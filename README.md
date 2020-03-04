@@ -3,7 +3,7 @@
 ## Nyttige lenker
 
 ### Tools
-- [Google drive] (https://drive.google.com/open?id=1bChILODl54nJyrrzWWDoBAAk-wocjbVR)
+- [Google drive](https://drive.google.com/open?id=1bChILODl54nJyrrzWWDoBAAk-wocjbVR)
 - [Trello](https://trello.com/in200010)
 - [slack](in2000-prosjektgroup.slack.com)
 
