@@ -5,7 +5,7 @@
 ### Tools
 - [Google drive](https://drive.google.com/open?id=1bChILODl54nJyrrzWWDoBAAk-wocjbVR)
 - [Trello](https://trello.com/in200010)
-- [slack](in2000-prosjektgroup.slack.com)
+- [slack](https://in2000-prosjektgroup.slack.com)
 
 ### Docs
 - [IN2000 case resources (god oversikt)](https://in2000-apiproxy.ifi.uio.no/weatherapi/doc/IN2000)
