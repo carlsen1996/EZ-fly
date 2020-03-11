@@ -12,14 +12,14 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.example.basicmap.ui.dashboard.DashboardFragment"
+        android:id="@+id/navigation_trips"
+        android:name="com.example.basicmap.ui.trips.TripsFragment"
         android:label="@string/title_places"
         tools:layout="@layout/fragment_places" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.example.basicmap.ui.notifications.NotificationsFragment"
+        android:id="@+id/navigation_drones"
+        android:name="com.example.basicmap.ui.drones.DronesFragment"
         android:label="@string/title_drones"
         tools:layout="@layout/fragment_drones" />
 </navigation>
