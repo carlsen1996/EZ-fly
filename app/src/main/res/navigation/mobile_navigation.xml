@@ -22,4 +22,11 @@
         android:name="com.example.basicmap.ui.drones.DronesFragment"
         android:label="@string/title_drones"
         tools:layout="@layout/fragment_drones" />
+
+    <fragment
+        android:id="@+id/navigation_faq"
+        android:name="com.example.basicmap.ui.faq.FaqFragment"
+        android:label="@string/title_faq"
+        tools:layout="@layout/fragment_faq" />
+
 </navigation>
