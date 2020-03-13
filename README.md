@@ -1,5 +1,25 @@
 # IN2000 - Team 36 prosjekt
 
+## Arbeidsfordeling
+
+Her en skisse for hvordan vi kan dele inn arbeidet.
+
+### Raport og skriving
+- Master scribe: Rolf
+
+### Kode
+- Tech lead: Tor
+
+#### Backend
+
+- Met api: Johannes
+- Zones (no-fly etc.): Philip? Olav?
+
+#### Frontend
+
+- Design, ikoner etc.: Al Hareth?
+- Brukergrupper: Rolf
+
 ## Nyttige lenker
 
 ### Tools
