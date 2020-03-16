@@ -14,12 +14,14 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 
 class HomeFragment : Fragment(), OnMapReadyCallback {
 
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var mMap: GoogleMap
+    private lateinit var marker: Marker
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,8 +42,12 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
         // Add a marker in Sydney and move the camera
         val sydney = LatLng(-34.0, 151.0)
-        mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
+        marker = mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
-    }
 
+        mMap.setOnMapClickListener {
+            marker.remove()
+            marker = mMap.addMarker(MarkerOptions().position(it))
+        }
+    }
 }
