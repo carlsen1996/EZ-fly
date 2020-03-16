@@ -17,7 +17,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 
-class HomeFragment : Fragment(), OnMapReadyCallback {
+class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListener {
 
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var mMap: GoogleMap
@@ -45,9 +45,13 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         marker = mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
 
-        mMap.setOnMapClickListener {
-            marker.remove()
-            marker = mMap.addMarker(MarkerOptions().position(it))
-        }
+        mMap.setOnMapClickListener(this)
+    }
+
+    override fun onMapClick(p0: LatLng?) {
+        if (p0 == null)
+            return
+        marker.remove()
+        marker = mMap.addMarker(MarkerOptions().position(p0))
     }
 }
