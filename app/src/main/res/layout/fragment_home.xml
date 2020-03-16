@@ -19,9 +19,11 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/popup"
         android:layout_width="match_parent"
         android:layout_margin="8dp"
         android:layout_height="100dp"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent" >
 
         <TextView
