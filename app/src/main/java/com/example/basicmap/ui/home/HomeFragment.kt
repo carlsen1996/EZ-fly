@@ -24,7 +24,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
 
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var mMap: GoogleMap
-    private lateinit var marker: Marker
+    private var marker: Marker? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,7 +48,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
     override fun onMapClick(p0: LatLng?) {
         if (p0 == null)
             return
-        marker.remove()
+        marker?.remove()
         marker = mMap.addMarker(MarkerOptions().position(p0))
         popup.visibility = View.VISIBLE
         popup.textView.text = "${p0.latitude}, ${p0.longitude}"
