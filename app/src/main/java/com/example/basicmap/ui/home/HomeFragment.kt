@@ -45,9 +45,15 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
     override fun onMapClick(p0: LatLng?) {
         if (p0 == null)
             return
+        setMarker(p0)
+    }
+
+    fun setMarker(p: LatLng): Marker {
         marker?.remove()
-        marker = mMap.addMarker(MarkerOptions().position(p0))
+        val m = mMap.addMarker(MarkerOptions().position(p))
+        marker = m
         popup.visibility = View.VISIBLE
-        popup.textView.text = "${p0.latitude}, ${p0.longitude}"
+        popup.textView.text = "${p.latitude}, ${p.longitude}"
+        return m
     }
 }
