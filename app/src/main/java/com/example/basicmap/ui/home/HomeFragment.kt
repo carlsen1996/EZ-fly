@@ -22,7 +22,6 @@ import kotlinx.android.synthetic.main.fragment_home.view.*
 
 class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListener {
 
-    private lateinit var homeViewModel: HomeViewModel
     private lateinit var mMap: GoogleMap
     private var marker: Marker? = null
 
@@ -31,8 +30,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        homeViewModel =
-            ViewModelProviders.of(this).get(HomeViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_home, container, false)
         val map = childFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
