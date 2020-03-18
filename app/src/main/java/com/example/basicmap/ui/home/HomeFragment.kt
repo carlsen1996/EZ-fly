@@ -21,6 +21,9 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.api.net.FetchPlaceRequest
+import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest
 import com.google.android.libraries.places.api.net.PlacesClient
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
@@ -108,7 +111,27 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
         val m = mMap.addMarker(MarkerOptions().position(p))
         marker = m
         popup.visibility = View.VISIBLE
+
+        val placeFields: List<Place.Field> = listOf(
+            Place.Field.NAME, Place.Field.ADDRESS,
+            Place.Field.LAT_LNG
+        )
         popup.textView.text = "${p.latitude}, ${p.longitude}"
+
+        // Add place names to the popup
+        // FIXME: Only reports names from the device location, make it actually react to the marker.
+        val request = FindCurrentPlaceRequest.newInstance(placeFields)
+        val placeResult = placesClient.findCurrentPlace(request)
+        placeResult.addOnCompleteListener {
+            if (it.isSuccessful && it.result != null) {
+
+                val likely = it.result!!
+                for (placeLikelihood in likely.placeLikelihoods) {
+                    val place = placeLikelihood.place
+                    popup.textView.text = "${popup.textView.text}\n${place.name}"
+                }
+            }
+        }
         return m
     }
 }
