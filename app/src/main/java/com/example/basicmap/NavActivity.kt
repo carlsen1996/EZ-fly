@@ -11,6 +11,10 @@ import androidx.navigation.ui.setupWithNavController
 class NavActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        //Artificial "loading delay", placeholder for now to show splashscreen
+        Thread.sleep(2000)
+        //Here we set the theme in the starting activity
+        setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_nav)
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
