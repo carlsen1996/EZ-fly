@@ -2,6 +2,7 @@ package com.example.basicmap.ui.home
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -17,9 +18,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.net.FetchPlaceRequest
@@ -37,6 +36,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
     private lateinit var mMap: GoogleMap
     private lateinit var placesClient: PlacesClient
     private var marker: Marker? = null
+    private val zones = mutableListOf<Polygon>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -133,5 +133,16 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
             }
         }
         return m
+    }
+
+    fun addZone(positions: List<LatLng>): Polygon? {
+        if (positions.size == 0)
+            return null
+        val polygonOptions = PolygonOptions().addAll(positions)
+        polygonOptions.fillColor(Color.argb(40, 255, 0, 0))
+        polygonOptions.strokeColor(Color.argb(180, 255, 0, 0))
+        val polygon = mMap.addPolygon(polygonOptions)
+        zones.add(polygon)
+        return polygon
     }
 }
