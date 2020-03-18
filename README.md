@@ -1,5 +1,9 @@
 # IN2000 - Team 36 prosjekt
 
+## Dokumentasjon
+
+- [maps](maps.md)
+
 ## Arbeidsfordeling
 
 Her en skisse for hvordan vi kan dele inn arbeidet.
