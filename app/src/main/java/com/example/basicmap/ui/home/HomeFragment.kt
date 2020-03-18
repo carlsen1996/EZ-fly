@@ -21,7 +21,6 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
-import com.google.android.libraries.places.api.net.FetchPlaceRequest
 import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest
 import com.google.android.libraries.places.api.net.PlacesClient
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -60,6 +59,14 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
         mMap.setOnMapClickListener(this)
         getLocationPermission()
         getDeviceLocation()
+
+        // Add a dummy zone
+        addZone(listOf(
+            LatLng(59.94195862876364, 10.76321694999933),
+            LatLng(59.94377610821358, 10.762283876538277),
+            LatLng(59.943641097920406, 10.759101770818233),
+            LatLng(59.942160986342856, 10.754415281116962)
+        ))
     }
 
     private fun getLocationPermission() {
@@ -116,7 +123,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
             Place.Field.NAME, Place.Field.ADDRESS,
             Place.Field.LAT_LNG
         )
-        popup.textView.text = "${p.latitude}, ${p.longitude}"
+        val latlngText = "${p.latitude}, ${p.longitude}"
+        popup.textView.text = latlngText
+        Log.d("latlng", latlngText)
 
         // Add place names to the popup
         // FIXME: Only reports names from the device location, make it actually react to the marker.
