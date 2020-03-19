@@ -32,7 +32,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
     private val PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1
     private var locationPermissionGranted = false
     private lateinit var locationClient: FusedLocationProviderClient
-    private lateinit var mMap: GoogleMap
+    private lateinit var map: GoogleMap
     private lateinit var placesClient: PlacesClient
     private var marker: Marker? = null
     private val zones = mutableListOf<Polygon>()
@@ -43,9 +43,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
         savedInstanceState: Bundle?
     ): View? {
         val root = inflater.inflate(R.layout.fragment_home, container, false)
-        val map = childFragmentManager
+        val mapFragment = childFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
-        map.getMapAsync(this)
+        mapFragment.getMapAsync(this)
 
         // NOTE: Have to use «!!» to declare non-null
         Places.initialize(context!!, getString(R.string.google_maps_key))
@@ -55,8 +55,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
-        mMap = googleMap
-        mMap.setOnMapClickListener(this)
+        map = googleMap
+        map.setOnMapClickListener(this)
         getLocationPermission()
         getDeviceLocation()
 
@@ -96,7 +96,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
             if (it.isSuccessful) {
                 it.result?.apply {
                     Log.d("location", "got location ${latitude} ${longitude}")
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                    map.moveCamera(CameraUpdateFactory.newLatLngZoom(
                         // NOTE: use «x.xf» to get a java type float
                         LatLng(latitude, longitude), 15.0f
                     ))
@@ -115,7 +115,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
 
     fun setMarker(p: LatLng): Marker {
         marker?.remove()
-        val m = mMap.addMarker(MarkerOptions().position(p))
+        val m = map.addMarker(MarkerOptions().position(p))
         marker = m
         popup.visibility = View.VISIBLE
 
@@ -150,7 +150,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
         val polygonOptions = PolygonOptions().addAll(positions)
         polygonOptions.fillColor(Color.argb(40, 255, 0, 0))
         polygonOptions.strokeColor(Color.argb(180, 255, 0, 0))
-        val polygon = mMap.addPolygon(polygonOptions)
+        val polygon = map.addPolygon(polygonOptions)
         zones.add(polygon)
         return polygon
     }
