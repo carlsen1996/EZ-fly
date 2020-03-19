@@ -13,7 +13,7 @@
 
     <fragment
         android:id="@+id/navigation_trips"
-        android:name="com.example.basicmap.ui.trips.TripsFragment"
+        android:name="com.example.basicmap.ui.places.PlacesFragment"
         android:label="@string/title_places"
         tools:layout="@layout/fragment_places" />
 

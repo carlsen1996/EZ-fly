@@ -1,4 +1,4 @@
-package com.example.basicmap.ui.trips
+package com.example.basicmap.ui.places
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

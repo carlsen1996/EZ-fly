@@ -1,4 +1,4 @@
-package com.example.basicmap.ui.trips
+package com.example.basicmap.ui.places
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,7 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.basicmap.R
 
-class TripsFragment : Fragment() {
+class PlacesFragment : Fragment() {
 
     private lateinit var tripsViewModel: TripsViewModel
 
