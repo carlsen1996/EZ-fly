@@ -21,6 +21,7 @@ import com.example.basicmap.lib.setupWeatherElement
 import com.example.basicmap.ui.places.LivePlace
 import com.example.basicmap.ui.places.Place
 import com.example.basicmap.ui.places.PlacesViewModel
+import com.google.android.gms.common.api.Status
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -30,7 +31,10 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.net.PlacesClient
+import com.google.android.libraries.places.api.model.Place as GPlace
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.popup.*
 import kotlinx.android.synthetic.main.popup.view.*
@@ -43,7 +47,7 @@ import kotlin.coroutines.CoroutineContext
 
 private val TAG = "HomeFragment"
 
-class HomeFragment : Fragment(), OnMapReadyCallback {
+class HomeFragment : Fragment(), OnMapReadyCallback, PlaceSelectionListener {
 
     private val PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1
     private var locationPermissionGranted = false
@@ -143,6 +147,13 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         root.gotoButton.setOnClickListener {
             map.animateCamera(CameraUpdateFactory.newLatLng(model.getPlace().place.value!!.position))
         }
+
+        // Setup search
+        val autocompleteFragment = childFragmentManager
+            .findFragmentById(R.id.autocomplete_fragment) as AutocompleteSupportFragment
+        // The information we're interested in
+        autocompleteFragment.setPlaceFields(listOf(GPlace.Field.ID, GPlace.Field.NAME, GPlace.Field.LAT_LNG));
+        autocompleteFragment.setOnPlaceSelectedListener(this)
 
         return root
     }
@@ -299,4 +310,16 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     }
 
 
+    override fun onPlaceSelected(place: GPlace) {
+        Log.i("place selected", "${place.name}")
+        val position = place.latLng!!
+        model.getPlace().place.value = Place(position)
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(
+            position, 15.0f
+        ))
+    }
+
+    override fun onError(status: Status) {
+        Log.i("place error", "${status}")
+    }
 }

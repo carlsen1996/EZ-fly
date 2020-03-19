@@ -50,4 +50,10 @@ placesClient
 }
 
 
-```
+NOTE: this seems to require billing in the google cloud account :/
+
+[autocomplete for search](https://developers.google.com/places/android-sdk/reference/com/google/android/libraries/places/widget/Autocomplete)
+
+Premade `AutocompleteSupportFragment`, but it's possible to call
+`PlacesClient.findAutocompletePredictions()` manually if we want a custom search
+widget.
