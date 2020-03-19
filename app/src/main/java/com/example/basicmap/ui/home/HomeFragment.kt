@@ -12,6 +12,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.basicmap.R
+import com.google.android.gms.common.api.Status
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -23,11 +24,14 @@ import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest
 import com.google.android.libraries.places.api.net.PlacesClient
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
 
 
-class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListener {
+class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListener,
+    PlaceSelectionListener {
 
     private val PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1
     private var locationPermissionGranted = false
@@ -46,6 +50,13 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
         val mapFragment = childFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+        // Setup search
+        val autocompleteFragment = childFragmentManager
+            .findFragmentById(R.id.autocomplete_fragment) as AutocompleteSupportFragment
+        // The information we're interested in
+        autocompleteFragment.setPlaceFields(listOf(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG));
+        autocompleteFragment.setOnPlaceSelectedListener(this)
 
         // NOTE: Have to use «!!» to declare non-null
         Places.initialize(context!!, getString(R.string.google_maps_key))
@@ -153,5 +164,18 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
         val polygon = map.addPolygon(polygonOptions)
         zones.add(polygon)
         return polygon
+    }
+
+    override fun onPlaceSelected(place: Place) {
+        Log.i("place selected", "${place.name}")
+        setMarker(place.latLng!!)
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(
+            // NOTE: use «x.xf» to get a java type float
+            place.latLng!!, 15.0f
+        ))
+    }
+
+    override fun onError(status: Status) {
+        Log.i("place error", "${status}")
     }
 }
