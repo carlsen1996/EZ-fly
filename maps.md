@@ -23,8 +23,6 @@ LocationServices
 
 # [Places](https://developers.google.com/places/android-sdk/intro)
 
-[autocomplete for search](https://developers.google.com/places/android-sdk/reference/com/google/android/libraries/places/widget/Autocomplete)
-
 Get information about the current place. (Not sure yet how to get this for an
 arbitrary place):
 ```kotlin
@@ -48,6 +46,8 @@ placesClient
             }
         }
 }
-
-
 ```
+
+# Search
+
+[autocomplete for search](https://developers.google.com/places/android-sdk/reference/com/google/android/libraries/places/widget/Autocomplete)
