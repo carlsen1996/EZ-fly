@@ -177,7 +177,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
         GlobalScope.launch {
             val gson = Gson()
             val response = Fuel.get(fullUrl).awaitString()
-
+            Log.d("hei", fullUrl)
+            weather = gson.fromJson(response, Array<Met>::class.java).toMutableList()
         }
     }
 }
