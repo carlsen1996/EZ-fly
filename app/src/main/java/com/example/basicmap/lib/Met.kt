@@ -1,7 +1,6 @@
 package com.example.basicmap.lib
-/*
-Wrapper library to interact with the MET https/json/xml APIs
- */
 
-class Met {
+
+data class Met(val temperature: Float, val humidity: Float, val fog: Float, val windDirection: Float, val windSpeed: Float, val persipitation: Float) {
+
 }
