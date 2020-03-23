@@ -2,6 +2,9 @@
 <androidx.cardview.widget.CardView android:id="@+id/popup"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginLeft="6dp"
+    android:layout_marginRight="6dp"
+    android:layout_marginTop="6dp"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <TextView
