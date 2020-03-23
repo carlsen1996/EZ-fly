@@ -4,8 +4,7 @@ import android.util.Log
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.coroutines.awaitString
 import com.google.gson.Gson
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+
 
 
 class Met {
@@ -54,17 +53,16 @@ class Met {
 
 
 
-    fun netCall(lat: Double, long: Double) {
+    suspend fun netCall(lat: Double, long: Double) {
         val baseUrl =  "https://in2000-apiproxy.ifi.uio.no/weatherapi/locationforecast/1.9/.json?lat="
         val fullUrl = baseUrl.plus(lat).plus("&lon=").plus(long)
 
 
-        GlobalScope.launch {
-            val gson = Gson()
-            val response = Fuel.get(fullUrl).awaitString()
-            Log.d("Url", fullUrl)
-            val weather = gson.fromJson(response, Kall::class.java)
-            Log.d("alle verdier", weather.product.time[0].location.temperature?.value) //test som henter nåværende temperatur
-        }
+        val gson = Gson()
+        val response = Fuel.get(fullUrl).awaitString()
+        Log.d("Url", fullUrl)
+        val weather = gson.fromJson(response, Kall::class.java)
+        Log.d("temp verdi", weather.product.time[0].location.temperature?.value)
+        Log.d("regn verdi", weather.product.time[1].location.precipitation?.value)//test som henter nåværende temperatur
     }
 }

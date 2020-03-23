@@ -27,6 +27,8 @@ import com.google.android.libraries.places.api.net.PlacesClient
 import kotlinx.android.synthetic.main.fragment_home.view.*
 import kotlinx.android.synthetic.main.popup.*
 import kotlinx.android.synthetic.main.popup.view.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListener {
@@ -118,7 +120,10 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
         if (p0 == null)
             return
         setMarker(p0)
-        Met().netCall(p0.latitude, p0.longitude)
+        GlobalScope.launch {
+            Met().netCall(p0.latitude, p0.longitude)
+        }
+
     }
 
     fun setMarker(p: LatLng): Marker {
