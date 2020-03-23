@@ -142,6 +142,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
                 for (placeLikelihood in likely.placeLikelihoods) {
                     val place = placeLikelihood.place
                     popup.textView.text = "${popup.textView.text}\n${place.name}"
+                    break // Limit to one result
                 }
             }
         }
