@@ -18,19 +18,15 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/popup"
+    <!-- Use a stub which is inflated on startup.
+         This way we can reuse the layout for the popup.
+            -->
+    <ViewStub
+        android:id="@+id/popupStub"
         android:layout_width="match_parent"
-        android:layout_margin="8dp"
-        android:layout_height="100dp"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent" >
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Foo bar" />
-    </androidx.cardview.widget.CardView>
+        android:layout_height="wrap_content"
+        android:layout_margin="6dp"
+        android:layout="@layout/popup"
+        app:layout_constraintBottom_toBottomOf="@+id/map" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
