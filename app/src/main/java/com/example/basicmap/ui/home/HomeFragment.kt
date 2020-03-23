@@ -13,8 +13,6 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.basicmap.R
 import com.example.basicmap.lib.Met
-import com.github.kittinunf.fuel.Fuel
-import com.github.kittinunf.fuel.coroutines.awaitString
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -29,9 +27,6 @@ import com.google.android.libraries.places.api.net.PlacesClient
 import kotlinx.android.synthetic.main.fragment_home.view.*
 import kotlinx.android.synthetic.main.popup.*
 import kotlinx.android.synthetic.main.popup.view.*
-import com.google.gson.Gson
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 
 class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListener {
@@ -44,7 +39,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
     private var marker: Marker? = null
     private val zones = mutableListOf<Polygon>()
 
-    private var weather = mutableListOf<Met>()
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -123,6 +118,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
         if (p0 == null)
             return
         setMarker(p0)
+        Met().netCall(p0.latitude, p0.longitude)
     }
 
     fun setMarker(p: LatLng): Marker {
@@ -135,7 +131,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
             Place.Field.NAME, Place.Field.ADDRESS,
             Place.Field.LAT_LNG
         )
-        netCall(p.latitude, p.longitude)
+
 
         val latlngText = "${p.latitude}, ${p.longitude}"
         popup.textView.text = latlngText
@@ -169,17 +165,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
         zones.add(polygon)
         return polygon
     }
-    fun netCall(lat: Double, long: Double) {
-        val baseUrl =  "https://in2000-apiproxy.ifi.uio.no/weatherapi/locationforecast/1.9/.json?lat="
-        val fullUrl = baseUrl.plus(lat).plus("&lon=").plus(long)
 
-
-        GlobalScope.launch {
-            val gson = Gson()
-            val response = Fuel.get(fullUrl).awaitString()
-            Log.d("hei", fullUrl)
-            weather = gson.fromJson(response, Array<Met>::class.java).toMutableList()
-        }
-    }
 }
 
