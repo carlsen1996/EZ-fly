@@ -53,7 +53,7 @@ class Met {
 
 
 
-    suspend fun netCall(lat: Double, long: Double) {
+    suspend fun locationForcast(lat: Double, long: Double) {
         val baseUrl =  "https://in2000-apiproxy.ifi.uio.no/weatherapi/locationforecast/1.9/.json?lat="
         val fullUrl = baseUrl.plus(lat).plus("&lon=").plus(long)
 
@@ -62,7 +62,7 @@ class Met {
         val response = Fuel.get(fullUrl).awaitString()
         Log.d("Url", fullUrl)
         val weather = gson.fromJson(response, Kall::class.java)
-        Log.d("temp verdi", weather.product.time[0].location.temperature?.value)
-        Log.d("regn verdi", weather.product.time[1].location.precipitation?.value)//test som henter nåværende temperatur
+        Log.d("temp verdi", weather.product.time[0].location.temperature?.value) //test som henter nåværende temp
+        Log.d("regn verdi", weather.product.time[1].location.precipitation?.value)//test som henter nåværende regn
     }
 }
