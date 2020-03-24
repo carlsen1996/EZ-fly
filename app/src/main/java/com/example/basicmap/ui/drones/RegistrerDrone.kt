@@ -46,9 +46,6 @@ class RegistrerDrone : AppCompatActivity() {
             else {
                 val drone = Drone(navn, maksVindStyrke, vanntett)
                 droneList.add(drone)
-                /*val droneIntent = Intent(this, DronesFragment::class.java)
-                droneIntent.putExtra("drone", drone)
-                setResult(RESULT_OK, droneIntent)*/
                 saveData()
                 for(i in droneList) {
                     Log.v("navn", i.navn)
@@ -75,6 +72,16 @@ class RegistrerDrone : AppCompatActivity() {
         val sharedPref: SharedPreferences = getSharedPreferences("sharedPref", MODE_PRIVATE)
         val gson = GsonBuilder().create()
         val json = sharedPref.getString("droneList", null)
-        droneList = gson.fromJson(json, Array<Drone>::class.java).toMutableList()
+        val drones = gson.fromJson(json, Array<Drone>::class.java)
+        if(drones == null) {
+            return
+        }
+        droneList = drones.toMutableList()
+    }
+    private fun clearSharedPref() {
+        val sharedPref: SharedPreferences = getSharedPreferences("sharedPref", MODE_PRIVATE)
+        val editor: SharedPreferences.Editor = sharedPref.edit()
+        editor.clear()
+        editor.commit()
     }
 }
