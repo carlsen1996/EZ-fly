@@ -23,8 +23,9 @@ import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest
 import com.google.android.libraries.places.api.net.PlacesClient
-import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
+import kotlinx.android.synthetic.main.popup.*
+import kotlinx.android.synthetic.main.popup.view.*
 
 
 class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListener {
@@ -46,6 +47,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
         val mapFragment = childFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+        // Make the
+        root.popupStub.inflate()
 
         // NOTE: Have to use «!!» to declare non-null
         Places.initialize(context!!, getString(R.string.google_maps_key))
@@ -138,6 +142,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
                 for (placeLikelihood in likely.placeLikelihoods) {
                     val place = placeLikelihood.place
                     popup.textView.text = "${popup.textView.text}\n${place.name}"
+                    break // Limit to one result
                 }
             }
         }

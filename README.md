@@ -3,6 +3,7 @@
 ## Dokumentasjon
 
 - [maps](maps.md)
+- [fragments](fragments.md)
 
 ## Arbeidsfordeling
 
