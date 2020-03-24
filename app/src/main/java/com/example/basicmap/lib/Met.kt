@@ -3,6 +3,7 @@ package com.example.basicmap.lib
 import android.util.Log
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.coroutines.awaitString
+import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
 
 
@@ -53,16 +54,16 @@ class Met {
 
 
 
-    suspend fun locationForcast(lat: Double, long: Double) {
-        val baseUrl =  "https://in2000-apiproxy.ifi.uio.no/weatherapi/locationforecast/1.9/.json?lat="
-        val fullUrl = baseUrl.plus(lat).plus("&lon=").plus(long)
-
+    suspend fun locationForcast(p: LatLng): Kall {
+        val baseUrl =  "https://in2000-apiproxy.ifi.uio.no/weatherapi/locationforecast/1.9/.json"
+        val fullUrl = "${baseUrl}?lat=${p.latitude}&lon=${p.longitude}"
 
         val gson = Gson()
         val response = Fuel.get(fullUrl).awaitString()
         Log.d("Url", fullUrl)
         val weather = gson.fromJson(response, Kall::class.java)
-        Log.d("temp verdi", weather.product.time[0].location.temperature?.value) //test som henter nåværende temp
-        Log.d("regn verdi", weather.product.time[1].location.precipitation?.value)//test som henter nåværende regn
+//        Log.d("temp verdi", weather.product.time[0].location.temperature?.value) //test som henter nåværende temp
+//        Log.d("regn verdi", weather.product.time[1].location.precipitation?.value)//test som henter nåværende regn
+        return weather
     }
 }

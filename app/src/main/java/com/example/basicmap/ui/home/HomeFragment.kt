@@ -121,7 +121,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
             return
         setMarker(p0)
         GlobalScope.launch {
-            Met().locationForcast(p0.latitude, p0.longitude)
+            Met().locationForcast(p0)
         }
 
     }
