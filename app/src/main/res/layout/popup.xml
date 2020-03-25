@@ -4,9 +4,10 @@
     android:id="@+id/popup"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:visibility="invisible"
+    android:padding="20dp"
     app:cardCornerRadius="10dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <RelativeLayout
         android:id="@+id/myLayout"
@@ -15,11 +16,10 @@
 
         <TextView
             android:id="@+id/windSpeedView"
-            android:layout_width="76dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="6dp"
             android:layout_marginTop="14dp"
             android:maxHeight="100dp"
             android:padding="8dp"

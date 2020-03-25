@@ -62,8 +62,8 @@ class Met {
         val response = Fuel.get(fullUrl).awaitString()
         //Log.d("Url", fullUrl)
         val weather = gson.fromJson(response, Kall::class.java)
-        Log.d("temp verdi", weather.product.time[0].location.temperature?.value) //test som henter nåværende temp
-        Log.d("regn verdi", weather.product.time[1].location.precipitation?.value)//test som henter nåværende regn
+        //Log.d("temp verdi", weather.product.time[0].location.temperature?.value) //test som henter nåværende temp
+        //Log.d("regn verdi", weather.product.time[1].location.precipitation?.value)//test som henter nåværende regn
         return weather
     }
 }
