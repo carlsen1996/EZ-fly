@@ -1,16 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView android:id="@+id/popup"
+<androidx.cardview.widget.CardView xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/popup"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:android="http://schemas.android.com/apk/res/android"
     app:cardCornerRadius="10dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:maxHeight="100dp"
-        android:padding="8dp"
-        android:text="" />
+    <RelativeLayout
+        android:id="@+id/myLayout"
+        android:layout_width="match_parent"
+        android:layout_height="238dp">
+
+        <TextView
+            android:id="@+id/windSpeedView"
+            android:layout_width="76dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="14dp"
+            android:maxHeight="100dp"
+            android:padding="8dp"
+            android:text=""
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="-2dp" />
+
+        <TextView
+            android:id="@+id/maxGustView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxHeight="100dp"
+            android:padding="8dp"
+            android:text=""
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/windSpeedView"
+            tools:layout_editor_absoluteX="26dp"
+            tools:layout_editor_absoluteY="187dp" />
+
+        <TextView
+            android:id="@+id/temperatureView"
+            android:layout_width="116dp"
+            android:layout_height="wrap_content"
+            android:maxHeight="100dp"
+            android:padding="8dp"
+            android:text=""
+            android:layout_below="@+id/maxGustView"
+            android:layout_alignParentStart="true"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="46dp" />
+
+        <TextView
+            android:id="@+id/precipitationView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxHeight="100dp"
+            android:padding="8dp"
+            android:text=""
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/temperatureView"
+            tools:layout_editor_absoluteX="20dp"
+            tools:layout_editor_absoluteY="101dp" />
+
+
+        <TextView
+            android:id="@+id/fogView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxHeight="100dp"
+            android:padding="8dp"
+            android:text=""
+            android:layout_below="@+id/precipitationView"
+            android:layout_alignParentStart="true"
+            tools:layout_editor_absoluteX="23dp"
+            tools:layout_editor_absoluteY="143dp" />
+
+        <ImageView
+            android:id="@+id/weatherImageView"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:contentDescription="ImageOfWeather"
+            app:srcCompat="@drawable/ic_notifications_black_24dp" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:textSize="8sp"
+            android:text="Klikk for neste dagers værvarsel" />
+
+    </RelativeLayout>
+
 </androidx.cardview.widget.CardView>
