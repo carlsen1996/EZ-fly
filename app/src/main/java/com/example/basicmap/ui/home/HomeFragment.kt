@@ -1,6 +1,7 @@
 package com.example.basicmap.ui.home
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Bundle
@@ -29,8 +30,8 @@ import com.google.android.libraries.places.api.net.PlacesClient
 import kotlinx.android.synthetic.main.fragment_home.view.*
 import kotlinx.android.synthetic.main.popup.*
 import kotlinx.android.synthetic.main.popup.view.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
+
 
 
 class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListener {
@@ -129,12 +130,15 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
         if (p0 == null)
             return
         model.position.value = p0
+        var weather: Met.Kall
         GlobalScope.launch {
-
-          
-            Met().locationForecast(p0)
+            withContext(Dispatchers.IO) {
+                weather = Met().locationForecast(p0)
+                populatePopup(weather)
+            }
 
         }
+
 
     }
 
@@ -151,7 +155,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
 
 
         val latlngText = "${p.latitude}, ${p.longitude}"
-        popup.textView.text = latlngText
+        //popup.textView.text = latlngText
         Log.d("latlng", latlngText)
 
         // Add place names to the popup
@@ -169,7 +173,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
                 val likely = it.result!!
                 for (placeLikelihood in likely.placeLikelihoods) {
                     val place = placeLikelihood.place
-                    popup.textView.text = "${popup.textView.text}\n${place.name}"
+                    //popup.textView.text = "${popup.textView.text}\n${place.name}"
                     break // Limit to one result
                 }
             }
@@ -186,6 +190,16 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
         val polygon = map.addPolygon(polygonOptions)
         zones.add(polygon)
         return polygon
+    }
+    private fun populatePopup(weather: Met.Kall) {
+        activity?.runOnUiThread {
+            popup.windSpeedView.text = "Vindhastighet: ${weather.product.time[0].location.windSpeed?.mps}"
+            popup.maxGustView.text = "Max vindkast: ${weather.product.time[0].location.windGust?.mps}"
+            popup.temperatureView.text = "Temperatur: ${weather.product.time[0].location.temperature?.value}"
+            popup.precipitationView.text = "Regn: ${weather.product.time[1].location.precipitation?.value}"
+            popup.fogView.text = "Tåke: ${weather.product.time[0].location.fog?.percent}"
+        }
+
     }
 
 }
