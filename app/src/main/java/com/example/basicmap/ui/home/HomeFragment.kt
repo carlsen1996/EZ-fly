@@ -147,6 +147,11 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
         val request = FindCurrentPlaceRequest.newInstance(placeFields)
         val placeResult = placesClient.findCurrentPlace(request)
         placeResult.addOnCompleteListener {
+            // FIXME: destroy the listener when the fragment is destroyed
+            // This can trigger from a dead fragment after a rotation, so guard
+            // against dead views
+            if (popup == null)
+                return@addOnCompleteListener
             if (it.isSuccessful && it.result != null) {
 
                 val likely = it.result!!
