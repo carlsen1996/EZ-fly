@@ -44,7 +44,7 @@ class RegistrerDrone : AppCompatActivity() {
                 toast.show()
             }
             else {
-                val drone = Drone(navn, maksVindStyrke, vanntett)
+                val drone = Drone(navn, maksVindStyrke, vanntett, "@mipmap/appicon_128")
                 droneList.add(drone)
                 saveData()
                 for(i in droneList) {
@@ -67,7 +67,7 @@ class RegistrerDrone : AppCompatActivity() {
         editor.commit()
     }
 
-    inline fun <reified T> Gson.fromJson(json: String) = fromJson<T>(json, object: TypeToken<T>() {}.type)
+    //inline fun <reified T> Gson.fromJson(json: String) = fromJson<T>(json, object: TypeToken<T>() {}.type)
     private fun loadData() {
         val sharedPref: SharedPreferences = getSharedPreferences("sharedPref", MODE_PRIVATE)
         val gson = GsonBuilder().create()

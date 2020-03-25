@@ -82,4 +82,14 @@
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginBottom="20dp"/>
 
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/leggTilKnapp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@mipmap/appicon_128"
+        android:layout_marginBottom="50dp"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
