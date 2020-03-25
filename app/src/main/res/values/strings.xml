@@ -3,7 +3,7 @@
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_nav">NavActivity</string>
     <string name="title_home">Home</string>
-    <string name="title_places">Trips</string>
+    <string name="title_places">Places</string>
     <string name="title_drones">My drones</string>
     <string name="title_faq">FAQ</string>
     <string-array name="vindstyrker">
