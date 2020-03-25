@@ -1,20 +1,13 @@
 package com.example.basicmap.ui.drones
 
-import android.app.Activity
-import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.example.basicmap.R
-import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.activity_registrer_drone.*
-import java.io.Serializable
-import java.lang.reflect.Type
 
 class RegistrerDrone : AppCompatActivity() {
 
@@ -67,7 +60,6 @@ class RegistrerDrone : AppCompatActivity() {
         editor.commit()
     }
 
-    //inline fun <reified T> Gson.fromJson(json: String) = fromJson<T>(json, object: TypeToken<T>() {}.type)
     private fun loadData() {
         val sharedPref: SharedPreferences = getSharedPreferences("sharedPref", MODE_PRIVATE)
         val gson = GsonBuilder().create()

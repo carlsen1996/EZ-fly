@@ -41,18 +41,17 @@ class DronesFragment : Fragment() {
         root.registrerKnapp.setOnClickListener {
             val intent = Intent(getActivity(), RegistrerDrone::class.java)
             startActivityForResult(intent, 1)
+
         }
 
         //Fill recyclerview
         viewManager = LinearLayoutManager(getActivity())
         viewAdapter = ListAdapter(getContext()!!, droneList)
-
         recyclerView = root.recyclerView.apply {
             setHasFixedSize(true)
             layoutManager = viewManager
             adapter = viewAdapter
         }
-
         return root
     }
 
@@ -65,6 +64,21 @@ class DronesFragment : Fragment() {
             return
         }
         droneList = drones.toMutableList()
+    }
+
+    //Update recyclerview
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode == 1) {
+            loadData()
+            viewManager = LinearLayoutManager(getActivity())
+            viewAdapter = ListAdapter(getContext()!!, droneList)
+            recyclerView = recyclerView.apply {
+                setHasFixedSize(true)
+                layoutManager = viewManager
+                adapter = viewAdapter
+            }
+        }
     }
 
 }
