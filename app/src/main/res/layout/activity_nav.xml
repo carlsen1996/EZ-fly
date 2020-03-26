@@ -10,13 +10,13 @@
         android:id="@+id/nav_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:itemIconTint="@color/colorAccent"
+        app:itemIconTint="@drawable/menu_item_color_check"
         app:menu="@menu/bottom_nav_menu"
-        app:itemTextColor="@color/colorPrimaryDark"/>
+        app:itemTextColor="@color/colorPrimaryDark"
+        />
 
     <fragment
         android:id="@+id/nav_host_fragment"
