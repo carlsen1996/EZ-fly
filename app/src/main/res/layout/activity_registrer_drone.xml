@@ -93,4 +93,17 @@
         app:srcCompat="@mipmap/appicon_128"
         android:layout_marginBottom="50dp"/>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/vindInfoKnapp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="10dp"
+        android:clickable="true"
+        app:backgroundTint="#009688"
+        app:fabCustomSize="15dp"
+        app:layout_constraintStart_toEndOf="@+id/vindTekst"
+        app:layout_constraintTop_toBottomOf="@+id/navn"
+        app:srcCompat="@android:drawable/ic_dialog_info" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

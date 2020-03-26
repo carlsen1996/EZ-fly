@@ -1,9 +1,11 @@
 package com.example.basicmap.ui.drones
 
+import android.content.DialogInterface
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.basicmap.R
 import com.google.gson.GsonBuilder
@@ -49,6 +51,14 @@ class RegistrerDrone : AppCompatActivity() {
                 toast.show()
                 finish()
             }
+        }
+        vindInfoKnapp.setOnClickListener {
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle("Maks vindstyrke")
+            builder.setMessage("Alle dronemodeller kommer med informasjon om den høyeste vindstyrken det er mulig for dronen og fly i. " +
+                    "Sjekk manualen eller besøk produsentens nettside for å finne din drones maks vindstyrke.")
+            builder.setPositiveButton("OK", { dialogInterface: DialogInterface, i: Int -> })
+            builder.show()
         }
     }
     private fun saveData() {
