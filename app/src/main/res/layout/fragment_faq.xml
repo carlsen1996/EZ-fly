@@ -11,11 +11,12 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@mipmap/faq2" />
+        android:src="@mipmap/faq" />
     </com.google.android.material.appbar.AppBarLayout>
 
 
     <ExpandableListView
+        android:background="@color/colorPrimary"
         android:id="@+id/faqListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

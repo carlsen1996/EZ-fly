@@ -14,6 +14,7 @@
     android:clickable="false">
 
     <RelativeLayout
+        android:background="#333333"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="20dp">
@@ -21,6 +22,7 @@
 
         <TextView
             android:id="@+id/vanntett"
+            android:textColor="#ffffff"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
@@ -31,6 +33,7 @@
 
         <TextView
             android:id="@+id/navn"
+            android:textColor="#ffffff"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
@@ -42,6 +45,7 @@
 
         <TextView
             android:id="@+id/vindStyrke"
+            android:textColor="#ffffff"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
