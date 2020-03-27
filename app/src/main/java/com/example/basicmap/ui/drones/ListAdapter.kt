@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.example.basicmap.R
 import com.example.basicmap.R.layout.drone_kort
 import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.drone_kort.view.*
@@ -20,6 +22,16 @@ class ListAdapter(val context: Context, val droneList: MutableList<Drone>) : Rec
         fun setData(drone: Drone?, pos: Int) {
             itemView.navn.setText(drone?.navn)
             itemView.vindStyrke.setText("Maks vindstyrke: " + drone?.maksVindStyrke.toString())
+            if(drone?.imgSrc == "") {
+                Glide.with(itemView)
+                    .load(R.drawable.drone_img_asst)
+                    .into(itemView.imageView)
+            }
+            else {
+                Glide.with(itemView)
+                    .load(drone?.imgSrc)
+                    .into(itemView.imageView)
+            }
             if(drone?.vanntett == true) {
                 itemView.vanntett.setText("Er vanntett")
             }
@@ -43,7 +55,6 @@ class ListAdapter(val context: Context, val droneList: MutableList<Drone>) : Rec
             droneList.removeAt(pos)
             notifyDataSetChanged()
             saveData()
-            Log.v("test", "drone slettet")
         }
         private fun saveData() {
             val sharedPref: SharedPreferences = context.getSharedPreferences("sharedPref", AppCompatActivity.MODE_PRIVATE)
