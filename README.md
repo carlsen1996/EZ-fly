@@ -2,6 +2,7 @@
 
 ## Dokumentasjon
 
+- [ViewModel og tilstands-arkitektur](viewModel.md)
 - [maps](maps.md)
 - [fragments](fragments.md)
 
