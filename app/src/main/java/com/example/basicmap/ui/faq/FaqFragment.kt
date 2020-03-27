@@ -24,14 +24,19 @@ class FaqFragment : Fragment() {
         val answer3 : MutableList<String> = mutableListOf()
         val answer4 : MutableList<String> = mutableListOf()
 
-        question.add("Question 1")
-        answer1.add("Answer 1")
-        question.add("Question 2")
-        answer2.add("Answer 2")
-        question.add("Question 3")
-        answer3.add("Answer 3")
-        question.add("Question 4")
-        answer4.add("Answer 4")
+        question.add("Kan jeg fly dronen min i minusgrader?")
+        answer1.add("Det er ikke anbefalt, men mulig. Batteriet mister raskt " +
+                "kapasitet i kulden. Pass på at dronen din er ladet" +
+                ". Et tips er å bruke håndvarmere for å " +
+                "holde batteriet varmt.")
+        question.add("Hva hvis det regner/snør?")
+        answer2.add("Det kommer an på dronen din. De fleste droner er ikke vanntette, så " +
+                "her bør du sjekke din modell spesifikt.")
+        question.add("Hvor høyt kan jeg fly?")
+        answer3.add("Luftfartstilsynet sin regel er ikke høyere enn 120m over bakken.")
+        question.add("Kan jeg fly om kvelden?")
+        answer4.add("Hovedregelen er at du alltid må kunne se dronen når den flys. Dersom " +
+                "det er mørkt og du har dårlig sikt, skal du ikke fly.")
 
         answer.add(answer1)
         answer.add(answer2)
