@@ -17,6 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".ui.drones.RegistrerDrone"></activity>
         <activity
             android:name=".NavActivity"
             android:label="@string/title_activity_nav"
@@ -26,7 +27,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -39,7 +39,6 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
-
     </application>
 
 </manifest>

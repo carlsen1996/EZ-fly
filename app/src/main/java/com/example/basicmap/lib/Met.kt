@@ -3,66 +3,54 @@ package com.example.basicmap.lib
 import android.util.Log
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.coroutines.awaitString
+import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
 
 
 
 class Met {
-    data class WindDirection(val deg: String, val id: String, val name: String)
-    data class DewPointTemperature(val unit: String, val id: String, val value: String)
-    data class Humidity(val unit: String, val value: String)
-    data class Temperature(val unit: String, val value: String, val id: String)
-    data class HighClouds(val percent: String, val id: String)
-    data class Cloudiness(val id: String, val percent: String)
-    data class Pressure(val unit: String, val value: String, val id: String)
-    data class LowClouds(val percent: String, val id: String)
-    data class Fog(val percent: String, val id: String)
-    data class WindGust(val mps: String, val id: String)
-    data class MediumClouds(val id: String, val percent: String)
-    data class WindSpeed(val mps: String, val id: String, val name: String, val beaufort: String)
-    data class Symbol(val number: String, val id: String)
-    data class Precipitation(val unit: String, val maxvalue: String, val value: String, val minvalue: String)
-    data class TemperatureProbability(val value: String, val unit: String)
-    data class WindProbability(val unit: String, val value: String)
-
-    data class Location(val windDirection: WindDirection?,
-                        val dewPointTemperature: DewPointTemperature?,
-                        val humidity: Humidity?,
-                        val temperature: Temperature?,
-                        val highClouds: HighClouds?,
-                        val cloudiness: Cloudiness?,
-                        val pressure: Pressure?,
-                        val lowClouds: LowClouds?,
-                        val fog: Fog?,
-                        val windGust: WindGust?,
-                        val mediumClouds: MediumClouds?,
-                        val windSpeed: WindSpeed?,
-                        val symbol: Symbol?,
-                        val precipitation: Precipitation?,
-                        val temperatureProbability: TemperatureProbability?,
-                        val windProbability: WindProbability?,
-                        val latitude: String,
-                        val longitude: String,
-                        val altitude: String)
-    data class Numb(val datatype: String, val to: String, val from: String, val location: Location)
-    data class Product(val clas: String, val time: List<Numb>)
-    data class Model(val to: String, val termin: String, val name: String, val runended: String, val from: String, val nextrun: String)
-    data class Meta(val model: Model)
-    data class Kall(val product: Product, val created: String, val meta: Meta)
+    data class Details(val air_pressure_at_sea_level: String?,
+                       val air_temperature: String?,
+                       val cloud_area_fraction: String?,
+                       val cloud_area_fraction_high: String?,
+                       val cloud_area_fraction_low: String?,
+                       val cloud_area_fraction_medium: String?,
+                       val dew_point_temperature: String?,
+                       val fog_area_fraction: String?,
+                       val relative_humidity: String?,
+                       val ultraviolet_index_clear_sky: String?,
+                       val wind_from_direction: String?,
+                       val wind_speed: String?,
+                       val wind_speed_of_gust: String?,
+                       val precipitation_amount: String?,
+                       val precipitation_amount_max: String?,
+                       val precipitation_amount_min: String?,
+                       val probability_of_precipitation: String?,
+                       val probability_of_thunder: String?,
+                       val air_temperature_max: String?,
+                       val air_temperature_min: String?)
+    data class Instant(val details: Details)
+    data class Summary(val symbol_code: String)
+    data class Next1hours(val summary: Summary, val details: Details)
+    data class Next6hours(val summary: Summary, val details: Details)
+    data class Data(val instant: Instant, val next_1_hours: Next1hours, val next_6_hours: Next6hours)
+    data class Numb(val time: String, val data: Data)
+    data class Meta(val updated_at: String, val units: Details)
+    data class Properties(val meta: Meta, val timeseries: List<Numb>)
+    data class Kall(val properties: Properties)
 
 
-
-
-    suspend fun locationForcast(lat: Double, long: Double) {
-        val baseUrl =  "https://in2000-apiproxy.ifi.uio.no/weatherapi/locationforecast/1.9/.json?lat="
-        val fullUrl = baseUrl.plus(lat).plus("&lon=").plus(long)
+    suspend fun locationForecast(p: LatLng): Kall {
+        val baseUrl =  "https://in2000-apiproxy.ifi.uio.no/weatherapi/locationforecast/2.0/.json"
+        val fullUrl = "${baseUrl}?lat=${p.latitude}&lon=${p.longitude}"
 
 
         val gson = Gson()
         val response = Fuel.get(fullUrl).awaitString()
         Log.d("Url", fullUrl)
         val weather = gson.fromJson(response, Kall::class.java)
-        Log.d("temp verdi", weather.product.time[0].location.temperature?.value) //test som henter nåværende temp
-        Log.d("regn verdi", weather.product.time[1].location.precipitation?.value)//test som henter nåværende regn
+        Log.d("temp verdi", weather.properties.timeseries[0].data.instant.details.air_temperature) //test som henter nåværende temp
+        Log.d("regn verdi", weather.properties.timeseries[0].data.next_1_hours.details.precipitation_amount)//test som henter nåværende regn
+        return weather
     }
 }

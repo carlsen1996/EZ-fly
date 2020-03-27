@@ -11,6 +11,8 @@ import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import com.example.basicmap.R
 import com.example.basicmap.lib.Met
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -38,10 +40,12 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
     private lateinit var locationClient: FusedLocationProviderClient
     private lateinit var map: GoogleMap
     private lateinit var placesClient: PlacesClient
+
+    // Transient reference to current marker, backed by model.position
     private var marker: Marker? = null
     private val zones = mutableListOf<Polygon>()
 
-
+    private val model: HomeViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -68,6 +72,11 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
         map.setOnMapClickListener(this)
         getLocationPermission()
         getDeviceLocation()
+
+        // setMarker needs the map
+        model.position.observe(viewLifecycleOwner, Observer {
+            setMarker(it)
+        })
 
         // Add a dummy zone
         addZone(listOf(
@@ -119,9 +128,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
     override fun onMapClick(p0: LatLng?) {
         if (p0 == null)
             return
-        setMarker(p0)
+        model.position.value = p0
         GlobalScope.launch {
-            Met().locationForcast(p0.latitude, p0.longitude)
+            Met().locationForecast(p0)
         }
 
     }
@@ -147,6 +156,11 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
         val request = FindCurrentPlaceRequest.newInstance(placeFields)
         val placeResult = placesClient.findCurrentPlace(request)
         placeResult.addOnCompleteListener {
+            // FIXME: destroy the listener when the fragment is destroyed
+            // This can trigger from a dead fragment after a rotation, so guard
+            // against dead views
+            if (popup == null)
+                return@addOnCompleteListener
             if (it.isSuccessful && it.result != null) {
 
                 val likely = it.result!!
