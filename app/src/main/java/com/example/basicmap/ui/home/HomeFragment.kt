@@ -193,11 +193,11 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
     }
     private fun populatePopup(weather: Met.Kall) {
         activity?.runOnUiThread {
-            popup.windSpeedView.text = "Vindhastighet: ${weather.product.time[0].location.windSpeed?.mps}"
-            popup.maxGustView.text = "Max vindkast: ${weather.product.time[0].location.windGust?.mps}"
-            popup.temperatureView.text = "Temperatur: ${weather.product.time[0].location.temperature?.value}"
-            popup.precipitationView.text = "Regn: ${weather.product.time[1].location.precipitation?.value}"
-            popup.fogView.text = "Tåke: ${weather.product.time[0].location.fog?.percent}"
+            popup.windSpeedView.text = "Vindhastighet: ${weather.properties.timeseries[0].data.instant.details.wind_speed} m/s"
+            popup.maxGustView.text = "Max vindkast: ${weather.properties.timeseries[0].data.instant.details.wind_speed_of_gust} m/s"
+            popup.temperatureView.text = "Temperatur: ${weather.properties.timeseries[0].data.instant.details.air_temperature} °C"
+            popup.precipitationView.text = "Regn: ${weather.properties.timeseries[0].data.next_1_hours.details.precipitation_amount} mm"
+            popup.fogView.text = "Tåke: ${weather.properties.timeseries[0].data.instant.details.fog_area_fraction}%"
         }
 
     }
