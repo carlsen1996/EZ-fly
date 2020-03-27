@@ -132,7 +132,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
         GlobalScope.launch {
 
           
-            Met().locationForcast(p0)
+            Met().locationForecast(p0)
 
         }
 
