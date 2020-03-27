@@ -45,12 +45,15 @@ class Met {
         val fullUrl = "${baseUrl}?lat=${p.latitude}&lon=${p.longitude}"
 
 
+
         val gson = Gson()
         val response = Fuel.get(fullUrl).awaitString()
         Log.d("Url", fullUrl)
         val weather = gson.fromJson(response, Kall::class.java)
+
         Log.d("temp verdi", weather.properties.timeseries[0].data.instant.details.air_temperature) //test som henter nåværende temp
         Log.d("regn verdi", weather.properties.timeseries[0].data.next_1_hours.details.precipitation_amount)//test som henter nåværende regn
+
         return weather
     }
 }
