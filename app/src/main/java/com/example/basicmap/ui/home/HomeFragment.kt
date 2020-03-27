@@ -130,7 +130,10 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
             return
         model.position.value = p0
         GlobalScope.launch {
+
+          
             Met().locationForcast(p0)
+
         }
 
     }
