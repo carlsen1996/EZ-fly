@@ -1,6 +1,7 @@
 package com.example.basicmap
 
 import android.os.Bundle
+import android.view.Window
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -16,6 +17,9 @@ class NavActivity : AppCompatActivity() {
         //Here we set the theme in the starting activity
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
+        getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
+        actionBar?.hide();
+
         setContentView(R.layout.activity_nav)
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
 
