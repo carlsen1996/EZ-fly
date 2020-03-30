@@ -3,7 +3,7 @@
     <string name="title_activity_maps">Map</string>
     <string name="title_home">Home</string>
     <string name="title_places">Places</string>
-    <string name="title_drones">My drones</string>
+    <string name="title_drones">Drones</string>
     <string name="title_faq">FAQ</string>
     <string-array name="vindstyrker">
         <item>"2 m/s"</item>
@@ -12,8 +12,4 @@
         <item>"17 m/s"</item>
     </string-array>
     <string name="title_activity_main">MainActivity</string>
-    <string name="tab_text_1">Tab 1</string>
-    <string name="tab_text_2">Tab 2</string>
-    <string name="tab_text_3">foo</string>
-    <string name="tab_text_4">bar</string>
 </resources>

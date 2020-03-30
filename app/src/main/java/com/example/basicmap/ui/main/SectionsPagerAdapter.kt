@@ -13,10 +13,10 @@ import com.example.basicmap.ui.home.HomeFragment
 import com.example.basicmap.ui.places.PlacesFragment
 
 private val TAB_TITLES = arrayOf(
-    R.string.tab_text_1,
-    R.string.tab_text_2,
-    R.string.tab_text_3,
-    R.string.tab_text_4
+    R.string.title_home,
+    R.string.title_places,
+    R.string.title_drones,
+    R.string.title_faq
 )
 
 /**
