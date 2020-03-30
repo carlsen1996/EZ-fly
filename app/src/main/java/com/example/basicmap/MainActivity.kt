@@ -13,6 +13,7 @@ import com.example.basicmap.ui.main.SectionsPagerAdapter
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val sectionsPagerAdapter = SectionsPagerAdapter(this, supportFragmentManager)
