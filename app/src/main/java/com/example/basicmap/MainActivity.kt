@@ -20,6 +20,14 @@ class MainActivity : AppCompatActivity() {
         val viewPager: ViewPager = findViewById(R.id.view_pager)
         viewPager.adapter = sectionsPagerAdapter
         val tabs: TabLayout = findViewById(R.id.tabs)
+
         tabs.setupWithViewPager(viewPager)
+
+        // This is a bit ugly, but should work
+        // FIXME: icon sizes are wrong
+        tabs.getTabAt(0)?.setIcon(R.mipmap.round_place_black_18dp)
+        tabs.getTabAt(1)?.setIcon(R.mipmap.round_explore_black_18dp)
+        tabs.getTabAt(2)?.setIcon(R.mipmap.drone4)
+        tabs.getTabAt(3)?.setIcon(R.mipmap.round_help_black_18dp)
     }
 }
