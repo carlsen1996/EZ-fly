@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -14,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.basicmap.R
 import com.google.gson.GsonBuilder
+import kotlinx.android.synthetic.main.fragment_drones.*
 import kotlinx.android.synthetic.main.fragment_drones.view.*
 
 class DronesFragment : Fragment() {
@@ -39,6 +42,7 @@ class DronesFragment : Fragment() {
 
         //Add drone
         root.registrerKnapp.setOnClickListener {
+            root.recycleViewTekst.setVisibility(INVISIBLE)
             val intent = Intent(getActivity(), RegistrerDrone::class.java)
             startActivityForResult(intent, 1)
         }
@@ -46,11 +50,13 @@ class DronesFragment : Fragment() {
         //Fill recyclerview
         viewManager = LinearLayoutManager(getActivity())
         viewAdapter = ListAdapter(getContext()!!, droneList)
-
         recyclerView = root.recyclerView.apply {
             setHasFixedSize(true)
             layoutManager = viewManager
             adapter = viewAdapter
+        }
+        if(viewAdapter.getItemCount() == 0) {
+            root.recycleViewTekst.setVisibility(VISIBLE)
         }
 
         return root
@@ -65,6 +71,21 @@ class DronesFragment : Fragment() {
             return
         }
         droneList = drones.toMutableList()
+    }
+
+    //Update recyclerview
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode == 1) {
+            loadData()
+            viewManager = LinearLayoutManager(getActivity())
+            viewAdapter = ListAdapter(getContext()!!, droneList)
+            recyclerView = recyclerView.apply {
+                setHasFixedSize(true)
+                layoutManager = viewManager
+                adapter = viewAdapter
+            }
+        }
     }
 
 }
