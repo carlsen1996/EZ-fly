@@ -76,6 +76,18 @@
             tools:layout_editor_absoluteX="23dp"
             tools:layout_editor_absoluteY="143dp" />
 
+        <TextView
+            android:id="@+id/locationNameView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxHeight="100dp"
+            android:padding="8dp"
+            android:text=""
+            android:layout_below="@+id/fogView"
+            android:layout_alignParentStart="true"
+            tools:layout_editor_absoluteX="23dp"
+            tools:layout_editor_absoluteY="143dp" />
+
         <ImageView
             android:id="@+id/weatherImageView"
             android:layout_width="50dp"
