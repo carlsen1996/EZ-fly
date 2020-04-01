@@ -86,24 +86,22 @@ private fun initNoFlyLufthavn(jsonStringenMedFlyplasser : String) {
         // 5km avstand
 
 
-
-
+        val sirkelfarge = Color.parseColor("#db784c")
 
         val circleOptions1 = CircleOptions()
             .center(LatLng1)
             .radius(5000.0) // I meter
-            .fillColor(229, 40, 40, 0.8) // RBG + alpha (transparancy)
+            .fillColor(sirkelfarge) // RBG + alpha (transparancy)
             .strokeColor(Color.TRANSPARENT) // Utkanten av sirkelen
-            .
         val circleOptions2 = CircleOptions()
             .center(LatLng2)
             .radius(5000.0)
-            .fillColor(229, 40, 40, 0.8)
+            .fillColor(sirkelfarge)
             .strokeColor(Color.TRANSPARENT)
         val circleOptions3 = CircleOptions()
             .center(LatLng3)
             .radius(5000.0)
-            .fillColor(229, 40, 40, 0.8)
+            .fillColor(sirkelfarge)
             .strokeColor(Color.TRANSPARENT)
 
 
@@ -113,7 +111,7 @@ private fun initNoFlyLufthavn(jsonStringenMedFlyplasser : String) {
 
         // Ikke glem å legge til en som mater inn stringen i main filen
 
-
+        //yeet
 
         teller++
     }
