@@ -6,13 +6,33 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="130dp"
+        android:background="@color/colorAccent"
         android:gravity="center"
         android:elevation="0dp">
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@mipmap/faq2" />
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/faqimg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/faq2"
+            android:layout_centerInParent="true"/>
+        <Switch
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/darkSwitch"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true">
+
+        </Switch>
+
+        </RelativeLayout>
     </com.google.android.material.appbar.AppBarLayout>
+
+
+
 
 
     <ExpandableListView
