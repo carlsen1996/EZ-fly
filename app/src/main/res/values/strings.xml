@@ -13,6 +13,8 @@
     </string-array>
     <string name="title_activity_main">MainActivity</string>
 
+
+    <!--her er det en enorm liste, hold ting helst over her-->
     <string name="flyplassListe">
         [
           {
@@ -26,307 +28,284 @@
 </resources>
 
 <!--
-    FlyplassId:1
+[
     {
-    “Navn”:”Sandane lufthavn”
-    “Kordinat1”:”61.4944.2, 6.0626.3”
-    “Kordinat2”:”61.4950.1, 6.0703.1”
-    “Kordinat3”:”61.4947.2, 6.0556.8”
-    }
-
-    FlyplassId:2
-    “Navn”:Oslo lufthavn
-    “Kordinat1”:60.1248.5, 11.0630.2
-    “Kordinat2”:60.1058.5, 11.0419.2
-    “Kordinat3”:60.1042.7, 11.0637.3
-
-    FlyplassId:3
-    “Navn”:Stavanger lufthavn
-    “Kordinat1”:58.5342.5, 5.3813.8
-    “Kordinat2”:58.5221.2, 5.3843.9
-    “Kordinat3”:58.5254.7, 5.3616.9
-
-    FlyplassId:4
-    “Navn”:Ørsta-Volda lufthavn
-    “Kordinat1”:62.1036.7, 6.0343.7
-    “Kordinat2”:62.1053.9, 6.0447.6
-    “Kordinat3”:62.1047.7, 6.0447.0
-
-    FlyplassId:5
-    “Navn”:Brønnøysund lufthavn
-    “Kordinat1”:65.2737.3, 12.1233.7
-    “Kordinat2”:65.2714.6, 12.1213.5
-    “Kordinat3”:65.2750.9, 12.1323.8
-
-    FlyplassId:6
-    “Navn”:Rørvik lufthavn
-    “Kordinat1”:64.5022.3, 11.0839.5
-    “Kordinat2”:64.5001.5, 11.0810.1
-    “Kordinat3”:64.5024.5, 11.0858.4
-
-    FlyplassId:7
-    “Navn”:Andøya lufthavn
-    “Kordinat1”:69.1832.6, 16.0659.9
-    “Kordinat2”:69.1709.1, 16.0917.5
-    “Kordinat3”:69.1658.6, 16.0740.2
-
-
-    FlyplassId:8
-    “Navn”:
-    “Kordinat1”:
-    “Kordinat2”:
-    “Kordinat3”:
-
-    FlyplassId:9
-    “Navn”:Fagernes lufthavn
-    “Kordinat1”:61.0025.4, 9.1737.2
-    “Kordinat2”:61.0012.2, 9.1810.1
-    “Kordinat3”:61.0109.3, 9.1700.9
-
-    FlyplassId:10
-    “Navn”:Molde lufthavn
-    “Kordinat1”:62.4446.6, 7.1532.4
-    “Kordinat2”:62.4455.9, 7.1718.1
-    “Kordinat3”:62.4432.2, 7.1448.1
-
-    FlyplassId:11
-    “Navn”:Sogndal lufthavn
-    “Kordinat1”:61.0929.3, 7.0810.5
-    “Kordinat2”:61.0930.1, 7.0842.9
-    “Kordinat3”:61.0911.6, 7.0738.3
-
-    FlyplassId:12
-    “Navn”:Kristiansund lufthavn
-    “Kordinat1”:63.0658.4, 7.4938.3
-    “Kordinat2”:63.0657.4, 7.5106.5
-    “Kordinat3”:63.0632.5, 7.4823.9
-
-    FlyplassId:13
-    “Navn”:Bodø lufthavn
-    “Kordinat1”:67.1623.3, 14.2145.0
-    “Kordinat2”:67.1553.6, 14.1849.2
-    “Kordinat3”:67.1619.9, 14.2403.8
-
-    FlyplassId:14
-    “Navn”:Røst lufthavn
-    “Kordinat1”:67.3137.6, 12.0623.1
-    “Kordinat2”:67.3121.0, 12.0544.8
-    “Kordinat3”:67.3150.2, 12.0627.0
-
-    FlyplassId:15
-    “Navn”:Lakselv lufthavn
-    “Kordinat1”:70.0358.8, 24.5857.1
-    “Kordinat2”:70.0322.9, 24.5835.7
-    “Kordinat3”:70.0452.5, 24.5815.0
-
-    FlyplassId:16
-    “Navn”:Ålesund lufthavn
-    “Kordinat1”:62.3329.7, 6.0658.5
-    “Kordinat2”:62.3355.5, 6.0759.3
-    “Kordinat3”:62.3320.7, 6.0523.1
-
-    FlyplassId:17
-    “Navn”:Hasvik lufthavn
-    “Kordinat1”:70.2912.4, 22.0849.9
-    “Kordinat2”:70.2903.2, 22.0912.2
-    “Kordinat3”:70.2919.0, 22.0743.7
-
-    FlyplassId:18
-    “Navn”:Mehamn lufthavn
-    “Kordinat1”:71.0139.4, 27.4946.7
-    “Kordinat2”:71.0130.7, 27.4934.0
-    “Kordinat3”:71.0202.0, 27.4937.9
-
-    FlyplassId:19
-    “Navn”:Honningsvåg lufthavn
-    “Kordinat1”:71.0030.8, 25.5839.2
-    “Kordinat2”:71.0034.8, 25.5816.5
-    “Kordinat3”:71.0034.7, 25.5947.8
-
-    FlyplassId:20
-    “Navn”:Stokmarknes lufthavn
-    “Kordinat1”:68.3445.4, 15.0148.3
-    “Kordinat2”:68.3450.5, 15.0157.2
-    “Kordinat3”:68.3451.3, 15.0035.0
-
-    FlyplassId:21
-    “Navn”:Vadsø lufthavn
-    “Kordinat1”:70.0350.2, 29.5014.3
-    “Kordinat2”:70.0354.0, 29.4957.5
-    “Kordinat3”:70.0355.7, 29.5132.1
-
-    FlyplassId:22
-    “Navn”:Vardø lufthavn
-    “Kordinat1”:70.2122.4, 31.0224.2
-    “Kordinat2”:70.2100.6, 31.0258.2
-    “Kordinat3”:70.2136.1, 31.0226.4
-
-    FlyplassId:23
-    “Navn”:Florø lufthavn
-    “Kordinat1”:61.3510.3, 5.0129.1
-    “Kordinat2”:61.3450.7, 5.0026.5
-    “Kordinat3”:61.3505.8, 5.0157.1
-
-    FlyplassId:24
-    “Navn”:Kristiansand Lufthavn
-    “Kordinat1”:58.1244.4, 8.0545.5
-    “Kordinat2”:58.1244.2, 8.0545.9
-    “Kordinat3”:58.1209.6, 8.0425.9
-
-    FlyplassId:25
-    “Navn”:Sørkjosen lufthavn
-    “Kordinat1”:69.4707.3, 20.5726.1
-    “Kordinat2”:69.4659.1, 20.5752.5
-    “Kordinat3”:69.4728.6, 20.5712.9
-
-    FlyplassId:26
-    “Navn”:Bardufoss lufthavn
-    “Kordinat1”:69.0335.9, 18.3223.6
-    “Kordinat2”:69.0304.6, 18.3436.7
-    “Kordinat3”:69.0337.3, 18.3010.1
-
-    FlyplassId:27
-    “Navn”:Alta lufthavn
-    “Kordinat1”:69.5858.3, 23.2022.7
-    “Kordinat2”:69.5821.0, 23.2325.3
-    “Kordinat3”:69.5836.6, 23.2102.5
-
-    FlyplassId:28
-    “Navn”:Trondheim lufthavn
-    “Kordinat1”:63.2727.7, 10.5301.8
-    “Kordinat2”:63.2727.9, 10.5647.4
-    “Kordinat3”:63.2705.3, 10.5457.2
-
-    FlyplassId:29
-    “Navn”:Kirkenes lufthavn
-    “Kordinat1”:69.4315.4, 29.5348.7
-    “Kordinat2”:69.4345.5, 29.5504.4
-    “Kordinat3”:69.4320.6, 29.5159.0
-
-    FlyplassId:30
-    “Navn”:Tromsø lufthavn
-    “Kordinat1”:69.4013.2, 18.5436.3
-    “Kordinat2”:69.4148.7, 18.5540.6
-    “Kordinat3”:69.4056.5, 18.5416.1
-
-    FlyplassId:31
-    “Navn”:Hammerfest lufthavn
-    “Kordinat1”:70.4045.8, 23.4031.7
-    “Kordinat2”:70.4055.0, 23.4041.2
-    “Kordinat3”:70.4038.0, 23.3925.7
-
-    FlyplassId:32
-    “Navn”:Leknes lufthavn
-    “Kordinat1”:68.0856.3, 13.3614.1
-    “Kordinat2”:68.0911.9, 13.3653.5
-    “Kordinat3”:68.0927.3, 13.3657.0
-
-    FlyplassId:33
-    “Navn”:Berlevåg lufthavn
-    “Kordinat1”:70.5212.6, 29.0105.7
-    “Kordinat2”:70.5211.3, 29.0148.8
-    “Kordinat3”:70.5221.4, 29.0245.6
-
-    FlyplassId:34
-    “Navn”:Båtsfjord lufthavn
-    “Kordinat1”:70.3615.3, 29.4216.7
-    “Kordinat2”:70.3610.1, 29.4130.0
-    “Kordinat3”:70.3546.4, 29.4052.2
-
-    FlyplassId:35
-    “Navn”:Røros lufthavn
-    “Kordinat1”:62.3424.2, 11.2121.7
-    “Kordinat2”:62.3438.8, 11.2116.4
-    “Kordinat3”:62.3505.0, 11.1958.9
-
-    FlyplassId:36
-    “Navn”:Mo i Rana lufthavn
-    “Kordinat1”:66.2200.4, 14.1743.5
-    “Kordinat2”:66.2138.6, 14.1827.7
-    “Kordinat3”:66.2154.1, 14.1812.4
-
-    FlyplassId:37
-    “Navn”:Værøy helikopterhavn
-    “Kordinat1”:67.3915.1, 12.4337.2
-    “Kordinat2”:67.3917.0, 12.4340.4
-    “Kordinat3”:67.3918.1, 12.4331.9
-
-    FlyplassId:38
-    “Navn”:Svalbard lufthavn
-    “Kordinat1”:
-    “Kordinat2”:
-    “Kordinat3”:
-
-    FlyplassId:39
-    “Navn”:Harstad/Narvik lufthavn
-    “Kordinat1”:68.2834.1, 16.4046.2
-    “Kordinat2”:68.2931.6, 16.4153.9
-    “Kordinat3”:68.3014.8, 16.4033.4
-
-    FlyplassId:40
-    “Navn”:Namsos lufthavn
-    “Kordinat1”:64.2823.8, 11.3514.5
-    “Kordinat2”:64.2823.4, 11.3408.8
-    “Kordinat3”:64.2815.5, 11.3407.6
-
-    FlyplassId:41
-    “Navn”:Svolvær lufthavn
-    “Kordinat1”:68.1449.6, 14.4018.7
-    “Kordinat2”:68.1443.0, 14.3957.1
-    “Kordinat3”:68.1416.6, 14.3955.9
-
-    FlyplassId:42
-    “Navn”:Bergen lufthavn
-    “Kordinat1”:60.1645.3, 5.1319.3
-    “Kordinat2”:60.1731.6, 5.1405.6
-    “Kordinat3”:60.1829.7, 5.1245.7
-
-    FlyplassId:43
-    “Navn”:Mosjøen lufthavn
-    “Kordinat1”:65.4716.3, 13.1239.8
-    “Kordinat2”:65.4703.4, 13.1311.4
-    “Kordinat3”:65.4645.2, 13.1307.3
-
-    FlyplassId:44
-    “Navn”:Haugesund lufthavn
-    “Kordinat1”:59.2107.7, 5.1140.5
-    “Kordinat2”:59.2042.7, 5.1305.2
-    “Kordinat3”:59.2008.8, 5.1338.2
-
-    FlyplassId:45
-    “Navn”:
-    “Kordinat1”:
-    “Kordinat2”:
-    “Kordinat3”:
-
-    FlyplassId:46
-    “Navn”:
-    “Kordinat1”
-    “Kordinat2”:
-    “Kordinat3”:
-
-    FlyplassId:47
-    “Navn”:Sandnessjøen lufthavn
-    “Kordinat1”:65.5709.0, 12.2748.0
-    “Kordinat2”:65.5750.9, 12.2835.0
-    “Kordinat3”:65.5735.3, 12.2837.0
-
-    FlyplassId:48
-    “Navn”:Førde lufthavn
-    “Kordinat1”:61.2325.6, 5.4551.8
-    “Kordinat2”:61.2336.0, 5.4612.4
-    “Kordinat3”:61.2325.7, 5.4457.2
-
-    FlyplassId:49
-    “Navn”:Rygge lufthavn
-    “Kordinat1”:59.2316.9, 10.4544.0
-    “Kordinat2”:59.2231.1, 10.4655.5
-    “Kordinat3”:59.2226.8, 10.4839.1
-
-    FlyplassId:50
-    “Navn”:Ørland lufthavn
-    “Kordinat1”:63.4144.6, 9.3610.6
-    “Kordinat2”:63.4247.3, 9.3551.7
-    “Kordinat3”:63.4112.1, 9.3741.1
-
+    “Navn”:”Sandane lufthavn”,
+    “Kordinat1”:”61.4944.2, 6.0626.3”,
+    “Kordinat2”:”61.4950.1, 6.0703.1”,
+    “Kordinat3”:”61.4947.2, 6.0556.8”,
+    },
+    {
+    “Navn”:”Oslo lufthavn”,
+    “Kordinat1”:”60.1248.5, 11.0630.2”,
+    “Kordinat2”:”60.1058.5, 11.0419.2”,
+    “Kordinat3”:”60.1042.7, 11.0637.0”,
+    },
+    {
+    “Navn”:”Stavanger lufthavn”,
+    “Kordinat1”:”58.5342.5, 5.3813.8”,
+    “Kordinat2”:”58.5221.2, 5.3843.9”,
+    “Kordinat3”:”58.5254.7, 5.3616.9”,
+    },
+    {
+    “Navn”:”Ørsta-Volda lufthavn”,
+    “Kordinat1”:”62.1036.7, 6.0343.7”,
+    “Kordinat2”:”62.1053.9, 6.0447.6”,
+    “Kordinat3”:”62.1047.7, 6.0447.0”,
+    },
+    {
+    “Navn”:”Brønnøysund lufthavn”,
+    “Kordinat1”:”65.2737.3, 12.1233.7”,
+    “Kordinat2”:”65.2714.6, 12.1213.5”,
+    “Kordinat3”:”65.2750.9, 12.1323.8”,
+    },
+    {
+    “Navn”:”Rørvik lufthavn”,
+    “Kordinat1”:”64.5022.3, 11.0839.5”,
+    “Kordinat2”:”64.5001.5, 11.0810.1”,
+    “Kordinat3”:”64.5024.5, 11.0858.4”,
+    },
+    {
+    “Navn”:”Andøya lufthavn”,
+    “Kordinat1”:”69.1832.6, 16.0659.9”,
+    “Kordinat2”:”69.1709.1, 16.0917.5”,
+    “Kordinat3”:”69.1658.6, 16.0740.2”,
+    },
+    {
+    “Navn”:”Fagernes lufthavn”,
+    “Kordinat1”:”61.0025.4, 9.1737.2”,
+    “Kordinat2”:”61.0012.2, 9.1810.1”,
+    “Kordinat3”:”61.0109.3, 9.1700.9”,
+    },
+    {
+    “Navn”:”Molde lufthavn”,
+    “Kordinat1”:”62.4446.6, 7.1532.4”,
+    “Kordinat2”:”62.4455.9, 7.1718.1”,
+    “Kordinat3”:”62.4432.2, 7.1448.1”,
+    },
+    {
+    “Navn”:”Sogndal lufthavn”,
+    “Kordinat1”:”61.0929.3, 7.0810.5”,
+    “Kordinat2”:”61.0930.1, 7.0842.9”,
+    “Kordinat3”:”61.0911.6, 7.0738.3”,
+    },
+    {
+    “Navn”:”Kristiansund lufthavn”,
+    “Kordinat1”:”63.0658.4, 7.4938.3”,
+    “Kordinat2”:”63.0657.4, 7.5106.5”,
+    “Kordinat3”:”63.0632.5, 7.4823.9”,
+    },
+    {
+    “Navn”:”Bodø lufthavn”,
+    “Kordinat1”:”67.1623.3, 14.2145.0”,
+    “Kordinat2”:”67.1553.6, 14.1849.2”,
+    “Kordinat3”:”67.1619.9, 14.2403.8”,
+    },
+    {
+    “Navn”:”Røst lufthavn”,
+    “Kordinat1”:”67.3137.6, 12.0623.1”,
+    “Kordinat2”:”67.3121.0, 12.0544.8”,
+    “Kordinat3”:”67.3150.2, 12.0627.0”,
+    },
+    {
+    “Navn”:”Lakselv lufthavn”,
+    “Kordinat1”:”70.0358.8, 24.5857.1”,
+    “Kordinat2”:”70.0322.9, 24.5835.7”,
+    “Kordinat3”:”70.0452.5, 24.5815.0”,
+    },
+    {
+    “Navn”:”Ålesund lufthavn”,
+    “Kordinat1”:”62.3329.7, 6.0658.5”,
+    “Kordinat2”:”62.3355.5, 6.0759.3”,
+    “Kordinat3”:”62.3320.7, 6.0523.1”,
+    },
+    {
+    “Navn”:”Hasvik lufthavn”,
+    “Kordinat1”:”70.2912.4, 22.0849.9”,
+    “Kordinat2”:”70.2903.2, 22.0912.2”,
+    “Kordinat3”:”70.2919.0, 22.0743.7”,
+    },
+    {
+    “Navn”:”Mehamn lufthavn”,
+    “Kordinat1”:”71.0139.4, 27.4946.7”,
+    “Kordinat2”:”71.0130.7, 27.4934.0”,
+    “Kordinat3”:”71.0202.0, 27.4937.9”,
+    },
+    {
+    “Navn”:”Honningsvåg lufthavn”,
+    “Kordinat1”:”71.0030.8, 25.5839.2”,
+    “Kordinat2”:”71.0034.8, 25.5816.5”,
+    “Kordinat3”:”71.0034.7, 25.5947.8”,
+    },
+    {
+    “Navn”:”Stokmarknes lufthavn”,
+    “Kordinat1”:”68.3445.4, 15.0148.3”,
+    “Kordinat2”:”68.3450.5, 15.0157.2”,
+    “Kordinat3”:”68.3451.3, 15.0035.0”,
+    },
+    {
+    “Navn”:”Vadsø lufthavn”,
+    “Kordinat1”:”70.0350.2, 29.5014.3”,
+    “Kordinat2”:”70.0354.0, 29.4957.5”,
+    “Kordinat3”:”70.0355.7, 29.5132.1”,
+    },
+    {
+    “Navn”:”Vardø lufthavn”,
+    “Kordinat1”:”70.2122.4, 31.0224.2”,
+    “Kordinat2”:”70.2100.6, 31.0258.2”,
+    “Kordinat3”:”70.2136.1, 31.0226.4”,
+    },
+    {
+    “Navn”:”Florø lufthavn”,
+    “Kordinat1”:”61.3510.3, 5.0129.1”,
+    “Kordinat2”:”61.3450.7, 5.0026.5”,
+    “Kordinat3”:”61.3505.8, 5.0157.1”,
+    },
+    {
+    “Navn”:”Kristiansand Lufthavn”,
+    “Kordinat1”:”58.1244.4, 8.0545.5”,
+    “Kordinat2”:”58.1244.2, 8.0545.9”,
+    “Kordinat3”:”58.1209.6, 8.0425.9”,
+    },
+    {
+    “Navn”:”Sørkjosen lufthavn”,
+    “Kordinat1”:”69.4707.3, 20.5726.1”,
+    “Kordinat2”:”69.4659.1, 20.5752.5”,
+    “Kordinat3”:”69.4728.6, 20.5712.9”,
+    },
+    {
+    “Navn”:”Bardufoss lufthavn”,
+    “Kordinat1”:”69.0335.9, 18.3223.6”,
+    “Kordinat2”:”69.0304.6, 18.3436.7”,
+    “Kordinat3”:”69.0337.3, 18.3010.1”,
+    },
+    {
+    “Navn”:”Alta lufthavn”,
+    “Kordinat1”:”69.5858.3, 23.2022.7”,
+    “Kordinat2”:”69.5821.0, 23.2325.3”,
+    “Kordinat3”:”69.5836.6, 23.2102.5”,
+    },
+    {
+    “Navn”:”Trondheim lufthavn”,
+    “Kordinat1”:”63.2727.7, 10.5301.8”,
+    “Kordinat2”:”63.2727.9, 10.5647.4”,
+    “Kordinat3”:”63.2705.3, 10.5457.2”,
+    },
+    {
+    “Navn”:”Kirkenes lufthavn”,
+    “Kordinat1”:”69.4315.4, 29.5348.7”,
+    “Kordinat2”:”69.4345.5, 29.5504.4”,
+    “Kordinat3”:”69.4320.6, 29.5159.0”,
+    },
+    {
+    “Navn”:”Tromsø lufthavn”,
+    “Kordinat1”:”69.4013.2, 18.5436.3”,
+    “Kordinat2”:”69.4148.7, 18.5540.6”,
+    “Kordinat3”:”69.4056.5, 18.5416.1”,
+    },
+    {
+    “Navn”:”Hammerfest lufthavn”,
+    “Kordinat1”:”70.4045.8, 23.4031.7”,
+    “Kordinat2”:”70.4055.0, 23.4041.2”,
+    “Kordinat3”:”70.4038.0, 23.3925.7”,
+    },
+    {
+    “Navn”:”Leknes lufthavn”,
+    “Kordinat1”:”68.0856.3, 13.3614.1”,
+    “Kordinat2”:”68.0911.9, 13.3653.5”,
+    “Kordinat3”:”68.0927.3, 13.3657.0”,
+    },
+    {
+    “Navn”:”Berlevåg lufthavn”,
+    “Kordinat1”:”70.5212.6, 29.0105.7”,
+    “Kordinat2”:”70.5211.3, 29.0148.8”,
+    “Kordinat3”:”70.5221.4, 29.0245.6”,
+    },
+    {
+    “Navn”:”Båtsfjord lufthavn”,
+    “Kordinat1”:”70.3615.3, 29.4216.7”,
+    “Kordinat2”:”70.3610.1, 29.4130.0”,
+    “Kordinat3”:”70.3546.4, 29.4052.2”,
+    },
+    {
+    “Navn”:”Røros lufthavn”,
+    “Kordinat1”:”62.3424.2, 11.2121.7”,
+    “Kordinat2”:”62.3438.8, 11.2116.4”,
+    “Kordinat3”:”62.3505.0, 11.1958.9”,
+    },
+    {
+    “Navn”:”Mo i Rana lufthavn”,
+    “Kordinat1”:”66.2200.4, 14.1743.5”,
+    “Kordinat2”:”66.2138.6, 14.1827.7”,
+    “Kordinat3”:”66.2154.1, 14.1812.4”,
+    },
+    {
+    “Navn”:”Værøy helikopterhavn”,
+    “Kordinat1”:”67.3915.1, 12.4337.2”,
+    “Kordinat2”:”67.3917.0, 12.4340.4”,
+    “Kordinat3”:”67.3918.1, 12.4331.9”,
+    },
+    {
+    “Navn”:”Harstad/Narvik lufthavn”,
+    “Kordinat1”:”68.2834.1, 16.4046.2”,
+    “Kordinat2”:”68.2931.6, 16.4153.9”,
+    “Kordinat3”:”68.3014.8, 16.4033.4”,
+    },
+    {
+    “Navn”:”Namsos lufthavn”,
+    “Kordinat1”:”64.2823.8, 11.3514.5”,
+    “Kordinat2”:”64.2823.4, 11.3408.8”,
+    “Kordinat3”:”64.2815.5, 11.3407.6”,
+    },
+    {
+    “Navn”:”Svolvær lufthavn”,
+    “Kordinat1”:”68.1449.6, 14.4018.7”,
+    “Kordinat2”:”68.1443.0, 14.3957.1”,
+    “Kordinat3”:”68.1416.6, 14.3955.9”,
+    },
+    {
+    “Navn”:”Bergen lufthavn”,
+    “Kordinat1”:”60.1645.3, 5.1319.3”,
+    “Kordinat2”:”60.1731.6, 5.1405.6”,
+    “Kordinat3”:”60.1829.7, 5.1245.7”,
+    },
+    {
+    “Navn”:”Mosjøen lufthavn”,
+    “Kordinat1”:”65.4716.3, 13.1239.8”,
+    “Kordinat2”:”65.4703.4, 13.1311.4”,
+    “Kordinat3”:”65.4645.2, 13.1307.3”,
+    },
+    {
+    “Navn”:”Haugesund lufthavn”,
+    “Kordinat1”:”59.2107.7, 5.1140.5”,
+    “Kordinat2”:”59.2042.7, 5.1305.2”,
+    “Kordinat3”:”59.2008.8, 5.1338.2”,
+    },
+    {
+    “Navn”:”Sandnessjøen lufthavn”,
+    “Kordinat1”:”65.5709.0, 12.2748.0”,
+    “Kordinat2”:”65.5750.9, 12.2835.0”,
+    “Kordinat3”:”65.5735.3, 12.2837.0”,
+    },
+    {
+    “Navn”:”Førde lufthavn”,
+    “Kordinat1”:”61.2325.6, 5.4551.8”,
+    “Kordinat2”:”61.2336.0, 5.4612.4”,
+    “Kordinat3”:”61.2325.7, 5.4457.2”,
+    },
+    {
+    “Navn”:”Rygge lufthavn”,
+    “Kordinat1”:”59.2316.9, 10.4544.0”,
+    “Kordinat2”:”59.2231.1, 10.4655.5”,
+    “Kordinat3”:”59.2226.8, 10.4839.1”,
+    },
+    {
+    “Navn”:”Ørland lufthavn”,
+    “Kordinat1”:”63.4144.6, 9.3610.6”,
+    “Kordinat2”:”63.4247.3, 9.3551.7”,
+    “Kordinat3”:”63.4112.1, 9.3741.1”,
+    },
+]
 -->
+
+
