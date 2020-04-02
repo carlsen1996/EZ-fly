@@ -10,6 +10,8 @@ import android.widget.Switch
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import com.example.basicmap.R
+import com.mahfa.dnswitch.DayNightSwitch
+import com.mahfa.dnswitch.DayNightSwitchListener
 import kotlinx.android.synthetic.main.fragment_faq.view.*
 
 
@@ -48,21 +50,39 @@ class FaqFragment : Fragment() {
 
         val root = inflater.inflate(R.layout.fragment_faq, container, false)
 
-        val adapter = FaqListAdapter(context!!, question, answer)
+        val adapter = FaqListAdapter(requireContext(), question, answer)
         root.faqListView.setAdapter(adapter)
+        var switch : DayNightSwitch = root.darkSwitch
 
-        var switch : Switch = root.darkSwitch
-        switch.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) {
+        val preferenceDarkMode = DarkPref(requireContext())
+        var userPreferenceDarkMode = preferenceDarkMode.getDarkPref()
+        if (userPreferenceDarkMode) {
+            switch.setIsNight(userPreferenceDarkMode)
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            root.faqimg.setImageResource(R.mipmap.faq)
+        }
+        else {
+            switch.setIsNight(userPreferenceDarkMode)
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            root.faqimg.setImageResource(R.mipmap.faq2)
+        }
+
+
+        switch.setListener(DayNightSwitchListener {
+            if (it) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
                 root.faqimg.setImageResource(R.mipmap.faq)
+                preferenceDarkMode.setDarkPref(true)
 
             }
             else {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                 root.faqimg.setImageResource(R.mipmap.faq2)
+                preferenceDarkMode.setDarkPref(false)
             }
-        }
+        })
+
+
 
         return root
     }
