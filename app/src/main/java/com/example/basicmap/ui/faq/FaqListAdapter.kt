@@ -9,7 +9,7 @@ import android.widget.BaseExpandableListAdapter
 import android.widget.TextView
 import com.example.basicmap.R
 
-class FaqListAdapter(var context : Context, var header : MutableList<String>, var body : MutableList<MutableList<String>>) : BaseExpandableListAdapter() {
+class FaqListAdapter(var context : Context, var header : List<String>, var body : List<List<String>>) : BaseExpandableListAdapter() {
     override fun getGroup(groupPosition: Int): String {
         return header[groupPosition]
     }
