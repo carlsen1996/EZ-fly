@@ -157,11 +157,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
             )
         )
 
-        //val fraStringStedet = resources.getString(R.string.flyplassListe)
-        //val fraStringStedet: String = getString(R.string.flyplassListe)
-        //val luftStringer = resources.openRawResource(R.raw.)
 
-        //val kontekst = activity
         val jsonFilStringen = getJsonDataFromAsset(context!!, "lufthavnRawJson.json")
         initNoFlyLufthavn(jsonFilStringen, map)
     }

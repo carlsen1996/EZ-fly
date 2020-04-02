@@ -27,34 +27,7 @@ var LufthavnMutableListe = mutableListOf<LufthavnKlasse>()
 
 public fun initNoFlyLufthavn(jsonStringen : String, kartet : GoogleMap) {
 
-    //val fraStringStedet = getString(R.flyplassStrings.flyplassListe)*/
-    //val lufthavnListTypeenne = object: TypeToken<MutableList<Lufthavn>>() {}.type
-    //var lufthavnerlisteliste = Gson().fromJson(jsonStringenMedFlyplasser, MutableList<Lufthavn>::class.java).toList()
-    //LufthavnMutableListe = lufthavnerlisteliste.toMutableList()
-
-    //val lufthavnListType = object: TypeToken<MutableList<Lufthavn>>() {}.type
-    //val LufthavnMutableList : MutableList<Lufthavn> = Gson().fromJson(jsonStringenMedFlyplasser, lufthavnListType)
-
-
-    /*val lufthavnListeStoerrelse = 1
-    val teller = 0
-    while (teller == lufthavnListeStoerrelse) {
-
-    }*/
-
-    /*val jobj = JSONObject(jsonStringenMedFlyplasser)
-    val lufthavner: JSONObject = jobj.getJSONObject("lufthavner")
-    val luftHiVnn = lufthavner.getJSONArray("lufthavnInternListe")
-    for (i in 0 until luftHiVnn.length()) {
-        val entry = luftHiVnn.getJSONObject(i)
-        //DO STUFF
-    }*/
-
-    //var LufthavnMutableList = mutableListOf<Lufthavn>()
-    //val kontekst = HomeFragment.this
-    //val jsonFilStringen = getJsonDataFromAsset(kontekst, jsonFilNavn)
-    //LufthavnMutableListe = Gson().fromJson(jsonStringen, Array<Lufthavn>::class.java).toMutableList()
-
+    //yeet
 
     LufthavnMutableListe = Gson().fromJson(jsonStringen, Array<LufthavnKlasse>::class.java).toMutableList()
 
@@ -128,15 +101,9 @@ public fun initNoFlyLufthavn(jsonStringen : String, kartet : GoogleMap) {
             N3 = Kor3ArraySplittet.get(0).toDouble()
             E3 = Kor3ArraySplittet.get(1).toDouble()
 
-            // fått og gjort alle verdiene om til doubler.
-            // gjør dem til LatLng
-
             var LatLng1 = LatLng(N1, E1)
             var LatLng2 = LatLng(N2, E2)
             var LatLng3 = LatLng(N3, E3)
-
-            // ez pz next task
-            // 5km avstand
 
 
             val sirkelfarge = Color.parseColor("#66FF0000")
@@ -159,10 +126,15 @@ public fun initNoFlyLufthavn(jsonStringen : String, kartet : GoogleMap) {
                 .fillColor(sirkelfarge)
                 .strokeColor(Color.TRANSPARENT)
 
+            //-----------------------------------------------------
+            //Kommenter inn dette
 
-            //val circle1: Circle = kartet.addCircle(circleOptions1)
-            //val circle2: Circle = kartet.addCircle(circleOptions2)
-            val circle3: Circle = kartet.addCircle(circleOptions3)
+            /*val circle1: Circle = kartet.addCircle(circleOptions1)
+            val circle2: Circle = kartet.addCircle(circleOptions2)
+            val circle3: Circle = kartet.addCircle(circleOptions3)*/
+
+            //Kommenter inn dette
+            //-----------------------------------------------------
 
             //yeet
 
@@ -180,7 +152,8 @@ public fun initNoFlyLufthavn(jsonStringen : String, kartet : GoogleMap) {
 
 
 
-
+            //-----------------------------------------------------
+            //Kommenter Ut dette
 
             var polyguneerPunktListe = mutableListOf<LatLng>()
             var tellerkar = 0
@@ -205,7 +178,8 @@ public fun initNoFlyLufthavn(jsonStringen : String, kartet : GoogleMap) {
                     .fillColor(sirkelfarge)
             )
 
-
+            //Kommenter Ut dette
+            //-----------------------------------------------------
 
 
 
