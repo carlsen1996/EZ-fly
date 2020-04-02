@@ -30,13 +30,11 @@ import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest
 import com.google.android.libraries.places.api.net.PlacesClient
-import kotlinx.android.synthetic.main.fragment_home.*
-import kotlinx.android.synthetic.main.fragment_home.view.*
 import kotlinx.android.synthetic.main.fragment_home.view.popupStub
 import kotlinx.android.synthetic.main.popup.*
 import kotlinx.android.synthetic.main.popup.view.*
 import kotlinx.coroutines.*
-import java.time.DayOfWeek
+
 
 import java.util.*
 
@@ -236,49 +234,76 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
             popup.fogView.text = "Tåke: ${weather.properties.timeseries[0].data.instant.details.fog_area_fraction}%"
             popup.setOnClickListener{
 
-                for (i in 6..32) {
+                val times = mutableListOf<Met.Numb>()
+                for (i in 6..80) {
                     val time = weather.properties.timeseries[i].time
                     val hour1 = time[11]
                     val hour2 = time[12]
                     val hour = "${hour1}${hour2}"
                     if (hour == "12") {
-                        popup.timeView.text = "I morgen:\n" +
-                                "Vindhastighet: ${weather.properties.timeseries[i].data.instant.details.wind_speed} m/s\n" +
-                                "Max vindkast: ${weather.properties.timeseries[i].data.instant.details.wind_speed_of_gust} m/s\n" +
-                                "Temperatur: ${weather.properties.timeseries[i].data.instant.details.air_temperature} °C\n" +
-                                "Regn: ${weather.properties.timeseries[i].data.next_6_hours.details.precipitation_amount} mm\n" +
-                                "Tåke: ${weather.properties.timeseries[i].data.instant.details.fog_area_fraction}%"
-                        popup.windSpeedView.text = "Om to dager:\n" +
-                                "Vindhastighet: ${weather.properties.timeseries[i + 24].data.instant.details.wind_speed} m/s\n" +
-                                "Max vindkast: ${weather.properties.timeseries[i + 24].data.instant.details.wind_speed_of_gust} m/s\n" +
-                                "Temperatur: ${weather.properties.timeseries[i + 24].data.instant.details.air_temperature} °C\n" +
-                                "Regn: ${weather.properties.timeseries[i + 24].data.next_6_hours.details.precipitation_amount} mm\n" +
-                                "Tåke: ${weather.properties.timeseries[i + 24].data.instant.details.fog_area_fraction}%"
-                        popup.maxGustView.text = "Om tre dager:\n" +
-                                "Vindhastighet: ${weather.properties.timeseries[54].data.instant.details.wind_speed} m/s\n" +
-                                "Max vindkast: ${weather.properties.timeseries[54].data.instant.details.wind_speed_of_gust} m/s\n" +
-                                "Temperatur: ${weather.properties.timeseries[54].data.instant.details.air_temperature} °C\n" +
-                                "Regn: ${weather.properties.timeseries[54].data.next_6_hours.details.precipitation_amount} mm\n" +
-                                "Tåke: ${weather.properties.timeseries[54].data.instant.details.fog_area_fraction}%"
-                        popup.temperatureView.text = "Om fire dager:\n" +
-                                "Vindhastighet: ${weather.properties.timeseries[58].data.instant.details.wind_speed} m/s\n" +
-                                "Max vindkast: ${weather.properties.timeseries[58].data.instant.details.wind_speed_of_gust} m/s\n" +
-                                "Temperatur: ${weather.properties.timeseries[58].data.instant.details.air_temperature} °C\n" +
-                                "Regn: ${weather.properties.timeseries[58].data.next_6_hours.details.precipitation_amount} mm\n" +
-                                "Tåke: ${weather.properties.timeseries[58].data.instant.details.fog_area_fraction}%"
-                        popup.precipitationView.text = "Om fem dager:\n" +
-                                "Vindhastighet: ${weather.properties.timeseries[62].data.instant.details.wind_speed} m/s\n" +
-                                "Max vindkast: ${weather.properties.timeseries[62].data.instant.details.wind_speed_of_gust} m/s\n" +
-                                "Temperatur: ${weather.properties.timeseries[62].data.instant.details.air_temperature} °C\n" +
-                                "Regn: ${weather.properties.timeseries[62].data.next_6_hours.details.precipitation_amount} mm\n" +
-                                "Tåke: ${weather.properties.timeseries[62].data.instant.details.fog_area_fraction}%"
-                        popup.fogView.text = ""
-                        popup.textView.text = ""
-                        popup.setOnClickListener{
-                            popup.visibility = View.INVISIBLE
-                        }
+                        times.add(weather.properties.timeseries[i])
                     }
                 }
+                popup.timeView.text = "I morgen\n" +
+                        "Vindhastighet: ${times[0].data.instant.details.wind_speed} m/s\n" +
+                        "Max vindkast: ${times[0].data.instant.details.wind_speed_of_gust} m/s\n" +
+                        "Temperatur: ${times[0].data.instant.details.air_temperature} °C\n" +
+                        "Regn: ${times[0].data.next_6_hours.details.precipitation_amount} mm\n" +
+                        "Tåke: ${times[0].data.instant.details.fog_area_fraction}%"
+                popup.windSpeedView.text = "Om to dager:\n" +
+                        "Vindhastighet: ${times[1].data.instant.details.wind_speed} m/s\n" +
+                        "Max vindkast: ${times[1].data.instant.details.wind_speed_of_gust} m/s\n" +
+                        "Temperatur: ${times[1].data.instant.details.air_temperature} °C\n" +
+                        "Regn: ${times[1].data.next_6_hours.details.precipitation_amount} mm\n" +
+                        "Tåke: ${times[1].data.instant.details.fog_area_fraction}%"
+                if (times[2].data.next_6_hours.details.precipitation_amount == null) {
+                    popup.maxGustView.text = "Om tre dager:\n" +
+                            "Vindhastighet: ${times[2].data.instant.details.wind_speed} m/s\n" +
+                            "Temperatur: ${times[2].data.instant.details.air_temperature} °C\n" +
+                            "Regn: ${times[2].data.next_1_hours.details.precipitation_amount} mm\n" +
+                            "Tåke: ${times[2].data.instant.details.fog_area_fraction}%"
+                }
+                else {
+                    popup.maxGustView.text = "Om tre dager:\n" +
+                            "Vindhastighet: ${times[2].data.instant.details.wind_speed} m/s\n" +
+                            "Temperatur: ${times[2].data.instant.details.air_temperature} °C\n" +
+                            "Regn: ${times[2].data.next_6_hours.details.precipitation_amount} mm\n" +
+                            "Tåke: ${times[2].data.instant.details.fog_area_fraction}%"
+                }
+                if (times[3].data.next_6_hours.details.precipitation_amount == null) {
+                    popup.temperatureView.text = "Om fire dager:\n" +
+                            "Vindhastighet: ${times[3].data.instant.details.wind_speed} m/s\n" +
+                            "Temperatur: ${times[3].data.instant.details.air_temperature} °C\n" +
+                            "Regn: ${times[3].data.next_1_hours.details.precipitation_amount} mm\n" +
+                            "Tåke: ${times[3].data.instant.details.fog_area_fraction}%"
+                }
+                else {
+                    popup.temperatureView.text = "Om fire dager:\n" +
+                            "Vindhastighet: ${times[3].data.instant.details.wind_speed} m/s\n" +
+                            "Temperatur: ${times[3].data.instant.details.air_temperature} °C\n" +
+                            "Regn: ${times[3].data.next_6_hours.details.precipitation_amount} mm\n" +
+                            "Tåke: ${times[3].data.instant.details.fog_area_fraction}%"
+                }
+                if (times[4].data.next_6_hours.details.precipitation_amount == null) {
+                    popup.precipitationView.text = "Om fem dager:\n" +
+                            "Vindhastighet: ${times[4].data.instant.details.wind_speed} m/s\n" +
+                            "Temperatur: ${times[4].data.instant.details.air_temperature} °C\n" +
+                            "Regn: ${times[4].data.next_1_hours.details.precipitation_amount} mm\n" +
+                            "Tåke: ${times[4].data.instant.details.fog_area_fraction}%"
+                }
+                else {
+                    popup.precipitationView.text = "Om fem dager:\n" +
+                            "Vindhastighet: ${times[4].data.instant.details.wind_speed} m/s\n" +
+                            "Temperatur: ${times[4].data.instant.details.air_temperature} °C\n" +
+                            "Regn: ${times[4].data.next_6_hours.details.precipitation_amount} mm\n" +
+                            "Tåke: ${times[4].data.instant.details.fog_area_fraction}%"
+                }
+                popup.fogView.text = ""
+                popup.textView.text = "Klikk for å gå tilbake til kartet"
+                popup.setOnClickListener{
+                    popup.visibility = View.INVISIBLE
+                }
+                Log.d("times", times.toString())
             }
         }
 
