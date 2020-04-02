@@ -22,6 +22,8 @@ import com.example.basicmap.R
 import com.example.basicmap.lib.Met
 import com.example.basicmap.ui.places.Place
 import com.example.basicmap.ui.places.PlacesViewModel
+import com.example.basicmap.lib.getJsonDataFromAsset
+import com.example.basicmap.lib.initNoFlyLufthavn
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -154,6 +156,14 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
                 LatLng(59.942160986342856, 10.754415281116962)
             )
         )
+
+        //val fraStringStedet = resources.getString(R.string.flyplassListe)
+        //val fraStringStedet: String = getString(R.string.flyplassListe)
+        //val luftStringer = resources.openRawResource(R.raw.)
+
+        //val kontekst = activity
+        val jsonFilStringen = getJsonDataFromAsset(context!!, "lufthavnRawJson.json")
+        initNoFlyLufthavn(jsonFilStringen, map)
     }
 
     private fun getLocationPermission() {

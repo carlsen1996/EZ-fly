@@ -1,0 +1,14 @@
+[
+  {
+    "lufthavnNavn": "Sandane lufthavn",
+    "lufthavnKordinat1": "61.49442, 6.06263",
+    "lufthavnKordinat2": "61.49501, 6.07031",
+    "lufthavnKordinat3": "61.49472, 6.05568"
+  },
+  {
+    "lufthavnNavn": "Oslo lufthavn",
+    "lufthavnKordinat1": "60.10182, 11.06319",
+    "lufthavnKordinat2": "60.11030, 11.03092",
+    "lufthavnKordinat3": "60.13324, 11.05527"
+  }
+]
