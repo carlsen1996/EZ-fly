@@ -4,11 +4,14 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.graphics.Color
+import android.location.Address
+import android.location.Geocoder
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -31,7 +34,7 @@ import kotlinx.android.synthetic.main.fragment_home.view.*
 import kotlinx.android.synthetic.main.popup.*
 import kotlinx.android.synthetic.main.popup.view.*
 import kotlinx.coroutines.*
-
+import java.util.*
 
 
 class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListener {
@@ -62,9 +65,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
         root.popupStub.inflate()
 
         // NOTE: Have to use «!!» to declare non-null
-        Places.initialize(context!!, getString(R.string.google_maps_key))
-        placesClient = Places.createClient(context!!)
-        locationClient = LocationServices.getFusedLocationProviderClient(context!!)
+        Places.initialize(requireContext(), getString(R.string.google_maps_key))
+        placesClient = Places.createClient(requireContext())
+        locationClient = LocationServices.getFusedLocationProviderClient(requireContext())
         return root
     }
 
@@ -80,12 +83,14 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
         })
 
         // Add a dummy zone
-        addZone(listOf(
-            LatLng(59.94195862876364, 10.76321694999933),
-            LatLng(59.94377610821358, 10.762283876538277),
-            LatLng(59.943641097920406, 10.759101770818233),
-            LatLng(59.942160986342856, 10.754415281116962)
-        ))
+        addZone(
+            listOf(
+                LatLng(59.94195862876364, 10.76321694999933),
+                LatLng(59.94377610821358, 10.762283876538277),
+                LatLng(59.943641097920406, 10.759101770818233),
+                LatLng(59.942160986342856, 10.754415281116962)
+            )
+        )
     }
 
     private fun getLocationPermission() {
@@ -96,7 +101,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
          * onRequestPermissionsResult.
          */
         if (ContextCompat.checkSelfPermission(
-                context!!,
+                requireContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION
             )
             == PackageManager.PERMISSION_GRANTED
@@ -104,7 +109,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
             locationPermissionGranted = true
         } else {
             ActivityCompat.requestPermissions(
-                activity!!, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                requireActivity(), arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                 PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION
             )
         }
@@ -115,10 +120,12 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
             if (it.isSuccessful) {
                 it.result?.apply {
                     Log.d("location", "got location ${latitude} ${longitude}")
-                    map.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                        // NOTE: use «x.xf» to get a java type float
-                        LatLng(latitude, longitude), 15.0f
-                    ))
+                    map.moveCamera(
+                        CameraUpdateFactory.newLatLngZoom(
+                            // NOTE: use «x.xf» to get a java type float
+                            LatLng(latitude, longitude), 15.0f
+                        )
+                    )
                 }
             } else {
                 Log.d("location", "didn't get location")
@@ -135,6 +142,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
             withContext(Dispatchers.IO) {
                 weather = Met().locationForecast(p0)
                 populatePopup(weather)
+                displayAddressOfClickedArea(p0)
             }
 
         }
@@ -191,16 +199,59 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
         zones.add(polygon)
         return polygon
     }
+
     private fun populatePopup(weather: Met.Kall) {
         activity?.runOnUiThread {
-            popup.windSpeedView.text = "Vindhastighet: ${weather.properties.timeseries[0].data.instant.details.wind_speed} m/s"
-            popup.maxGustView.text = "Max vindkast: ${weather.properties.timeseries[0].data.instant.details.wind_speed_of_gust} m/s"
-            popup.temperatureView.text = "Temperatur: ${weather.properties.timeseries[0].data.instant.details.air_temperature} °C"
-            popup.precipitationView.text = "Regn: ${weather.properties.timeseries[0].data.next_1_hours.details.precipitation_amount} mm"
-            popup.fogView.text = "Tåke: ${weather.properties.timeseries[0].data.instant.details.fog_area_fraction}%"
+            popup.windSpeedView.text =
+                "Vindhastighet: ${weather.properties.timeseries[0].data.instant.details.wind_speed} m/s"
+            popup.maxGustView.text =
+                "Max vindkast: ${weather.properties.timeseries[0].data.instant.details.wind_speed_of_gust} m/s"
+            popup.temperatureView.text =
+                "Temperatur: ${weather.properties.timeseries[0].data.instant.details.air_temperature} °C"
+            popup.precipitationView.text =
+                "Regn: ${weather.properties.timeseries[0].data.next_1_hours.details.precipitation_amount} mm"
+            popup.fogView.text =
+                "Tåke: ${weather.properties.timeseries[0].data.instant.details.fog_area_fraction}%"
+
         }
 
     }
 
+    private fun displayAddressOfClickedArea(p0: LatLng?) {
+        activity?.runOnUiThread {
+
+            //This method first finds latitude and longitude of p0, which is an instance of the LatLng-class.
+            //Then we instantiate a geocoder-object, and use it to receive all the names of addresses associated with mentioned lat and long.
+            //the name of the first address is then displayed, which we determine to be the closest one to the latLang-coordinates
+
+            var lat: Double? = p0?.latitude
+            var long: Double? = p0?.longitude
+
+            var geoc: Geocoder = Geocoder(this.activity, Locale.ENGLISH) //is the problem here, not accessing right activity?
+            var locationList = mutableListOf<Address>()
+
+            var closestLocationAddress: String? = ""
+
+            if (lat != null && long != null) {
+                //locationList is a mutable list that adds all elements in an array of Addresses. Because geoc(geocoder).getFromLocation returns just that.
+                locationList.addAll(geoc.getFromLocation(lat, long, 1))
+            }
+
+            if (locationList != null) {
+                closestLocationAddress = locationList[0]?.getAddressLine(0) //why does this not work? Perhaps we need new google maps API-key-thing?
+            }
+
+            // the following splits the string in order to remove unnecessary information. getAdressLine returns very full info, for example:
+            // Frivoldveien 74, 4877, Grimstad, Norway. Country name is a given, and therefore reduntant,
+            // since our "market" is limited to Norway (we use APIs for Norwegian weather only, and data on restricted zones only for Norway
+
+            val stringArray = closestLocationAddress?.split(",")?.toTypedArray()
+            val addressToBeDisplayed: String? = stringArray?.get(0) + "," + stringArray?.get(1)
+
+            //Then textview is populated with address, postal code and city/place/location name
+            popup.locationNameView.text = "Adresse: " + addressToBeDisplayed //closestLocationName
+        }
+    }
 }
+
 
