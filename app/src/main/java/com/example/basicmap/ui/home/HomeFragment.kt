@@ -34,7 +34,6 @@ import kotlinx.android.synthetic.main.fragment_home.view.popupStub
 import kotlinx.android.synthetic.main.popup.*
 import kotlinx.android.synthetic.main.popup.view.*
 import kotlinx.coroutines.*
-import java.time.Instant.now
 import java.util.*
 import java.util.Calendar.DAY_OF_WEEK
 
@@ -178,7 +177,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
         marker?.remove()
         val m = map.addMarker(MarkerOptions().position(p))
         marker = m
-        popup.visibility = View.VISIBLE
+
 
         val placeFields: List<Place.Field> = listOf(
             Place.Field.NAME, Place.Field.ADDRESS,
@@ -226,6 +225,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
     @SuppressLint("SetTextI18n")
     private fun populatePopup(weather: Met.Kall) {
         activity?.runOnUiThread {
+            popup.visibility = View.VISIBLE
             popup.timeView.text = "Nå:"
             popup.windSpeedView.text = "Vindhastighet: ${weather.properties.timeseries[0].data.instant.details.wind_speed} m/s"
             popup.maxGustView.text = "Max vindkast: ${weather.properties.timeseries[0].data.instant.details.wind_speed_of_gust} m/s"
@@ -233,7 +233,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
             popup.precipitationView.text = "Regn: ${weather.properties.timeseries[0].data.next_1_hours.details.precipitation_amount} mm"
             popup.fogView.text = "Tåke: ${weather.properties.timeseries[0].data.instant.details.fog_area_fraction}%"
             popup.setOnClickListener{
-
                 val times = mutableListOf<Met.Numb>()
                 val day = listOf("Søndag", "Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag")
                 var dayNow = Calendar.getInstance().get(DAY_OF_WEEK) - 1
@@ -281,7 +280,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
                             "Temperatur: ${times[2].data.instant.details.air_temperature} °C\n" +
                             "Regn: ${times[2].data.next_6_hours.details.precipitation_amount} mm\n"
                 }
-
                 dayNow++
                 if (dayNow == 7) {
                     dayNow = 0
@@ -320,7 +318,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
                 popup.setOnClickListener{
                     popup.visibility = View.INVISIBLE
                 }
-
             }
         }
 
