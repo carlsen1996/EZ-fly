@@ -232,7 +232,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
             popup.temperatureView.text = "Temperatur: ${weather.properties.timeseries[0].data.instant.details.air_temperature} °C"
             popup.precipitationView.text = "Regn: ${weather.properties.timeseries[0].data.next_1_hours.details.precipitation_amount} mm"
             popup.fogView.text = "Tåke: ${weather.properties.timeseries[0].data.instant.details.fog_area_fraction}%"
-            popup.setOnClickListener{
+            popup.textView.text = "Klikk for neste dagers værvarsel"
+            popup.setOnClickListener {
                 val times = mutableListOf<Met.Numb>()
                 val day = listOf("Søndag", "Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag")
                 var dayNow = Calendar.getInstance().get(DAY_OF_WEEK) - 1
@@ -246,7 +247,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
                     }
                 }
                 dayNow++
-                popup.timeView.text = "${day[dayNow]}\n" +
+                popup.timeView.text = "${day[dayNow]}:\n" +
                         "Vindhastighet: ${times[0].data.instant.details.wind_speed} m/s\n" +
                         "Max vindkast: ${times[0].data.instant.details.wind_speed_of_gust} m/s\n" +
                         "Temperatur: ${times[0].data.instant.details.air_temperature} °C\n" +
@@ -256,13 +257,12 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
                 if (dayNow == 7) {
                     dayNow = 0
                 }
-                popup.windSpeedView.text = "${day[dayNow]}\n" +
+                popup.windSpeedView.text = "${day[dayNow]}:\n" +
                         "Vindhastighet: ${times[1].data.instant.details.wind_speed} m/s\n" +
                         "Max vindkast: ${times[1].data.instant.details.wind_speed_of_gust} m/s\n" +
                         "Temperatur: ${times[1].data.instant.details.air_temperature} °C\n" +
                         "Regn: ${times[1].data.next_6_hours.details.precipitation_amount} mm\n" +
                         "Tåke: ${times[1].data.instant.details.fog_area_fraction}%"
-
                 dayNow++
                 if (dayNow == 7) {
                     dayNow = 0
@@ -273,9 +273,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
                             "Temperatur: ${times[2].data.instant.details.air_temperature} °C\n" +
                             "Regn: ${times[2].data.next_1_hours.details.precipitation_amount} mm\n"
 
-                }
-                else {
-                    popup.maxGustView.text = "${day[dayNow]}\n" +
+                } else {
+                    popup.maxGustView.text = "${day[dayNow]}:\n" +
                             "Vindhastighet: ${times[2].data.instant.details.wind_speed} m/s\n" +
                             "Temperatur: ${times[2].data.instant.details.air_temperature} °C\n" +
                             "Regn: ${times[2].data.next_6_hours.details.precipitation_amount} mm\n"
@@ -285,13 +284,12 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
                     dayNow = 0
                 }
                 if (times[3].data.next_6_hours.details.precipitation_amount == null) {
-                    popup.temperatureView.text = "${day[dayNow]}\n" +
+                    popup.temperatureView.text = "${day[dayNow]}:\n" +
                             "Vindhastighet: ${times[3].data.instant.details.wind_speed} m/s\n" +
                             "Temperatur: ${times[3].data.instant.details.air_temperature} °C\n" +
                             "Regn: ${times[3].data.next_1_hours.details.precipitation_amount} mm\n"
-                }
-                else {
-                    popup.temperatureView.text = "${day[dayNow]}\n" +
+                } else {
+                    popup.temperatureView.text = "${day[dayNow]}:\n" +
                             "Vindhastighet: ${times[3].data.instant.details.wind_speed} m/s\n" +
                             "Temperatur: ${times[3].data.instant.details.air_temperature} °C\n" +
                             "Regn: ${times[3].data.next_6_hours.details.precipitation_amount} mm\n"
@@ -302,13 +300,12 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
                     dayNow = 0
                 }
                 if (times[4].data.next_6_hours.details.precipitation_amount == null) {
-                    popup.precipitationView.text = "${day[dayNow]}\n" +
+                    popup.precipitationView.text = "${day[dayNow]}:\n" +
                             "Vindhastighet: ${times[4].data.instant.details.wind_speed} m/s\n" +
                             "Temperatur: ${times[4].data.instant.details.air_temperature} °C\n" +
                             "Regn: ${times[4].data.next_1_hours.details.precipitation_amount} mm\n"
-                }
-                else {
-                    popup.precipitationView.text = "${day[dayNow]}\n" +
+                } else {
+                    popup.precipitationView.text = "${day[dayNow]}:\n" +
                             "Vindhastighet: ${times[4].data.instant.details.wind_speed} m/s\n" +
                             "Temperatur: ${times[4].data.instant.details.air_temperature} °C\n" +
                             "Regn: ${times[4].data.next_6_hours.details.precipitation_amount} mm\n"
@@ -320,7 +317,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
                 }
             }
         }
-
     }
 
     private fun displayAddressOfClickedArea(p0: LatLng?) {
