@@ -8,7 +8,9 @@ import androidx.viewpager.widget.ViewPager
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatDelegate
 import com.example.basicmap.ui.main.SectionsPagerAdapter
+import kotlinx.android.synthetic.main.fragment_faq.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -29,5 +31,6 @@ class MainActivity : AppCompatActivity() {
         tabs.getTabAt(1)?.setIcon(R.mipmap.round_explore_black_18dp)
         tabs.getTabAt(2)?.setIcon(R.mipmap.drone4)
         tabs.getTabAt(3)?.setIcon(R.mipmap.round_help_black_18dp)
+
     }
 }
