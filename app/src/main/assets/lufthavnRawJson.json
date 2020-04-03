@@ -1,14 +1,278 @@
 [
   {
-    "lufthavnNavn": "Sandane lufthavn",
-    "lufthavnKordinat1": "61.49442, 6.06263",
-    "lufthavnKordinat2": "61.49501, 6.07031",
-    "lufthavnKordinat3": "61.49472, 6.05568"
+    "lufthavnNavn":"Oslo lufthavn",
+    "lufthavnKordinat1":"60.12485, 11.06302",
+    "lufthavnKordinat2":"60.10585, 11.04192",
+    "lufthavnKordinat3":"60.10427, 11.06370"
   },
   {
-    "lufthavnNavn": "Oslo lufthavn",
-    "lufthavnKordinat1": "60.10182, 11.06319",
-    "lufthavnKordinat2": "60.11030, 11.03092",
-    "lufthavnKordinat3": "60.13324, 11.05527"
+    "lufthavnNavn":"Sandane lufthavn",
+    "lufthavnKordinat1":"61.49442, 6.06263",
+    "lufthavnKordinat2":"61.49501, 6.07031",
+    "lufthavnKordinat3":"61.49472, 6.05568"
+  },
+  {
+    "lufthavnNavn":"Stavanger lufthavn",
+    "lufthavnKordinat1":"58.53425, 5.38138",
+    "lufthavnKordinat2":"58.52212, 5.38439",
+    "lufthavnKordinat3":"58.52547, 5.36169"
+  },
+  {
+    "lufthavnNavn":"Ørsta-Volda lufthavn",
+    "lufthavnKordinat1":"62.10367, 6.03437",
+    "lufthavnKordinat2":"62.10539, 6.04476",
+    "lufthavnKordinat3":"62.10477, 6.04470"
+  },
+  {
+    "lufthavnNavn":"Brønnøysund lufthavn",
+    "lufthavnKordinat1":"65.27373, 12.12337",
+    "lufthavnKordinat2":"65.27146, 12.12135",
+    "lufthavnKordinat3":"65.27509, 12.13238"
+  },
+  {
+    "lufthavnNavn":"Rørvik lufthavn",
+    "lufthavnKordinat1":"64.50223, 11.08395",
+    "lufthavnKordinat2":"64.50015, 11.08101",
+    "lufthavnKordinat3":"64.50245, 11.08584"
+  },
+  {
+    "lufthavnNavn":"Andøya lufthavn",
+    "lufthavnKordinat1":"69.18326, 16.06599",
+    "lufthavnKordinat2":"69.17091, 16.09175",
+    "lufthavnKordinat3":"69.16586, 16.07402"
+  },
+  {
+    "lufthavnNavn":"Fagernes lufthavn",
+    "lufthavnKordinat1":"61.00254, 9.17372",
+    "lufthavnKordinat2":"61.00122, 9.18101",
+    "lufthavnKordinat3":"61.01093, 9.17009"
+  },
+  {
+    "lufthavnNavn":"Molde lufthavn",
+    "lufthavnKordinat1":"62.44466, 7.15324",
+    "lufthavnKordinat2":"62.44559, 7.17181",
+    "lufthavnKordinat3":"62.44322, 7.14481"
+  },
+  {
+    "lufthavnNavn":"Sogndal lufthavn",
+    "lufthavnKordinat1":"61.09293, 7.08105",
+    "lufthavnKordinat2":"61.09301, 7.08429",
+    "lufthavnKordinat3":"61.09116, 7.07383"
+  },
+  {
+    "lufthavnNavn":"Kristiansund lufthavn",
+    "lufthavnKordinat1":"63.06584, 7.49383",
+    "lufthavnKordinat2":"63.06574, 7.51065",
+    "lufthavnKordinat3":"63.06325, 7.48239"
+  },
+  {
+    "lufthavnNavn":"Bodø lufthavn",
+    "lufthavnKordinat1":"67.16233, 14.21450",
+    "lufthavnKordinat2":"67.15536, 14.18492",
+    "lufthavnKordinat3":"67.16199, 14.24038"
+  },
+  {
+    "lufthavnNavn":"Røst lufthavn",
+    "lufthavnKordinat1":"67.31376, 12.06231",
+    "lufthavnKordinat2":"67.31210, 12.05448",
+    "lufthavnKordinat3":"67.31502, 12.06270"
+  },
+  {
+    "lufthavnNavn":"Lakselv lufthavn",
+    "lufthavnKordinat1":"70.03588, 24.58571",
+    "lufthavnKordinat2":"70.03229, 24.58357",
+    "lufthavnKordinat3":"70.04525, 24.58150"
+  },
+  {
+    "lufthavnNavn":"Ålesund lufthavn",
+    "lufthavnKordinat1":"62.33297, 6.06585",
+    "lufthavnKordinat2":"62.33555, 6.07593",
+    "lufthavnKordinat3":"62.33207, 6.05231"
+  },
+  {
+    "lufthavnNavn":"Hasvik lufthavn",
+    "lufthavnKordinat1":"70.29124, 22.08499",
+    "lufthavnKordinat2":"70.29032, 22.09122",
+    "lufthavnKordinat3":"70.29190, 22.07437"
+  },
+  {
+    "lufthavnNavn":"Mehamn lufthavn",
+    "lufthavnKordinat1":"71.01394, 27.49467",
+    "lufthavnKordinat2":"71.01307, 27.49340",
+    "lufthavnKordinat3":"71.02020, 27.49379"
+  },
+  {
+    "lufthavnNavn":"Honningsvåg lufthavn",
+    "lufthavnKordinat1":"71.00308, 25.58392",
+    "lufthavnKordinat2":"71.00348, 25.58165",
+    "lufthavnKordinat3":"71.00347, 25.59478"
+  },
+  {
+    "lufthavnNavn":"Stokmarknes lufthavn",
+    "lufthavnKordinat1":"68.34454, 15.01483",
+    "lufthavnKordinat2":"68.34505, 15.01572",
+    "lufthavnKordinat3":"68.34513, 15.00350"
+  },
+  {
+    "lufthavnNavn":"Vadsø lufthavn",
+    "lufthavnKordinat1":"70.03502, 29.50143",
+    "lufthavnKordinat2":"70.03540, 29.49575",
+    "lufthavnKordinat3":"70.03557, 29.51321"
+  },
+  {
+    "lufthavnNavn":"Vardø lufthavn",
+    "lufthavnKordinat1":"70.21224, 31.02242",
+    "lufthavnKordinat2":"70.21006, 31.02582",
+    "lufthavnKordinat3":"70.21361, 31.02264"
+  },
+  {
+    "lufthavnNavn":"Florø lufthavn",
+    "lufthavnKordinat1":"61.35103, 5.01291",
+    "lufthavnKordinat2":"61.34507, 5.00265",
+    "lufthavnKordinat3":"61.35058, 5.01571"
+  },
+  {
+    "lufthavnNavn":"Kristiansand Lufthavn",
+    "lufthavnKordinat1":"58.12444, 8.05455",
+    "lufthavnKordinat2":"58.12442, 8.05459",
+    "lufthavnKordinat3":"58.12096, 8.04259"
+  },
+  {
+    "lufthavnNavn":"Sørkjosen lufthavn",
+    "lufthavnKordinat1":"69.47073, 20.57261",
+    "lufthavnKordinat2":"69.46591, 20.57525",
+    "lufthavnKordinat3":"69.47286, 20.57129"
+  },
+  {
+    "lufthavnNavn":"Bardufoss lufthavn",
+    "lufthavnKordinat1":"69.03359, 18.32236",
+    "lufthavnKordinat2":"69.03046, 18.34367",
+    "lufthavnKordinat3":"69.03373, 18.30101"
+  },
+  {
+    "lufthavnNavn":"Alta lufthavn",
+    "lufthavnKordinat1":"69.58583, 23.20227",
+    "lufthavnKordinat2":"69.58210, 23.23253",
+    "lufthavnKordinat3":"69.58366, 23.21025"
+  },
+  {
+    "lufthavnNavn":"Trondheim lufthavn",
+    "lufthavnKordinat1":"63.27277, 10.53018",
+    "lufthavnKordinat2":"63.27279, 10.56474",
+    "lufthavnKordinat3":"63.27053, 10.54572"
+  },
+  {
+    "lufthavnNavn":"Kirkenes lufthavn",
+    "lufthavnKordinat1":"69.43154, 29.53487",
+    "lufthavnKordinat2":"69.43455, 29.55044",
+    "lufthavnKordinat3":"69.43206, 29.51590"
+  },
+  {
+    "lufthavnNavn":"Tromsø lufthavn",
+    "lufthavnKordinat1":"69.40132, 18.54363",
+    "lufthavnKordinat2":"69.41487, 18.55406",
+    "lufthavnKordinat3":"69.40565, 18.54161"
+  },
+  {
+    "lufthavnNavn":"Hammerfest lufthavn",
+    "lufthavnKordinat1":"70.40458, 23.40317",
+    "lufthavnKordinat2":"70.40550, 23.40412",
+    "lufthavnKordinat3":"70.40380, 23.39257"
+  },
+  {
+    "lufthavnNavn":"Leknes lufthavn",
+    "lufthavnKordinat1":"68.08563, 13.36141",
+    "lufthavnKordinat2":"68.09119, 13.36535",
+    "lufthavnKordinat3":"68.09273, 13.36570"
+  },
+  {
+    "lufthavnNavn":"Berlevåg lufthavn",
+    "lufthavnKordinat1":"70.52126, 29.01057",
+    "lufthavnKordinat2":"70.52113, 29.01488",
+    "lufthavnKordinat3":"70.52214, 29.02456"
+  },
+  {
+    "lufthavnNavn":"Båtsfjord lufthavn",
+    "lufthavnKordinat1":"70.36153, 29.42167",
+    "lufthavnKordinat2":"70.36101, 29.41300",
+    "lufthavnKordinat3":"70.35464, 29.40522"
+  },
+  {
+    "lufthavnNavn":"Røros lufthavn",
+    "lufthavnKordinat1":"62.34242, 11.21217",
+    "lufthavnKordinat2":"62.34388, 11.21164",
+    "lufthavnKordinat3":"62.35050, 11.19589"
+  },
+  {
+    "lufthavnNavn":"Mo i Rana lufthavn",
+    "lufthavnKordinat1":"66.22004, 14.17435",
+    "lufthavnKordinat2":"66.21386, 14.18277",
+    "lufthavnKordinat3":"66.21541, 14.18124"
+  },
+  {
+    "lufthavnNavn":"Værøy helikopterhavn",
+    "lufthavnKordinat1":"67.39151, 12.43372",
+    "lufthavnKordinat2":"67.39170, 12.43404",
+    "lufthavnKordinat3":"67.39181, 12.43319"
+  },
+  {
+    "lufthavnNavn":"Harstad/Narvik lufthavn",
+    "lufthavnKordinat1":"68.28341, 16.40462",
+    "lufthavnKordinat2":"68.29316, 16.41539",
+    "lufthavnKordinat3":"68.30148, 16.40334"
+  },
+  {
+    "lufthavnNavn":"Namsos lufthavn",
+    "lufthavnKordinat1":"64.28238, 11.35145",
+    "lufthavnKordinat2":"64.28234, 11.34088",
+    "lufthavnKordinat3":"64.28155, 11.34076"
+  },
+  {
+    "lufthavnNavn":"Svolvær lufthavn",
+    "lufthavnKordinat1":"68.14496, 14.40187",
+    "lufthavnKordinat2":"68.14430, 14.39571",
+    "lufthavnKordinat3":"68.14166, 14.39559"
+  },
+  {
+    "lufthavnNavn":"Bergen lufthavn",
+    "lufthavnKordinat1":"60.16453, 5.13193",
+    "lufthavnKordinat2":"60.17316, 5.14056",
+    "lufthavnKordinat3":"60.18297, 5.12457"
+  },
+  {
+    "lufthavnNavn":"Mosjøen lufthavn",
+    "lufthavnKordinat1":"65.47163, 13.12398",
+    "lufthavnKordinat2":"65.47034, 13.13114",
+    "lufthavnKordinat3":"65.46452, 13.13073"
+  },
+  {
+    "lufthavnNavn":"Haugesund lufthavn",
+    "lufthavnKordinat1":"59.21077, 5.11405",
+    "lufthavnKordinat2":"59.20427, 5.13052",
+    "lufthavnKordinat3":"59.20088, 5.13382"
+  },
+  {
+    "lufthavnNavn":"Sandnessjøen lufthavn",
+    "lufthavnKordinat1":"65.57090, 12.27480",
+    "lufthavnKordinat2":"65.57509, 12.28350",
+    "lufthavnKordinat3":"65.57353, 12.28370"
+  },
+  {
+    "lufthavnNavn":"Førde lufthavn",
+    "lufthavnKordinat1":"61.23256, 5.45518",
+    "lufthavnKordinat2":"61.23360, 5.46124",
+    "lufthavnKordinat3":"61.23257, 5.44572"
+  },
+  {
+    "lufthavnNavn":"Rygge lufthavn",
+    "lufthavnKordinat1":"59.23169, 10.45440",
+    "lufthavnKordinat2":"59.22311, 10.46555",
+    "lufthavnKordinat3":"59.22268, 10.48391"
+  },
+  {
+    "lufthavnNavn":"Ørland lufthavn",
+    "lufthavnKordinat1":"63.41446, 9.36106",
+    "lufthavnKordinat2":"63.42473, 9.35517",
+    "lufthavnKordinat3":"63.41121, 9.37411"
   }
 ]

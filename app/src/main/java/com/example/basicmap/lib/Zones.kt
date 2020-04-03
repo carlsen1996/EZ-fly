@@ -73,10 +73,10 @@ public fun initNoFlyLufthavn(jsonStringen : String, kartet : GoogleMap) {
             val yeboi = "Yeboi"
             val noboi = "Noboi"
             if (lufthavnNavn == null) {
-                Log.d("Lufthavn1", yeboi)
+                Log.d("Lufthavn1", noboi)
             }
             else {
-                Log.d("Lufthavn1", noboi)
+                Log.d("Lufthavn1", yeboi)
             }
 
             if (Kor1ArrayKlarForSplitting == null) {
@@ -127,18 +127,21 @@ public fun initNoFlyLufthavn(jsonStringen : String, kartet : GoogleMap) {
                 .strokeColor(Color.TRANSPARENT)
 
             //-----------------------------------------------------
-            //Kommenter inn dette
+            //Kommenter ut dette
 
-            /*val circle1: Circle = kartet.addCircle(circleOptions1)
+            val circle1: Circle = kartet.addCircle(circleOptions1)
             val circle2: Circle = kartet.addCircle(circleOptions2)
-            val circle3: Circle = kartet.addCircle(circleOptions3)*/
+            val circle3: Circle = kartet.addCircle(circleOptions3)
 
-            //Kommenter inn dette
+            //Kommenter ut dette
             //-----------------------------------------------------
 
             //yeet
 
-            var kordinatListe = arrayOf<LatLng>(LatLng1, LatLng2, LatLng3)
+            //-----------------------------------------------------
+            //Kommenter inn dette
+
+            /*var kordinatListe = arrayOf<LatLng>(LatLng1, LatLng2, LatLng3)
             var ekteKordinatListe = mutableListOf<LatLng>(LatLng1, LatLng2, LatLng3)
 
             val trekantpoligon = kartet.addPolygon(
@@ -148,12 +151,6 @@ public fun initNoFlyLufthavn(jsonStringen : String, kartet : GoogleMap) {
                     .addAll(ekteKordinatListe)
             )
 
-
-
-
-
-            //-----------------------------------------------------
-            //Kommenter Ut dette
 
             var polyguneerPunktListe = mutableListOf<LatLng>()
             var tellerkar = 0
@@ -176,9 +173,9 @@ public fun initNoFlyLufthavn(jsonStringen : String, kartet : GoogleMap) {
                     .addAll(polyguneerPunktListe)
                     .strokeColor(Color.TRANSPARENT)
                     .fillColor(sirkelfarge)
-            )
+            )*/
 
-            //Kommenter Ut dette
+            //Kommenter inn dette
             //-----------------------------------------------------
 
 
