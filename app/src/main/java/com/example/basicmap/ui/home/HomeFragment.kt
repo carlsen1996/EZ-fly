@@ -35,6 +35,9 @@ import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.net.PlacesClient
 import kotlinx.android.synthetic.main.fragment_home.view.popupStub
 import com.google.gson.GsonBuilder
+import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.fragment_home.view.*
+import kotlinx.android.synthetic.main.fragment_home.view.flyplassButton
 import kotlinx.android.synthetic.main.popup.*
 import kotlinx.android.synthetic.main.popup.view.*
 import kotlinx.coroutines.*
@@ -72,7 +75,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
 
-    private var sirkelMutableListOver = mutableListOf<Circle>()
+    private var sirkelMutableListOver = mutableListOf<CircleOptions>()
+    private var ferdigsirkelMutableListOver = mutableListOf<Circle>()
+    private var lufthavnButtonTeller = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -131,6 +136,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
         return root
     }
 
+
+
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
         // FIXME: this is a hack that avoids conflicts between state handled by the map itself
@@ -159,12 +166,17 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
             )
         )
 
+        leggTilLufthavner()
+        flyplassButton.setOnClickListener {
+            if (lufthavnButtonTeller == false) {
+                leggTilLufthavner()
+            }
+            if (lufthavnButtonTeller == true) {
+                fjernLufthavner()
+            }
 
-        val jsonFilStringen = getJsonDataFromAsset(context!!, "lufthavnRawJson.json")
-        sirkelMutableListOver = initNoFlyLufthavn(jsonFilStringen, map)
-        for (sirkel in sirkelMutableListOver) {
-            Log.d("Sirkel", sirkel.toString())
         }
+
     }
 
     private fun getLocationPermission() {
@@ -370,5 +382,28 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
             }
         }
     }
-}
 
+    private fun leggTilLufthavner() {
+        val jsonFilStringen = getJsonDataFromAsset(context!!, "lufthavnRawJson.json")
+        sirkelMutableListOver = initNoFlyLufthavn(jsonFilStringen, map)
+        for (optionini in sirkelMutableListOver) {
+            val sorkel: Circle = map.addCircle((optionini))
+            ferdigsirkelMutableListOver.add(sorkel)
+        }
+        lufthavnButtonTeller = false
+    }
+
+    private fun fjernLufthavner() {
+        if (ferdigsirkelMutableListOver.size > 0) {
+            for (sirkali in ferdigsirkelMutableListOver) {
+                sirkali.remove()
+            }
+        }
+        else {
+            Log.d("fjernLufthavner", "ferdigsirkelMutableListeOver er tom")
+        }
+        lufthavnButtonTeller = true
+    }
+
+
+}

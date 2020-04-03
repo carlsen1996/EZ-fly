@@ -12,25 +12,6 @@
         <item>"17 m/s"</item>
     </string-array>
     <string name="title_activity_main">MainActivity</string>
-
-
-    <!--her er det en enorm liste, hold ting helst over her-->
-   <!-- <string name="flyplassListe">
-        [
-            {
-                "Navn" : "Sandane lufthavn",
-                "Kordinat1" : "61.4944.2, 6.0626.3",
-                "Kordinat2" : "61.4950.1, 6.0703.1",
-                "Kordinat3" : "61.4947.2, 6.0556.8"
-            },
-            {
-                "Navn" : "Oslo lufthavn",
-                "Kordinat1" : "60.1248.5, 11.0630.2",
-                "Kordinat2" : "60.1058.5, 11.0419.2",
-                "Kordinat3" : "60.1042.7, 11.0637.0"
-            }
-        ]
-    </string>-->
 </resources>
 
 

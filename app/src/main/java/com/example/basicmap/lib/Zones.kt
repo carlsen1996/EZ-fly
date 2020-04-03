@@ -13,23 +13,26 @@ import com.google.android.gms.maps.model.*
 import com.google.android.gms.maps.model.Polygon
 
 
-/*
-    Utility for querying various zone data, like no-fly zones etc.
 
-    Could for instance have an method that takes a rectangle (ie. four LatLang's) and returns
-    a collection of all zones (polygons) inside the rectangle.
- */
+    // Utility for querying various zone data, like no-fly zones etc.
 
-class Zones {
+    // Could for instance have an method that takes a rectangle (ie. four LatLang's) and returns
+    // a collection of all zones (polygons) inside the rectangle.
+    // "//" is used for comments from writer
+    // and "*/ */" is used for potentially useful code
 
-}
+
+
 var LufthavnMutableListe = mutableListOf<LufthavnKlasse>()
 
-//public fun initNoFlyLufthavn(jsonStringen : String, kartet : GoogleMap) {
-public fun initNoFlyLufthavn(jsonStringen : String, kartet : GoogleMap): MutableList<Circle> {
+/*public fun initNoFlyLufthavn(jsonStringen : String, kartet : GoogleMap) {*/
+public fun initNoFlyLufthavn(jsonStringen : String, kartet : GoogleMap): MutableList<CircleOptions> {
 
-    //yeet
-    var sirkelMutableList = mutableListOf<Circle>()
+    // yeet
+    // flyplasser fra:
+    // https://luftfartstilsynet.no/aktorer/flyplass/landingsplasser/godkjente-lufthavner-og-flyplasser/
+
+    val sirkelMutableList = mutableListOf<CircleOptions>()
     LufthavnMutableListe = Gson().fromJson(jsonStringen, Array<LufthavnKlasse>::class.java).toMutableList()
 
     var teller = 0
@@ -46,15 +49,10 @@ public fun initNoFlyLufthavn(jsonStringen : String, kartet : GoogleMap): Mutable
     val Kor2 = LufthavnMutableListe.map { it.lufthavnKordinat2 }
     val Kor3 = LufthavnMutableListe.map { it.lufthavnKordinat3 }
 
-    //Log.d("RenString", jsonStringen)
-    //val TilbakeFraMutableTilJson: String = Gson().toJson(LufthavnMutableListe)
-    //Log.d("why", TilbakeFraMutableTilJson)
-
-
-    val luftpls = "Wewo"
-
-
-
+    /*Log.d("RenString", jsonStringen)
+    val TilbakeFraMutableTilJson: String = Gson().toJson(LufthavnMutableListe)
+    Log.d("why", TilbakeFraMutableTilJson)
+    val luftpls = "Wewo"*/
 
 
     if (Kor1 == null||Kor2 == null||Kor3 == null) {
@@ -106,12 +104,12 @@ public fun initNoFlyLufthavn(jsonStringen : String, kartet : GoogleMap): Mutable
             Log.d("E1", Kor3ArraySplittet.get(0).toString())
             Log.d("E1", Kor3ArraySplittet.get(1).toString())
             Log.d("-", " ")*/
-            N1 = korTilBedreKor(Kor1ArraySplittet.get(0))
-            E1 = korTilBedreKor(Kor1ArraySplittet.get(1))
-            N2 = korTilBedreKor(Kor2ArraySplittet.get(0))
-            E2 = korTilBedreKor(Kor2ArraySplittet.get(1))
-            N3 = korTilBedreKor(Kor3ArraySplittet.get(0))
-            E3 = korTilBedreKor(Kor3ArraySplittet.get(1))
+            N1 = korTilBedreKor(Kor1ArraySplittet[0])
+            E1 = korTilBedreKor(Kor1ArraySplittet[1])
+            N2 = korTilBedreKor(Kor2ArraySplittet[0])
+            E2 = korTilBedreKor(Kor2ArraySplittet[1])
+            N3 = korTilBedreKor(Kor3ArraySplittet[0])
+            E3 = korTilBedreKor(Kor3ArraySplittet[1])
 
             /*Log.d("N1", N1.toString())
             Log.d("E1", N1.toString())
@@ -121,17 +119,27 @@ public fun initNoFlyLufthavn(jsonStringen : String, kartet : GoogleMap): Mutable
             Log.d("E3", N3.toString())
             Log.d("-", "------------------")*/
 
-            var LatLng1 = LatLng(N1, E1)
-            var LatLng2 = LatLng(N2, E2)
-            var LatLng3 = LatLng(N3, E3)
+            val LatLng1 = LatLng(N1, E1)
+            val LatLng2 = LatLng(N2, E2)
+            val LatLng3 = LatLng(N3, E3)
 
 
             val sirkelfarge = Color.parseColor("#66FF0000")
 
 
 
-            val sirkelOptionis = CircleOptions()
+            val sirkelOptionis1 = CircleOptions()
                 .center(LatLng1) // Senteret
+                .radius(5000.0) // I meter
+                .fillColor(sirkelfarge) // RBG + alpha (transparancy)
+                .strokeColor(Color.TRANSPARENT) // Utkanten av sirkelen
+            val sirkelOptionis2 = CircleOptions()
+                .center(LatLng2) // Senteret
+                .radius(5000.0) // I meter
+                .fillColor(sirkelfarge) // RBG + alpha (transparancy)
+                .strokeColor(Color.TRANSPARENT) // Utkanten av sirkelen
+            val sirkelOptionis3 = CircleOptions()
+                .center(LatLng3) // Senteret
                 .radius(5000.0) // I meter
                 .fillColor(sirkelfarge) // RBG + alpha (transparancy)
                 .strokeColor(Color.TRANSPARENT) // Utkanten av sirkelen
@@ -139,13 +147,10 @@ public fun initNoFlyLufthavn(jsonStringen : String, kartet : GoogleMap): Mutable
             //-----------------------------------------------------
             //Kommenter ut dette
 
-            val circle1: Circle = kartet.addCircle(sirkelOptionis)
-            val circle2: Circle = kartet.addCircle(sirkelOptionis)
-            val circle3: Circle = kartet.addCircle(sirkelOptionis)
+            sirkelMutableList.add(sirkelOptionis1)
+            sirkelMutableList.add(sirkelOptionis2)
+            sirkelMutableList.add(sirkelOptionis3)
 
-            sirkelMutableList.add(circle1)
-            sirkelMutableList.add(circle2)
-            sirkelMutableList.add(circle3)
 
 
 
@@ -257,13 +262,6 @@ fun tegnSirkel(sentrum : LatLng, radius : Int, dir : Int):MutableList<LatLng> {
 
 fun getJsonDataFromAsset(context: Context, fileName: String): String {
     val jsonString: String
-    /*
-    try {
-        jsonString = context.assets.open(fileName).bufferedReader().use { it.readText() }
-    } catch (ioException: IOException) {
-        ioException.printStackTrace()
-        return null
-    }*/
     jsonString = context.assets.open(fileName).bufferedReader().use { it.readText() }
     return jsonString
 }
@@ -274,55 +272,28 @@ fun korTilBedreKor(daarligKor : String) : Double {
     var c = 0.0
     var d = 0.0
 
-
-
-
     val splittetListe = daarligKor.split("")
     if (splittetListe.size == 9) {
         a = (splittetListe[1]).toDouble()
-        if (splittetListe[4] =="0") {
-            b = (splittetListe[3]+"."+splittetListe[4]).toDouble()
-        }
-        else {
-            b = (splittetListe[3]+splittetListe[4]).toDouble()
-        }
-        if (splittetListe[5] == "0") {
-            c = (splittetListe[5]+"."+splittetListe[6]+splittetListe[7]).toDouble()
-        }
-        else {
-            c = (splittetListe[5]+splittetListe[6]+"."+splittetListe[7]).toDouble()
-        }
-        //Log.d("9", "9")
+        b = (splittetListe[3]+splittetListe[4]).toDouble()
+        c = (splittetListe[5]+splittetListe[6]+"."+splittetListe[7]).toDouble()
+        /*Log.d("9", "9")*/
     }
     else if (splittetListe.size == 10) {
         a = (splittetListe[1]+splittetListe[2]).toDouble()
-        if (splittetListe[4] =="0") {
-            b = (splittetListe[4]+"."+splittetListe[5]).toDouble()
-        }
-        else {
-            b = (splittetListe[4]+splittetListe[5]).toDouble()
-        }
-        if (splittetListe[6] == "0") {
-            c = (splittetListe[6]+"."+splittetListe[7]+splittetListe[8]).toDouble()
-        }
-        else {
-            c = (splittetListe[6]+splittetListe[7]+"."+splittetListe[8]).toDouble()
-        }
-        //Log.d("10", "10")
+        b = (splittetListe[4]+splittetListe[5]).toDouble()
+        c = (splittetListe[6]+splittetListe[7]+"."+splittetListe[8]).toDouble()
+        /*Log.d("10", "10")*/
     }
-
     d = a+(b/60)+(c/3600)
-
 
     /*Log.d("dk", daarligKor)
     Log.d("sl", splittetListe.toString())
-    Log.d("d", d.toString())
     Log.d("a", a.toString())
     Log.d("b", b.toString())
     Log.d("c", c.toString())
+    Log.d("d", d.toString())
     Log.d("-", "------------------")*/
-
-
 
     return d
 }
