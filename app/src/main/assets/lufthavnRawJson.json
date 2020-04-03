@@ -6,10 +6,10 @@
     "lufthavnKordinat3":"60.10427, 11.06370"
   },
   {
-    "lufthavnNavn":"Sandane lufthavn",
-    "lufthavnKordinat1":"61.49442, 6.06263",
-    "lufthavnKordinat2":"61.49501, 6.07031",
-    "lufthavnKordinat3":"61.49472, 6.05568"
+    "lufthavnNavn":"Kristiansand Lufthavn",
+    "lufthavnKordinat1":"58.12444, 8.05455",
+    "lufthavnKordinat2":"58.12442, 8.05459",
+    "lufthavnKordinat3":"58.12096, 8.04259"
   },
   {
     "lufthavnNavn":"Stavanger lufthavn",
@@ -132,10 +132,10 @@
     "lufthavnKordinat3":"61.35058, 5.01571"
   },
   {
-    "lufthavnNavn":"Kristiansand Lufthavn",
-    "lufthavnKordinat1":"58.12444, 8.05455",
-    "lufthavnKordinat2":"58.12442, 8.05459",
-    "lufthavnKordinat3":"58.12096, 8.04259"
+    "lufthavnNavn":"Sandane lufthavn",
+    "lufthavnKordinat1":"61.49442, 6.06263",
+    "lufthavnKordinat2":"61.49501, 6.07031",
+    "lufthavnKordinat3":"61.49472, 6.05568"
   },
   {
     "lufthavnNavn":"Sørkjosen lufthavn",

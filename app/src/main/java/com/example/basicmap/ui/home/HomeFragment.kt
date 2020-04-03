@@ -72,6 +72,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
 
+    private var sirkelMutableListOver = mutableListOf<Circle>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         job = Job()
@@ -159,7 +161,10 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
 
 
         val jsonFilStringen = getJsonDataFromAsset(context!!, "lufthavnRawJson.json")
-        initNoFlyLufthavn(jsonFilStringen, map)
+        sirkelMutableListOver = initNoFlyLufthavn(jsonFilStringen, map)
+        for (sirkel in sirkelMutableListOver) {
+            Log.d("Sirkel", sirkel.toString())
+        }
     }
 
     private fun getLocationPermission() {

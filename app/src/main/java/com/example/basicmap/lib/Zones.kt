@@ -25,13 +25,14 @@ class Zones {
 }
 var LufthavnMutableListe = mutableListOf<LufthavnKlasse>()
 
-public fun initNoFlyLufthavn(jsonStringen : String, kartet : GoogleMap) {
+//public fun initNoFlyLufthavn(jsonStringen : String, kartet : GoogleMap) {
+public fun initNoFlyLufthavn(jsonStringen : String, kartet : GoogleMap): MutableList<Circle> {
 
     //yeet
-
+    var sirkelMutableList = mutableListOf<Circle>()
     LufthavnMutableListe = Gson().fromJson(jsonStringen, Array<LufthavnKlasse>::class.java).toMutableList()
 
-
+    var teller = 0
 
     var N1 = 0.0
     var E1 = 0.0
@@ -45,9 +46,10 @@ public fun initNoFlyLufthavn(jsonStringen : String, kartet : GoogleMap) {
     val Kor2 = LufthavnMutableListe.map { it.lufthavnKordinat2 }
     val Kor3 = LufthavnMutableListe.map { it.lufthavnKordinat3 }
 
-    Log.d("RenString", jsonStringen)
-    val TilbakeFraMutableTilJson: String = Gson().toJson(LufthavnMutableListe)
-    Log.d("why", TilbakeFraMutableTilJson)
+    //Log.d("RenString", jsonStringen)
+    //val TilbakeFraMutableTilJson: String = Gson().toJson(LufthavnMutableListe)
+    //Log.d("why", TilbakeFraMutableTilJson)
+
 
     val luftpls = "Wewo"
 
@@ -59,7 +61,6 @@ public fun initNoFlyLufthavn(jsonStringen : String, kartet : GoogleMap) {
         Log.d("Zones", "En kordinat er Null (Kor1/2/3) ------------------------------")
     }
 
-    var teller = 0
     for (enkelFlyplass in LufthavnMutableListe) {
 
         val Kor1ArrayKlarForSplitting: String = Kor1.get(teller)
@@ -91,15 +92,34 @@ public fun initNoFlyLufthavn(jsonStringen : String, kartet : GoogleMap) {
             teller++
         }
         else {
-            val Kor1ArraySplittet = Kor1ArrayKlarForSplitting.split(",").toTypedArray()
-            N1 = Kor1ArraySplittet.get(0).toDouble()
-            E1 = Kor1ArraySplittet.get(1).toDouble()
-            val Kor2ArraySplittet = Kor2ArrayKlarForSplitting.split(",").toTypedArray()
-            N2 = Kor2ArraySplittet.get(0).toDouble()
-            E2 = Kor2ArraySplittet.get(1).toDouble()
-            val Kor3ArraySplittet = Kor3ArrayKlarForSplitting.split(",").toTypedArray()
-            N3 = Kor3ArraySplittet.get(0).toDouble()
-            E3 = Kor3ArraySplittet.get(1).toDouble()
+
+            // Må gjøre doublen om til faktisk riktige kordinater med korTilBedreKor
+
+            val Kor1ArraySplittet = Kor1ArrayKlarForSplitting.split(", ").toTypedArray()
+            val Kor2ArraySplittet = Kor2ArrayKlarForSplitting.split(", ").toTypedArray()
+            val Kor3ArraySplittet = Kor3ArrayKlarForSplitting.split(", ").toTypedArray()
+
+            /*Log.d("E1", Kor1ArraySplittet.get(0).toString())
+            Log.d("E1", Kor1ArraySplittet.get(1).toString())
+            Log.d("E1", Kor2ArraySplittet.get(0).toString())
+            Log.d("E1", Kor2ArraySplittet.get(1).toString())
+            Log.d("E1", Kor3ArraySplittet.get(0).toString())
+            Log.d("E1", Kor3ArraySplittet.get(1).toString())
+            Log.d("-", " ")*/
+            N1 = korTilBedreKor(Kor1ArraySplittet.get(0))
+            E1 = korTilBedreKor(Kor1ArraySplittet.get(1))
+            N2 = korTilBedreKor(Kor2ArraySplittet.get(0))
+            E2 = korTilBedreKor(Kor2ArraySplittet.get(1))
+            N3 = korTilBedreKor(Kor3ArraySplittet.get(0))
+            E3 = korTilBedreKor(Kor3ArraySplittet.get(1))
+
+            /*Log.d("N1", N1.toString())
+            Log.d("E1", N1.toString())
+            Log.d("N2", N2.toString())
+            Log.d("E2", N2.toString())
+            Log.d("N3", N3.toString())
+            Log.d("E3", N3.toString())
+            Log.d("-", "------------------")*/
 
             var LatLng1 = LatLng(N1, E1)
             var LatLng2 = LatLng(N2, E2)
@@ -110,28 +130,24 @@ public fun initNoFlyLufthavn(jsonStringen : String, kartet : GoogleMap) {
 
 
 
-            val circleOptions1 = CircleOptions()
+            val sirkelOptionis = CircleOptions()
                 .center(LatLng1) // Senteret
                 .radius(5000.0) // I meter
                 .fillColor(sirkelfarge) // RBG + alpha (transparancy)
                 .strokeColor(Color.TRANSPARENT) // Utkanten av sirkelen
-            val circleOptions2 = CircleOptions()
-                .center(LatLng2)
-                .radius(5000.0)
-                .fillColor(sirkelfarge)
-                .strokeColor(Color.TRANSPARENT)
-            val circleOptions3 = CircleOptions()
-                .center(LatLng3)
-                .radius(5000.0)
-                .fillColor(sirkelfarge)
-                .strokeColor(Color.TRANSPARENT)
 
             //-----------------------------------------------------
             //Kommenter ut dette
 
-            val circle1: Circle = kartet.addCircle(circleOptions1)
-            val circle2: Circle = kartet.addCircle(circleOptions2)
-            val circle3: Circle = kartet.addCircle(circleOptions3)
+            val circle1: Circle = kartet.addCircle(sirkelOptionis)
+            val circle2: Circle = kartet.addCircle(sirkelOptionis)
+            val circle3: Circle = kartet.addCircle(sirkelOptionis)
+
+            sirkelMutableList.add(circle1)
+            sirkelMutableList.add(circle2)
+            sirkelMutableList.add(circle3)
+
+
 
             //Kommenter ut dette
             //-----------------------------------------------------
@@ -187,7 +203,7 @@ public fun initNoFlyLufthavn(jsonStringen : String, kartet : GoogleMap) {
     }
 
 
-
+    return sirkelMutableList
 }
 
 
@@ -217,7 +233,7 @@ fun tegnSirkel(sentrum : LatLng, radius : Int, dir : Int):MutableList<LatLng> {
 
         // i < ende
         while (i >= ende) {
-            var theta = Math.PI*(i/(points+1))
+            val theta = Math.PI*(i/(points+1))
             var ey = sentrum.longitude+(rlng*Math.cos(theta))
             var ex = sentrum.latitude+(rlat*Math.sin(theta))
             i=i+dir
@@ -227,7 +243,7 @@ fun tegnSirkel(sentrum : LatLng, radius : Int, dir : Int):MutableList<LatLng> {
     else {
         // i > ende
         while (i <= ende) {
-            var theta = Math.PI*(i/(points+1))
+            val theta = Math.PI*(i/(points+1))
             var ey = sentrum.longitude+(rlng*Math.cos(theta))
             var ex = sentrum.latitude+(rlat*Math.sin(theta))
             punktListe.add(1, LatLng(ey, ex))
@@ -252,34 +268,62 @@ fun getJsonDataFromAsset(context: Context, fileName: String): String {
     return jsonString
 }
 
+fun korTilBedreKor(daarligKor : String) : Double {
+    var a = 0.0
+    var b = 0.0
+    var c = 0.0
+    var d = 0.0
 
-/*
-val Kor3ArraySplittet: List<String> = Kor3.get(teller).split(",") //Kor3.split(",")
-N3 = Kor3ArraySplittet.get(0).toDouble()
-E3 = Kor3ArraySplittet.get(1).toDouble()*/
 
-/*// Create marker
-var marker = new google.maps.Marker({
-    map: map,
-    position: new google.maps.LatLng(53, -2.5),
-    title: 'Some location'
-});
 
-// Add circle overlay and bind to marker
-var circle = new google.maps.Circle({
-        map: map,
-        radius: 16093,    // 10 miles in metres
-        fillColor: '#AA0000'
-});
-circle.bindTo('center', marker, 'position');*/
 
-/*val sirkelnr = teller.toString()
-        var sirkel1_navn = sirkel1navn + sirkelnr
-        val sirkel2_navn = sirkel2navn + sirkelnr
-        val sirkel3_navn = sirkel3navn + sirkelnr*/
-//val lstVerdier1: List<String> = Kor1.split(", ").map{it->it.trim()}
+    val splittetListe = daarligKor.split("")
+    if (splittetListe.size == 9) {
+        a = (splittetListe[1]).toDouble()
+        if (splittetListe[4] =="0") {
+            b = (splittetListe[3]+"."+splittetListe[4]).toDouble()
+        }
+        else {
+            b = (splittetListe[3]+splittetListe[4]).toDouble()
+        }
+        if (splittetListe[5] == "0") {
+            c = (splittetListe[5]+"."+splittetListe[6]+splittetListe[7]).toDouble()
+        }
+        else {
+            c = (splittetListe[5]+splittetListe[6]+"."+splittetListe[7]).toDouble()
+        }
+        //Log.d("9", "9")
+    }
+    else if (splittetListe.size == 10) {
+        a = (splittetListe[1]+splittetListe[2]).toDouble()
+        if (splittetListe[4] =="0") {
+            b = (splittetListe[4]+"."+splittetListe[5]).toDouble()
+        }
+        else {
+            b = (splittetListe[4]+splittetListe[5]).toDouble()
+        }
+        if (splittetListe[6] == "0") {
+            c = (splittetListe[6]+"."+splittetListe[7]+splittetListe[8]).toDouble()
+        }
+        else {
+            c = (splittetListe[6]+splittetListe[7]+"."+splittetListe[8]).toDouble()
+        }
+        //Log.d("10", "10")
+    }
 
-/*val wow = "yeet"
-wow.split(",")*/
+    d = a+(b/60)+(c/3600)
 
-//(::polyguneerPunktListe.isInitialized)
+
+    /*Log.d("dk", daarligKor)
+    Log.d("sl", splittetListe.toString())
+    Log.d("d", d.toString())
+    Log.d("a", a.toString())
+    Log.d("b", b.toString())
+    Log.d("c", c.toString())
+    Log.d("-", "------------------")*/
+
+
+
+    return d
+}
+
