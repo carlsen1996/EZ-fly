@@ -169,12 +169,13 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
         leggTilLufthavner()
         flyplassButton.setOnClickListener {
             if (lufthavnButtonTeller == false) {
-                leggTilLufthavner()
-            }
-            if (lufthavnButtonTeller == true) {
                 fjernLufthavner()
+                Log.d("KartLufthavnButton", "fjerner lufthavner")
             }
-
+            else if (lufthavnButtonTeller == true) {
+                leggTilLufthavner()
+                Log.d("KartLufthavnButton", "legger til lufthavner")
+            }
         }
 
     }
