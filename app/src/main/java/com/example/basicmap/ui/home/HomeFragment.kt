@@ -2,6 +2,8 @@ package com.example.basicmap.ui.home
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Context.MODE_PRIVATE
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.location.Address
@@ -11,6 +13,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -18,6 +23,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.basicmap.R
 import com.example.basicmap.lib.Met
+import com.example.basicmap.ui.places.PlaceForDrone
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -30,6 +36,8 @@ import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest
 import com.google.android.libraries.places.api.net.PlacesClient
 import kotlinx.android.synthetic.main.fragment_home.view.popupStub
+import com.google.gson.GsonBuilder
+import kotlinx.android.synthetic.main.fragment_home.view.*
 import kotlinx.android.synthetic.main.popup.*
 import kotlinx.android.synthetic.main.popup.view.*
 import kotlinx.coroutines.*
@@ -48,6 +56,13 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
     private lateinit var locationClient: FusedLocationProviderClient
     private lateinit var map: GoogleMap
     private lateinit var placesClient: PlacesClient
+
+    private var currentAddress: String = ""
+    private lateinit var currentPos: LatLng
+
+
+
+    private var placesList = mutableListOf<PlaceForDrone>()
 
     // Transient reference to current marker, backed by model.position
     private var marker: Marker? = null
@@ -102,6 +117,20 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
         Places.initialize(requireContext(), getString(R.string.google_maps_key))
         placesClient = Places.createClient(requireContext())
         locationClient = LocationServices.getFusedLocationProviderClient(requireContext())
+
+        GlobalScope.launch {
+            withContext(Dispatchers.IO) {
+                lagreLokasjonsKnapp.setOnClickListener {
+                    var locationToBeStored: PlaceForDrone =
+                        PlaceForDrone(currentAddress, currentPos)
+                    if (locationToBeStored != null) {
+                        placesList.add(locationToBeStored)
+                    }
+                    storeLocationData()
+                }
+            }
+        }
+
         return root
     }
 
@@ -177,6 +206,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
 
         model.position.value = p0
     }
+
 
     fun setMarker(p: LatLng): Marker {
         marker?.remove()
@@ -332,6 +362,36 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
                 popup.locationNameView.text = "Ingen addresseinformasjon tilgjengelig"
             }
         }
+    }
+
+    private fun storeLocationData() { //må ha coroutine her?
+
+        if (placesList.size > 0) {
+            val sharedPrefLocations: SharedPreferences =
+                requireActivity().getSharedPreferences("sharedPrefPlaces", AppCompatActivity.MODE_PRIVATE)
+            val editor: SharedPreferences.Editor = sharedPrefLocations.edit()
+            val gson = GsonBuilder().create()
+            val json = gson.toJson(placesList)
+            editor.putString("placeList", json)
+            editor.apply()
+
+            var message1 = placesList.get(0).adresse
+            var message2 = ", er lagt til i favoritter"
+
+            Toast.makeText(
+                activity,
+                message1 + message2,
+                Toast.LENGTH_SHORT
+            )
+                .show()
+        }
+
+        else {
+
+            Log.v("Feilmelding", "Finner ikke PlaceForDrone-objekt")
+        }
+
+        placesList.removeAt(0)
     }
 }
 
