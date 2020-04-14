@@ -89,10 +89,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
 
         mapFragment.getMapAsync(this)
 
-        // Make the
+        // viewStubs needs to be inflated
         root.popupStub.inflate()
 
-        // NOTE: Have to use «!!» to declare non-null
         Places.initialize(requireContext(), getString(R.string.google_maps_key))
         placesClient = Places.createClient(requireContext())
         locationClient = LocationServices.getFusedLocationProviderClient(requireContext())
