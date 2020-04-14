@@ -35,10 +35,11 @@ import kotlinx.android.synthetic.main.popup.view.*
 import kotlinx.coroutines.*
 import java.util.*
 import java.util.Calendar.DAY_OF_WEEK
+import kotlin.coroutines.CoroutineContext
 
 private val TAG = "HomeFragment"
 
-class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListener {
+class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListener, CoroutineScope {
 
     private val PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1
     private var locationPermissionGranted = false
@@ -53,8 +54,16 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
 
     private val model: HomeViewModel by viewModels()
 
+    // Dummy job to make cancellation of running jobs easy
+    private lateinit var job: Job
+
+    // Add all jobs to the same context
+    override val coroutineContext: CoroutineContext
+        get() = job + Dispatchers.Main
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        job = Job()
         Log.d(TAG, "onCreate")
     }
 
@@ -70,6 +79,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
 
     override fun onDestroy() {
         super.onDestroy()
+        job.cancel() // Cancel all running jobs
         Log.d(TAG, "onDestroy")
     }
 
@@ -177,7 +187,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
         val m = map.addMarker(MarkerOptions().position(p))
         marker = m
 
-        GlobalScope.launch {
+        launch {
             withContext(Dispatchers.IO) {
                 val weather = Met().locationForecast(p)
                 populatePopup(weather)
