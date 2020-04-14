@@ -186,35 +186,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
             }
         }
 
-        val placeFields: List<Place.Field> = listOf(
-            Place.Field.NAME, Place.Field.ADDRESS,
-            Place.Field.LAT_LNG
-        )
-
-        val latlngText = "${p.latitude}, ${p.longitude}"
-        //popup.textView.text = latlngText
-        Log.d("latlng", latlngText)
-
-        // Add place names to the popup
-        // FIXME: Only reports names from the device location, make it actually react to the marker.
-        val request = FindCurrentPlaceRequest.newInstance(placeFields)
-        val placeResult = placesClient.findCurrentPlace(request)
-        placeResult.addOnCompleteListener {
-            // FIXME: destroy the listener when the fragment is destroyed
-            // This can trigger from a dead fragment after a rotation, so guard
-            // against dead views
-            if (popup == null)
-                return@addOnCompleteListener
-            if (it.isSuccessful && it.result != null) {
-
-                val likely = it.result!!
-                for (placeLikelihood in likely.placeLikelihoods) {
-                    val place = placeLikelihood.place
-                    //popup.textView.text = "${popup.textView.text}\n${place.name}"
-                    break // Limit to one result
-                }
-            }
-        }
         return m
     }
 
