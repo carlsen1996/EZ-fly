@@ -23,7 +23,7 @@ import com.example.basicmap.lib.Met
 import com.example.basicmap.ui.places.Place
 import com.example.basicmap.ui.places.PlacesViewModel
 import com.example.basicmap.lib.getJsonDataFromAsset
-import com.example.basicmap.lib.initNoFlyLufthavn
+import com.example.basicmap.lib.initNoFlyLufthavnSirkel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -386,7 +386,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
 
     private fun leggTilLufthavner() {
         val jsonFilStringen = getJsonDataFromAsset(context!!, "lufthavnRawJson.json")
-        sirkelMutableListOver = initNoFlyLufthavn(jsonFilStringen, map)
+        sirkelMutableListOver = initNoFlyLufthavnSirkel(jsonFilStringen, map)
         for (optionini in sirkelMutableListOver) {
             val sorkel: Circle = map.addCircle((optionini))
             ferdigsirkelMutableListOver.add(sorkel)
