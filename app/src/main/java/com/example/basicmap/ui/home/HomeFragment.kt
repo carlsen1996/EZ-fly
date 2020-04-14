@@ -11,7 +11,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -325,40 +324,29 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
             }
         }
     }
+    /*
+        Looks up location names using Geocoder.getFromLocation.
+        When ready adds the name to the marker popup.
+     */
+    private fun displayAddressOfClickedArea(p: LatLng) {
+        val geoc: Geocoder = Geocoder(activity)
+        val locations = geoc.getFromLocation(p.latitude, p.longitude, 1)
+        if (locations.size == 0)
+            return
 
-    private fun displayAddressOfClickedArea(p0: LatLng?) {
+        // The following splits the string in order to remove unnecessary information. getAdressLine
+        // returns very full info, for example
+        // Frivoldveien 74, 4877, Grimstad, Norway.
+        // Country name is a given, and therefore reduntant,
+        // since our "marker" is limited to Norway (we use APIs for Norwegian weather only, and data
+        // on restricted zones only for Norway
+        val closestLocationAddress = locations[0].getAddressLine(0)
+        val stringArray = closestLocationAddress?.split(",")?.toTypedArray()
+        val addressToBeDisplayed = stringArray?.get(0) + "," + stringArray?.get(1)
+
+        // Then textview is populated with address, postal code and city/place/location name
         activity?.runOnUiThread {
-
-            //This method first finds latitude and longitude of p0, which is an instance of the LatLng-class.
-            //Then we instantiate a geocoder-object, and use it to receive all the names of addresses associated with mentioned lat and long.
-            //the name of the first address is then displayed, which we determine to be the closest one to the latLang-coordinates
-
-            var lat: Double? = p0?.latitude
-            var long: Double? = p0?.longitude
-
-            var geoc: Geocoder = Geocoder(this.activity, Locale.ENGLISH) //is the problem here, not accessing right activity?
-            var locationList = mutableListOf<Address>()
-
-            var closestLocationAddress: String? = ""
-
-            if (lat != null && long != null) {
-                //locationList is a mutable list that adds all elements in an array of Addresses. Because geoc(geocoder).getFromLocation returns just that.
-                locationList.addAll(geoc.getFromLocation(lat, long, 1))
-            }
-
-            if (locationList != null) {
-                closestLocationAddress = locationList[0]?.getAddressLine(0) //why does this not work? Perhaps we need new google maps API-key-thing?
-            }
-
-            // the following splits the string in order to remove unnecessary information. getAdressLine returns very full info, for example:
-            // Frivoldveien 74, 4877, Grimstad, Norway. Country name is a given, and therefore reduntant,
-            // since our "market" is limited to Norway (we use APIs for Norwegian weather only, and data on restricted zones only for Norway
-
-            val stringArray = closestLocationAddress?.split(",")?.toTypedArray()
-            val addressToBeDisplayed: String? = stringArray?.get(0) + "," + stringArray?.get(1)
-
-            //Then textview is populated with address, postal code and city/place/location name
-            popup.locationNameView.text = "Adresse: " + addressToBeDisplayed //closestLocationName
+            popup.locationNameView.text = "Adresse: " + addressToBeDisplayed
         }
     }
 }
