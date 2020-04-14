@@ -46,6 +46,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
     private lateinit var locationClient: FusedLocationProviderClient
     private lateinit var map: GoogleMap
     private lateinit var placesClient: PlacesClient
+    private var isSaved: Boolean = false
 
     // Transient reference to current marker, backed by model.position
     private var marker: Marker? = null
@@ -82,6 +83,11 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
         val root = inflater.inflate(R.layout.fragment_home, container, false)
         val mapFragment = childFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
+
+        if (savedInstanceState != null) {
+            isSaved = true
+        }
+
         mapFragment.getMapAsync(this)
 
         // Make the
@@ -96,14 +102,19 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
 
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
-        map.setOnMapClickListener(this)
-        getLocationPermission()
-        getDeviceLocation()
 
+        // hack: the map handles most state itself
+        if (isSaved)
+            return
+
+        map.setOnMapClickListener(this)
         // setMarker needs the map
         model.position.observe(viewLifecycleOwner, Observer {
             setMarker(it)
         })
+
+        getLocationPermission()
+        getDeviceLocation()
 
         // Add a dummy zone
         addZone(
