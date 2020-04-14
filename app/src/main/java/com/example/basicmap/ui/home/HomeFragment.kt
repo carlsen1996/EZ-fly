@@ -11,7 +11,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -36,16 +35,18 @@ import kotlinx.android.synthetic.main.popup.view.*
 import kotlinx.coroutines.*
 import java.util.*
 import java.util.Calendar.DAY_OF_WEEK
+import kotlin.coroutines.CoroutineContext
 
 private val TAG = "HomeFragment"
 
-class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListener {
+class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListener, CoroutineScope {
 
     private val PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1
     private var locationPermissionGranted = false
     private lateinit var locationClient: FusedLocationProviderClient
     private lateinit var map: GoogleMap
     private lateinit var placesClient: PlacesClient
+    private var isSaved: Boolean = false
 
     // Transient reference to current marker, backed by model.position
     private var marker: Marker? = null
@@ -53,8 +54,16 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
 
     private val model: HomeViewModel by viewModels()
 
+    // Dummy job to make cancellation of running jobs easy
+    private lateinit var job: Job
+
+    // Add all jobs to the same context
+    override val coroutineContext: CoroutineContext
+        get() = job + Dispatchers.Main
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        job = Job()
         Log.d(TAG, "onCreate")
     }
 
@@ -70,6 +79,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
 
     override fun onDestroy() {
         super.onDestroy()
+        job.cancel() // Cancel all running jobs
         Log.d(TAG, "onDestroy")
     }
 
@@ -82,12 +92,16 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
         val root = inflater.inflate(R.layout.fragment_home, container, false)
         val mapFragment = childFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
+
+        if (savedInstanceState != null) {
+            isSaved = true
+        }
+
         mapFragment.getMapAsync(this)
 
-        // Make the
+        // viewStubs needs to be inflated
         root.popupStub.inflate()
 
-        // NOTE: Have to use «!!» to declare non-null
         Places.initialize(requireContext(), getString(R.string.google_maps_key))
         placesClient = Places.createClient(requireContext())
         locationClient = LocationServices.getFusedLocationProviderClient(requireContext())
@@ -96,14 +110,19 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
 
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
-        map.setOnMapClickListener(this)
-        getLocationPermission()
-        getDeviceLocation()
 
+        // hack: the map handles most state itself
+        if (isSaved)
+            return
+
+        map.setOnMapClickListener(this)
         // setMarker needs the map
         model.position.observe(viewLifecycleOwner, Observer {
             setMarker(it)
         })
+
+        getLocationPermission()
+        getDeviceLocation()
 
         // Add a dummy zone
         addZone(
@@ -159,18 +178,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
     override fun onMapClick(p0: LatLng?) {
         if (p0 == null)
             return
+
         model.position.value = p0
-        var weather: Met.Kall
-        GlobalScope.launch {
-            withContext(Dispatchers.IO) {
-                weather = Met().locationForecast(p0)
-                populatePopup(weather)
-                displayAddressOfClickedArea(p0)
-            }
-
-        }
-
-
     }
 
     fun setMarker(p: LatLng): Marker {
@@ -178,37 +187,14 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
         val m = map.addMarker(MarkerOptions().position(p))
         marker = m
 
-
-        val placeFields: List<Place.Field> = listOf(
-            Place.Field.NAME, Place.Field.ADDRESS,
-            Place.Field.LAT_LNG
-        )
-
-
-        val latlngText = "${p.latitude}, ${p.longitude}"
-        //popup.textView.text = latlngText
-        Log.d("latlng", latlngText)
-
-        // Add place names to the popup
-        // FIXME: Only reports names from the device location, make it actually react to the marker.
-        val request = FindCurrentPlaceRequest.newInstance(placeFields)
-        val placeResult = placesClient.findCurrentPlace(request)
-        placeResult.addOnCompleteListener {
-            // FIXME: destroy the listener when the fragment is destroyed
-            // This can trigger from a dead fragment after a rotation, so guard
-            // against dead views
-            if (popup == null)
-                return@addOnCompleteListener
-            if (it.isSuccessful && it.result != null) {
-
-                val likely = it.result!!
-                for (placeLikelihood in likely.placeLikelihoods) {
-                    val place = placeLikelihood.place
-                    //popup.textView.text = "${popup.textView.text}\n${place.name}"
-                    break // Limit to one result
-                }
+        launch {
+            withContext(Dispatchers.IO) {
+                val weather = Met().locationForecast(p)
+                populatePopup(weather)
+                displayAddressOfClickedArea(p)
             }
         }
+
         return m
     }
 
@@ -318,40 +304,29 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
             }
         }
     }
+    /*
+        Looks up location names using Geocoder.getFromLocation.
+        When ready adds the name to the marker popup.
+     */
+    private fun displayAddressOfClickedArea(p: LatLng) {
+        val geoc: Geocoder = Geocoder(activity)
+        val locations = geoc.getFromLocation(p.latitude, p.longitude, 1)
+        if (locations.size == 0)
+            return
 
-    private fun displayAddressOfClickedArea(p0: LatLng?) {
+        // The following splits the string in order to remove unnecessary information. getAdressLine
+        // returns very full info, for example
+        // Frivoldveien 74, 4877, Grimstad, Norway.
+        // Country name is a given, and therefore reduntant,
+        // since our "marker" is limited to Norway (we use APIs for Norwegian weather only, and data
+        // on restricted zones only for Norway
+        val closestLocationAddress = locations[0].getAddressLine(0)
+        val stringArray = closestLocationAddress?.split(",")?.toTypedArray()
+        val addressToBeDisplayed = stringArray?.get(0) + "," + stringArray?.get(1)
+
+        // Then textview is populated with address, postal code and city/place/location name
         activity?.runOnUiThread {
-
-            //This method first finds latitude and longitude of p0, which is an instance of the LatLng-class.
-            //Then we instantiate a geocoder-object, and use it to receive all the names of addresses associated with mentioned lat and long.
-            //the name of the first address is then displayed, which we determine to be the closest one to the latLang-coordinates
-
-            var lat: Double? = p0?.latitude
-            var long: Double? = p0?.longitude
-
-            var geoc: Geocoder = Geocoder(this.activity, Locale.ENGLISH) //is the problem here, not accessing right activity?
-            var locationList = mutableListOf<Address>()
-
-            var closestLocationAddress: String? = ""
-
-            if (lat != null && long != null) {
-                //locationList is a mutable list that adds all elements in an array of Addresses. Because geoc(geocoder).getFromLocation returns just that.
-                locationList.addAll(geoc.getFromLocation(lat, long, 1))
-            }
-
-            if (locationList != null) {
-                closestLocationAddress = locationList[0]?.getAddressLine(0) //why does this not work? Perhaps we need new google maps API-key-thing?
-            }
-
-            // the following splits the string in order to remove unnecessary information. getAdressLine returns very full info, for example:
-            // Frivoldveien 74, 4877, Grimstad, Norway. Country name is a given, and therefore reduntant,
-            // since our "market" is limited to Norway (we use APIs for Norwegian weather only, and data on restricted zones only for Norway
-
-            val stringArray = closestLocationAddress?.split(",")?.toTypedArray()
-            val addressToBeDisplayed: String? = stringArray?.get(0) + "," + stringArray?.get(1)
-
-            //Then textview is populated with address, postal code and city/place/location name
-            popup.locationNameView.text = "Adresse: " + addressToBeDisplayed //closestLocationName
+            popup.locationNameView.text = "Adresse: " + addressToBeDisplayed
         }
     }
 }
