@@ -1,7 +1,3 @@
 package com.example.basicmap.ui.drones
 
-import java.io.Serializable
-
-class Drone(val navn: String, val maksVindStyrke: Int, val vanntett: Boolean, val imgSrc: String): Serializable {
-
-}
+data class Drone(var navn: String, var maksVindStyrke: Int, var vanntett: Boolean, var imgSrc: String)

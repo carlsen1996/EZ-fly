@@ -58,13 +58,13 @@
             app:srcCompat="@mipmap/appicon_128" />
 
         <ImageView
-            android:id="@+id/deleteKnapp"
+            android:id="@+id/editKnapp"
             android:layout_width="17dp"
             android:layout_height="14dp"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:clickable="true"
-            app:srcCompat="@android:drawable/ic_menu_delete" />
+            app:srcCompat="@drawable/edit_icon" />
 
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

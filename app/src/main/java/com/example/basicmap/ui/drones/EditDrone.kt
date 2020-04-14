@@ -1,18 +1,18 @@
 package com.example.basicmap.ui.drones
 
 import android.app.Activity
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
 import com.example.basicmap.R
-import kotlinx.android.synthetic.main.activity_registrer_drone.*
+import kotlinx.android.synthetic.main.activity_edit_drone.*
 
-class RegistrerDrone : AppCompatActivity() {
+class EditDrone : AppCompatActivity() {
 
     private lateinit var dronesViewModel: DronesViewModel
     var droneList =  mutableListOf<Drone>()
@@ -20,54 +20,73 @@ class RegistrerDrone : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_registrer_drone)
+        setContentView(R.layout.activity_edit_drone)
+        supportActionBar?.title = "Rediger"
 
         dronesViewModel = DronesViewModel()
         droneList = dronesViewModel.getDroneList().value!!.toMutableList()
-        supportActionBar?.title = "Legg til ny Drone"
 
-        //Registrer
-        leggTilKnapp.setOnClickListener {
-            val melding: String
-            val navn = navn.text.toString()
-            val valgtVindStyrke = spinner.selectedItem.toString()
-            var maksVindStyrke = 0
-            val vanntett = checkBox.isChecked
-            when(valgtVindStyrke) {
-                "2 m/s" -> maksVindStyrke = 2
-                "8 m/s" -> maksVindStyrke = 8
-                "12 m/s" -> maksVindStyrke = 12
-                "17 m/s" -> maksVindStyrke = 17
+        val pos = getIntent().getIntExtra("pos", 0)
+        val drone = droneList.elementAt(pos)
+        droneBilde = drone.imgSrc
+
+        navn.setText(drone.navn)
+        when(drone.maksVindStyrke) {
+            2 -> spinner.setSelection(0)
+            8 -> spinner.setSelection(1)
+            12 -> spinner.setSelection(2)
+            17 -> spinner.setSelection(3)
+        }
+        checkBox.isChecked = drone.vanntett
+        if(drone.imgSrc == "") {
+            Glide.with(this)
+                .load(R.drawable.drone_img_asst)
+                .into(imageView3)
+        }
+        else {
+            Glide.with(this)
+                .load(drone.imgSrc)
+                .into(imageView3)
+        }
+
+        //Endre drone informasjon
+        endreKnapp.setOnClickListener {
+            drone.navn = navn.getText().toString()
+            when(spinner.selectedItem.toString()) {
+                "2 m/s" -> drone.maksVindStyrke = 2
+                "8 m/s" -> drone.maksVindStyrke = 8
+                "12 m/s" -> drone.maksVindStyrke = 12
+                "17 m/s" -> drone.maksVindStyrke = 17
             }
-            if(navn.isEmpty()) {
-                melding = "Velg navn på dronen din"
-                val toast = Toast.makeText(this@RegistrerDrone, melding, Toast.LENGTH_LONG)
-                toast.show()
-            }
-            else {
-                val drone = Drone(navn, maksVindStyrke, vanntett, droneBilde.toString())
-                droneList.add(drone)
+            drone.vanntett = checkBox.isChecked
+            drone.imgSrc = droneBilde
+            dronesViewModel.getDroneList().value = droneList
+
+            finish()
+        }
+        //Slett Drone
+        slettKnapp.setOnClickListener {
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle("Slett Drone")
+            builder.setMessage("Er du sikker på at du vil slette \n" + drone.navn + " ?")
+            builder.setPositiveButton("Ja") { _, _ ->
+                droneList.remove(drone)
                 dronesViewModel.getDroneList().value = droneList
-                melding = "Drone lagt til"
-                val toast = Toast.makeText(this@RegistrerDrone, melding, Toast.LENGTH_LONG)
-                toast.show()
+
                 finish()
             }
-        }
-        vindInfoKnapp.setOnClickListener {
-            val builder = AlertDialog.Builder(this)
-            builder.setTitle("Maks vindstyrke")
-            builder.setMessage("Alle dronemodeller kommer med informasjon om den høyeste vindstyrken det er mulig for dronen og fly i. " +
-                    "Sjekk manualen eller besøk produsentens nettside for å finne din drones maks vindstyrke.")
-            builder.setPositiveButton("OK") { _: DialogInterface, _: Int -> }
+            builder.setNegativeButton("Nei") { dialog, _ ->
+                dialog.dismiss()
+            }
             builder.show()
         }
-        lastOppBildeKnapp.setOnClickListener {
+        //Endre bilde
+        endreBildeKnapp.setOnClickListener {
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if(checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE) ==
-                        PackageManager.PERMISSION_DENIED) {
+                    PackageManager.PERMISSION_DENIED) {
                     val permissions = arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE)
-                    requestPermissions(permissions, PERMISSION_CODE)
+                    requestPermissions(permissions, EditDrone.PERMISSION_CODE)
                 }
                 else {
                     pickImageFromGallery()
@@ -78,7 +97,6 @@ class RegistrerDrone : AppCompatActivity() {
             }
         }
     }
-    //Last opp bilde
     private fun pickImageFromGallery() {
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
@@ -89,7 +107,7 @@ class RegistrerDrone : AppCompatActivity() {
         private val PERMISSION_CODE = 1001;
     }
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        when(requestCode) {
+        when(requestCode){
             PERMISSION_CODE -> {
                 if (grantResults.size >0 && grantResults[0] ==
                     PackageManager.PERMISSION_GRANTED){
@@ -106,7 +124,10 @@ class RegistrerDrone : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE){
-            imageView2.setImageURI(data?.data)
+            //imageView3.setImageURI(data?.data)
+            Glide.with(this)
+                .load(data?.data)
+                .into(imageView3)
             droneBilde = data?.data.toString()
         }
     }
