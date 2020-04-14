@@ -237,7 +237,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
                 val times = mutableListOf<Met.Numb>()
                 val day = listOf("Søndag", "Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag")
                 var dayNow = Calendar.getInstance().get(DAY_OF_WEEK) - 1
-                for (i in 6..80) {
+                for (i in 6..75) {
                     val time = weather.properties.timeseries[i].time
                     val hour1 = time[11]
                     val hour2 = time[12]
