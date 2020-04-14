@@ -159,18 +159,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
     override fun onMapClick(p0: LatLng?) {
         if (p0 == null)
             return
+
         model.position.value = p0
-        var weather: Met.Kall
-        GlobalScope.launch {
-            withContext(Dispatchers.IO) {
-                weather = Met().locationForecast(p0)
-                populatePopup(weather)
-                displayAddressOfClickedArea(p0)
-            }
-
-        }
-
-
     }
 
     fun setMarker(p: LatLng): Marker {
@@ -178,12 +168,18 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
         val m = map.addMarker(MarkerOptions().position(p))
         marker = m
 
+        GlobalScope.launch {
+            withContext(Dispatchers.IO) {
+                val weather = Met().locationForecast(p)
+                populatePopup(weather)
+                displayAddressOfClickedArea(p)
+            }
+        }
 
         val placeFields: List<Place.Field> = listOf(
             Place.Field.NAME, Place.Field.ADDRESS,
             Place.Field.LAT_LNG
         )
-
 
         val latlngText = "${p.latitude}, ${p.longitude}"
         //popup.textView.text = latlngText
