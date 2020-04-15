@@ -42,7 +42,6 @@ class DronesFragment : Fragment() {
                 setHasFixedSize(true)
                 layoutManager = viewManager
                 adapter = viewAdapter
-                saveData()
             }
             if(viewAdapter.itemCount == 0) {
                 root.recycleViewTekst.visibility = VISIBLE
@@ -77,6 +76,5 @@ class DronesFragment : Fragment() {
         editor.putString("droneList", json)
         editor.apply()
     }
-
 }
 

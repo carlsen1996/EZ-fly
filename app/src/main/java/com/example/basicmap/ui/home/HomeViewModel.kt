@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import com.example.basicmap.ui.places.Place
 import com.google.android.gms.maps.model.LatLng
 
 class HomeViewModel(private val state: SavedStateHandle) : ViewModel() {

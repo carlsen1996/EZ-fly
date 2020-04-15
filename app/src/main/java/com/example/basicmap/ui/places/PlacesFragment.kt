@@ -4,6 +4,7 @@ import PlacesListAdapter
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.VISIBLE
@@ -11,13 +12,15 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.basicmap.R
 import com.google.gson.GsonBuilder
-import kotlinx.android.synthetic.main.fragment_drones.view.recyclerView
+import kotlinx.android.synthetic.main.fragment_places.*
 import kotlinx.android.synthetic.main.fragment_places.view.*
+import kotlinx.android.synthetic.main.fragment_places.view.recycleViewTekstPlaces
 
 class PlacesFragment : Fragment() {
 
@@ -35,22 +38,21 @@ class PlacesFragment : Fragment() {
     ): View? {
         val root = inflater.inflate(R.layout.fragment_places, container, false)
 
-        //loadData()
+        loadData()
 
-
-        //Fill recyclerview
-        viewManager = LinearLayoutManager(activity)
-        viewAdapter = PlacesListAdapter(requireContext(), placesList)
-        recyclerView = root.recyclerView.apply {
-            setHasFixedSize(true)
-            layoutManager = viewManager
-            adapter = viewAdapter
-
-        }
-
-        if(viewAdapter.getItemCount() == 0) {
-            root.recycleViewTekstPlaces.setVisibility(VISIBLE)
-        }
+        placesViewModel.getPlaces().observe(viewLifecycleOwner, Observer {
+            viewManager = LinearLayoutManager(activity)
+            viewAdapter = PlacesListAdapter(requireContext(), it)
+            recyclerView = root.recyclerView.apply {
+                setHasFixedSize(true)
+                layoutManager = viewManager
+                adapter = viewAdapter
+            }
+            if(viewAdapter.itemCount == 0) {
+                recycleViewTekstPlaces.visibility = VISIBLE
+            }
+            saveData()
+        })
 
         return root
     }
@@ -63,22 +65,18 @@ class PlacesFragment : Fragment() {
         if(places == null) {
             return
         }
-        placesList = places.toMutableList()
+        Log.d("placeslist", json)
+        placesViewModel.getPlaces().value = places.toMutableList()
     }
 
-    //Update recyclerview
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode == 1) {
-            //loadData()
-            viewManager = LinearLayoutManager(getActivity())
-            viewAdapter = PlacesListAdapter(requireContext(), placesList)
-            recyclerView = recyclerView.apply {
-                setHasFixedSize(true)
-                layoutManager = viewManager
-                adapter = viewAdapter
-            }
-        }
+    private fun saveData() {
+        Log.d("saveData", "")
+        val sharedPref: SharedPreferences = activity!!.getSharedPreferences("sharedPrefPlaces", AppCompatActivity.MODE_PRIVATE)
+        val editor: SharedPreferences.Editor = sharedPref.edit()
+        val gson = GsonBuilder().create()
+        val json = gson.toJson(placesViewModel.getPlaces().value)
+        editor.putString("placesList", json)
+        editor.apply()
     }
 
 }

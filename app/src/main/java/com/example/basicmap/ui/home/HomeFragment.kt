@@ -21,6 +21,7 @@ import androidx.lifecycle.Observer
 import com.example.basicmap.R
 import com.example.basicmap.lib.Met
 import com.example.basicmap.ui.places.Place
+import com.example.basicmap.ui.places.PlacesViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -60,6 +61,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
     private val zones = mutableListOf<Polygon>()
 
     private val model: HomeViewModel by viewModels()
+    private val placesViewModel: PlacesViewModel by viewModels()
 
     // Dummy job to make cancellation of running jobs easy
     private lateinit var job: Job
@@ -110,11 +112,11 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
         locationClient = LocationServices.getFusedLocationProviderClient(requireContext())
 
         root.lagreLokasjonsKnapp.setOnClickListener {
-            // This is only accessible from the
-            val locationToBeStored = Place(model.address.value!!, model.position.value!!)
-
-            placesList.add(locationToBeStored)
-            storeLocationData()
+            // This is only accessible from the popup, meaning the position has been set
+            val place = Place(model.position.value!!, model.address.value!!)
+            val places = placesViewModel.getPlaces().value!!
+            places.add(place)
+            placesViewModel.getPlaces().value = places
         }
 
         return root
@@ -364,7 +366,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
             editor.putString("placeList", json)
             editor.apply()
 
-            var message1 = placesList.get(0).adresse
+            var message1 = placesList.get(0).address
             var message2 = ", er lagt til i favoritter"
 
             Toast.makeText(

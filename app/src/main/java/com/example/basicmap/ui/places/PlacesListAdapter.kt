@@ -15,11 +15,11 @@ class PlacesListAdapter(val context: Context, val placesList: MutableList<com.ex
     inner class PlacesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun setData(place: com.example.basicmap.ui.places.Place, pos: Int) {
-            itemView.placeAdresse.setText(place.adresse)
+            itemView.placeAdresse.setText(place.address)
             itemView.placeDeleteKnapp.setOnClickListener {
                 val builder = androidx.appcompat.app.AlertDialog.Builder(context)
                 builder.setTitle("Slett lokasjon/plass")
-                builder.setMessage("Er du sikker på at du vil slette \n" + place.adresse + " ?")
+                builder.setMessage("Er du sikker på at du vil slette \n" + place.address + " ?")
                 builder.setPositiveButton("Ja") { dialog, which ->
                     slettPlace(pos)
                 }
