@@ -2,18 +2,15 @@ package com.example.basicmap.ui.home
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.Color
-import android.location.Address
 import android.location.Geocoder
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -23,7 +20,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.basicmap.R
 import com.example.basicmap.lib.Met
-import com.example.basicmap.ui.places.PlaceForDrone
+import com.example.basicmap.ui.places.Place
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -32,12 +29,9 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.android.libraries.places.api.Places
-import com.google.android.libraries.places.api.model.Place
-import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest
 import com.google.android.libraries.places.api.net.PlacesClient
 import kotlinx.android.synthetic.main.fragment_home.view.popupStub
 import com.google.gson.GsonBuilder
-import kotlinx.android.synthetic.main.fragment_home.view.*
 import kotlinx.android.synthetic.main.popup.*
 import kotlinx.android.synthetic.main.popup.view.*
 import kotlinx.coroutines.*
@@ -58,11 +52,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
     private lateinit var placesClient: PlacesClient
 
     private var currentAddress: String = ""
-    private lateinit var currentPos: LatLng
 
-
-
-    private var placesList = mutableListOf<PlaceForDrone>()
+    private var placesList = mutableListOf<com.example.basicmap.ui.places.Place>()
 
     // Transient reference to current marker, backed by model.position
     private var marker: Marker? = null
@@ -118,17 +109,12 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
         placesClient = Places.createClient(requireContext())
         locationClient = LocationServices.getFusedLocationProviderClient(requireContext())
 
-        GlobalScope.launch {
-            withContext(Dispatchers.IO) {
-                lagreLokasjonsKnapp.setOnClickListener {
-                    var locationToBeStored: PlaceForDrone =
-                        PlaceForDrone(currentAddress, currentPos)
-                    if (locationToBeStored != null) {
-                        placesList.add(locationToBeStored)
-                    }
-                    storeLocationData()
-                }
-            }
+        root.lagreLokasjonsKnapp.setOnClickListener {
+            // This is only accessible from the
+            val locationToBeStored = Place(model.address.value!!, model.position.value!!)
+
+            placesList.add(locationToBeStored)
+            storeLocationData()
         }
 
         return root
@@ -144,6 +130,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
         // setMarker needs the map
         model.position.observe(viewLifecycleOwner, Observer {
             setMarker(it)
+        })
+        model.address.observe(viewLifecycleOwner, Observer {
+            popup.locationNameView.text = "Adresse: " + it
         })
 
         getLocationPermission()

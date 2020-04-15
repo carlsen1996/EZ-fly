@@ -1,26 +1,20 @@
-import android.app.AlertDialog
 import android.content.Context
 import android.content.SharedPreferences
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.place_kort.view.*
-import kotlinx.android.synthetic.main.fragment_places.view.*
-import com.example.basicmap.R
 import com.example.basicmap.R.layout.place_kort
-import com.example.basicmap.ui.places.PlaceForDrone
-import com.google.android.libraries.places.api.model.Place
 
 
-class PlacesListAdapter(val context: Context, val placesList: MutableList<PlaceForDrone>) : RecyclerView.Adapter<PlacesListAdapter.PlacesViewHolder>() {
+class PlacesListAdapter(val context: Context, val placesList: MutableList<com.example.basicmap.ui.places.Place>) : RecyclerView.Adapter<PlacesListAdapter.PlacesViewHolder>() {
 
     inner class PlacesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun setData(place: PlaceForDrone, pos: Int) {
+        fun setData(place: com.example.basicmap.ui.places.Place, pos: Int) {
             itemView.placeAdresse.setText(place.adresse)
             itemView.placeDeleteKnapp.setOnClickListener {
                 val builder = androidx.appcompat.app.AlertDialog.Builder(context)
@@ -57,7 +51,7 @@ class PlacesListAdapter(val context: Context, val placesList: MutableList<PlaceF
     }
 
     override fun onBindViewHolder(holder: PlacesViewHolder, position: Int) {
-        val place: PlaceForDrone = placesList.elementAt(position)
+        val place: com.example.basicmap.ui.places.Place = placesList.elementAt(position)
         holder.setData(place, position)
     }
 

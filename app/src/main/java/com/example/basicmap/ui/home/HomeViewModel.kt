@@ -8,4 +8,5 @@ import com.google.android.gms.maps.model.LatLng
 
 class HomeViewModel(private val state: SavedStateHandle) : ViewModel() {
     val position: MutableLiveData<LatLng> = MutableLiveData()
+    val address: MutableLiveData<String> = MutableLiveData("")
 }

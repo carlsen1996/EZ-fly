@@ -10,20 +10,14 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.basicmap.R
-import com.example.basicmap.ui.places.PlaceForDrone
-import com.example.basicmap.ui.places.PlacesViewModel
 import com.google.gson.GsonBuilder
-import kotlinx.android.synthetic.main.fragment_drones.view.*
 import kotlinx.android.synthetic.main.fragment_drones.view.recyclerView
-import kotlinx.android.synthetic.main.fragment_places.*
 import kotlinx.android.synthetic.main.fragment_places.view.*
-import kotlinx.android.synthetic.main.popup.*
-import kotlinx.android.synthetic.main.popup.view.*
-import kotlinx.android.synthetic.main.popup.view.locationNameView
 
 class PlacesFragment : Fragment() {
 
@@ -31,17 +25,14 @@ class PlacesFragment : Fragment() {
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
 
-    private lateinit var placesViewModel: PlacesViewModel
-    var placesList =  mutableListOf<PlaceForDrone>()
+    private val placesViewModel: PlacesViewModel by viewModels()
+    var placesList =  mutableListOf<Place>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        placesViewModel =
-            ViewModelProviders.of(this).get(PlacesViewModel::class.java)
-
         val root = inflater.inflate(R.layout.fragment_places, container, false)
 
         //loadData()
@@ -68,7 +59,7 @@ class PlacesFragment : Fragment() {
         val sharedPrefPlaces: SharedPreferences = requireActivity().getSharedPreferences("sharedPrefPlaces", AppCompatActivity.MODE_PRIVATE)
         val gson = GsonBuilder().create()
         val json = sharedPrefPlaces.getString("placesList", null)
-        val places = gson.fromJson(json, Array<PlaceForDrone>::class.java)
+        val places = gson.fromJson(json, Array<Place>::class.java)
         if(places == null) {
             return
         }
