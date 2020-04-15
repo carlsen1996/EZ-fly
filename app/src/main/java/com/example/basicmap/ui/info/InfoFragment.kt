@@ -46,12 +46,10 @@ class InfoFragment : Fragment() {
         var userPreferenceDarkMode = preferenceDarkMode.getDarkPref()
         if (userPreferenceDarkMode) {
             switch.setIsNight(userPreferenceDarkMode)
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
             root.faqimg.setImageResource(R.mipmap.faq)
         }
         else {
             switch.setIsNight(userPreferenceDarkMode)
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
             root.faqimg.setImageResource(R.mipmap.faq2)
         }
 

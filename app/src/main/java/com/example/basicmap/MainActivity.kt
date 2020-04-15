@@ -4,12 +4,17 @@ import android.os.Bundle
 import com.google.android.material.tabs.TabLayout
 import androidx.viewpager.widget.ViewPager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
 import com.example.basicmap.ui.drones.DronesFragment
 import com.example.basicmap.ui.info.InfoFragment
 import com.example.basicmap.ui.home.HomeFragment
+import com.example.basicmap.ui.info.DarkPref
 import com.example.basicmap.ui.places.PlacesFragment
+import com.mahfa.dnswitch.DayNightSwitch
+import kotlinx.android.synthetic.main.fragment_info.*
+import kotlinx.android.synthetic.main.fragment_info.view.*
 
 private val TAB_TITLES = arrayOf(
     R.string.title_home,
@@ -51,6 +56,16 @@ class MainActivity : AppCompatActivity() {
         tabs.getTabAt(1)?.setIcon(R.mipmap.round_explore_black_18dp)
         tabs.getTabAt(2)?.setIcon(R.mipmap.drone4)
         tabs.getTabAt(3)?.setIcon(R.mipmap.round_help_black_18dp)
+
+        
+        val preferenceDarkMode = DarkPref(this)
+        var userPreferenceDarkMode = preferenceDarkMode.getDarkPref()
+        if (userPreferenceDarkMode) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        }
+        else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        }
 
     }
 }
