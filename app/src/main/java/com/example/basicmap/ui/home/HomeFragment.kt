@@ -46,7 +46,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
     private lateinit var locationClient: FusedLocationProviderClient
     private lateinit var map: GoogleMap
     private lateinit var placesClient: PlacesClient
-    private var isSaved: Boolean = false
 
     // Transient reference to current marker, backed by model.position
     private var marker: Marker? = null
@@ -93,10 +92,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
         val mapFragment = childFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
 
-        if (savedInstanceState != null) {
-            isSaved = true
-        }
-
         mapFragment.getMapAsync(this)
 
         // viewStubs needs to be inflated
@@ -110,10 +105,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
 
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
-
-        // hack: the map handles most state itself
-        if (isSaved)
-            return
+        // FIXME: this is a hack that avoids conflicts between state handled by the map itself
+        // and state we manage ourselves.
+        map.clear()
 
         map.setOnMapClickListener(this)
         // setMarker needs the map
