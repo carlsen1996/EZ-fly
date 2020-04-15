@@ -33,6 +33,8 @@ import kotlinx.android.synthetic.main.fragment_home.view.popupStub
 import kotlinx.android.synthetic.main.popup.*
 import kotlinx.android.synthetic.main.popup.view.*
 import kotlinx.coroutines.*
+import java.io.IOException
+import java.lang.NullPointerException
 import java.util.*
 import java.util.Calendar.DAY_OF_WEEK
 import kotlin.coroutines.CoroutineContext
@@ -304,23 +306,31 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
      */
     private fun displayAddressOfClickedArea(p: LatLng) {
         val geoc: Geocoder = Geocoder(activity)
-        val locations = geoc.getFromLocation(p.latitude, p.longitude, 1)
-        if (locations.size == 0)
-            return
 
-        // The following splits the string in order to remove unnecessary information. getAdressLine
-        // returns very full info, for example
-        // Frivoldveien 74, 4877, Grimstad, Norway.
-        // Country name is a given, and therefore reduntant,
-        // since our "marker" is limited to Norway (we use APIs for Norwegian weather only, and data
-        // on restricted zones only for Norway
-        val closestLocationAddress = locations[0].getAddressLine(0)
-        val stringArray = closestLocationAddress?.split(",")?.toTypedArray()
-        val addressToBeDisplayed = stringArray?.get(0) + "," + stringArray?.get(1)
+        try {
+            val locations = geoc.getFromLocation(p.latitude, p.longitude, 1)
+            if (locations.size == 0)
+                return
 
-        // Then textview is populated with address, postal code and city/place/location name
-        activity?.runOnUiThread {
-            popup.locationNameView.text = "Adresse: " + addressToBeDisplayed
+            // The following splits the string in order to remove unnecessary information. getAdressLine
+            // returns very full info, for example
+            // Frivoldveien 74, 4877, Grimstad, Norway.
+            // Country name is a given, and therefore reduntant,
+            // since our "marker" is limited to Norway (we use APIs for Norwegian weather only, and data
+            // on restricted zones only for Norway
+            val closestLocationAddress = locations[0].getAddressLine(0)
+            val stringArray = closestLocationAddress?.split(",")?.toTypedArray()
+            val addressToBeDisplayed = stringArray?.get(0) + "," + stringArray?.get(1)
+
+            // Then textview is populated with address, postal code and city/place/location name
+            activity?.runOnUiThread {
+                popup.locationNameView.text = "Adresse: " + addressToBeDisplayed
+            }
+        }
+        catch (e: IOException) {
+            activity?.runOnUiThread {
+                popup.locationNameView.text = "Ingen addresseinformasjon tilgjengelig"
+            }
         }
     }
 }
