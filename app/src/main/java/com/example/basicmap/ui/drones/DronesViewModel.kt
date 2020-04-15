@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 
 class DronesViewModel : ViewModel() {
     companion object {
-        var droneList = MutableLiveData<MutableList<Drone>>()
+        var droneList = MutableLiveData(mutableListOf<Drone>())
     }
 
     fun getDroneList(): MutableLiveData<MutableList<Drone>> {
