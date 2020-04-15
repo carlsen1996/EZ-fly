@@ -1,4 +1,4 @@
-package com.example.basicmap.ui.faq
+package com.example.basicmap.ui.info
 
 import android.content.Context
 

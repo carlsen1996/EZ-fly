@@ -1,6 +1,5 @@
-package com.example.basicmap.ui.faq
+package com.example.basicmap.ui.info
 
-import android.app.PendingIntent.getActivity
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View

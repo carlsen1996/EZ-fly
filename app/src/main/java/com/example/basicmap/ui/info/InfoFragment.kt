@@ -1,19 +1,18 @@
-package com.example.basicmap.ui.faq
+package com.example.basicmap.ui.info
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Switch
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import com.example.basicmap.R
 import com.mahfa.dnswitch.DayNightSwitch
 import com.mahfa.dnswitch.DayNightSwitchListener
-import kotlinx.android.synthetic.main.fragment_faq.view.*
+import kotlinx.android.synthetic.main.fragment_info.view.*
 
 
-class FaqFragment : Fragment() {
+class InfoFragment : Fragment() {
     val questions = listOf(
         "Kan jeg fly dronen min i minusgrader?",
         "Hva hvis det regner/snør?",
@@ -37,7 +36,7 @@ class FaqFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val root = inflater.inflate(R.layout.fragment_faq, container, false)
+        val root = inflater.inflate(R.layout.fragment_info, container, false)
 
         val adapter = FaqListAdapter(requireContext(), questions, answers)
         root.faqListView.setAdapter(adapter)
