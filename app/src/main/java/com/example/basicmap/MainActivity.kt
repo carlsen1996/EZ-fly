@@ -12,9 +12,6 @@ import com.example.basicmap.ui.info.InfoFragment
 import com.example.basicmap.ui.home.HomeFragment
 import com.example.basicmap.ui.info.DarkPref
 import com.example.basicmap.ui.places.PlacesFragment
-import com.mahfa.dnswitch.DayNightSwitch
-import kotlinx.android.synthetic.main.fragment_info.*
-import kotlinx.android.synthetic.main.fragment_info.view.*
 
 private val TAB_TITLES = arrayOf(
     R.string.title_home,
@@ -57,7 +54,7 @@ class MainActivity : AppCompatActivity() {
         tabs.getTabAt(2)?.setIcon(R.mipmap.drone4)
         tabs.getTabAt(3)?.setIcon(R.mipmap.round_help_black_18dp)
 
-        
+
         val preferenceDarkMode = DarkPref(this)
         var userPreferenceDarkMode = preferenceDarkMode.getDarkPref()
         if (userPreferenceDarkMode) {
