@@ -117,6 +117,11 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
             val places = placesViewModel.getPlaces().value!!
             places.add(place)
             placesViewModel.getPlaces().value = places
+            Toast.makeText(
+                activity,
+                "${model.address.value}, er lagt til i favoritter",
+                Toast.LENGTH_SHORT
+            ).show()
         }
 
         return root
@@ -353,36 +358,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
                 popup.locationNameView.text = "Ingen addresseinformasjon tilgjengelig"
             }
         }
-    }
-
-    private fun storeLocationData() { //må ha coroutine her?
-
-        if (placesList.size > 0) {
-            val sharedPrefLocations: SharedPreferences =
-                requireActivity().getSharedPreferences("sharedPrefPlaces", AppCompatActivity.MODE_PRIVATE)
-            val editor: SharedPreferences.Editor = sharedPrefLocations.edit()
-            val gson = GsonBuilder().create()
-            val json = gson.toJson(placesList)
-            editor.putString("placeList", json)
-            editor.apply()
-
-            var message1 = placesList.get(0).address
-            var message2 = ", er lagt til i favoritter"
-
-            Toast.makeText(
-                activity,
-                message1 + message2,
-                Toast.LENGTH_SHORT
-            )
-                .show()
-        }
-
-        else {
-
-            Log.v("Feilmelding", "Finner ikke PlaceForDrone-objekt")
-        }
-
-        placesList.removeAt(0)
     }
 }
 
