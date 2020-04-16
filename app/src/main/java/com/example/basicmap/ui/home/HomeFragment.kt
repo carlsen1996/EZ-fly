@@ -385,8 +385,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
     }
 
     private fun leggTilLufthavner() {
-        val jsonFilStringen = getJsonDataFromAsset(context!!, "lufthavnRawJson.json")
-        sirkelMutableListOver = initNoFlyLufthavnSirkel(jsonFilStringen, map)
+        val jsonFilStringen = getJsonDataFromAsset(requireContext(), "lufthavnRawJson.json")
+        sirkelMutableListOver = initNoFlyLufthavnSirkel(jsonFilStringen)
         for (optionini in sirkelMutableListOver) {
             val sorkel: Circle = map.addCircle((optionini))
             ferdigsirkelMutableListOver.add(sorkel)
