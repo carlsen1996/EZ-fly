@@ -140,9 +140,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
 
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
-        // FIXME: this is a hack that avoids conflicts between state handled by the map itself
-        // and state we manage ourselves.
-        map.clear()
 
         map.setOnMapClickListener(this)
         // setMarker needs the map
@@ -157,16 +154,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
             getLocationPermission()
             getDeviceLocation()
         }
-
-        // Add a dummy zone
-        addZone(
-            listOf(
-                LatLng(59.94195862876364, 10.76321694999933),
-                LatLng(59.94377610821358, 10.762283876538277),
-                LatLng(59.943641097920406, 10.759101770818233),
-                LatLng(59.942160986342856, 10.754415281116962)
-            )
-        )
 
         leggTilLufthavner()
         flyplassButton.setOnClickListener {
@@ -387,8 +374,15 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
     }
 
     private fun leggTilLufthavner() {
-        val jsonFilStringen = getJsonDataFromAsset(requireContext(), "lufthavnRawJson.json")
-        sirkelMutableListOver = initNoFlyLufthavnSirkel(jsonFilStringen)
+        if (sirkelMutableListOver.size == 0) {
+            val jsonFilStringen = getJsonDataFromAsset(requireContext(), "lufthavnRawJson.json")
+            sirkelMutableListOver = initNoFlyLufthavnSirkel(jsonFilStringen)
+        }
+
+        // Avoid redrawing circles
+        if (!lufthavnButtonTeller)
+            return
+
         for (optionini in sirkelMutableListOver) {
             val sorkel: Circle = map.addCircle((optionini))
             ferdigsirkelMutableListOver.add(sorkel)
