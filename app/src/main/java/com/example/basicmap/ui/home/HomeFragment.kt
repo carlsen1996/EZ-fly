@@ -57,10 +57,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
     private lateinit var map: GoogleMap
     private lateinit var placesClient: PlacesClient
 
-    private var currentAddress: String = ""
-
-    private var placesList = mutableListOf<com.example.basicmap.ui.places.Place>()
-
     // Transient reference to current marker, backed by model.position
     private var marker: Marker? = null
     private val zones = mutableListOf<Polygon>()
