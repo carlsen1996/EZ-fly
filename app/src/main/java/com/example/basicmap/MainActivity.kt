@@ -23,6 +23,7 @@ private val TAB_TITLES = arrayOf(
 class MainActivity : AppCompatActivity() {
 
     @Suppress("DEPRECATION")
+
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)

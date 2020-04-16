@@ -9,15 +9,17 @@
     android:layout_alignParentTop="true"
     android:layout_alignParentEnd="true"
     android:layout_alignParentBottom="true"
+    android:background="#5A3BC1FF"
     android:layout_marginTop="10dp"
-    app:cardCornerRadius="10dp"
     android:clickable="false">
 
-    <RelativeLayout
+    <com.jcminarro.roundkornerlayout.RoundKornerRelativeLayout
         android:id="@+id/droneKort"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="20dp">
+        android:background="#5A3BC1FF"
+        android:padding="20dp"
+        app:corner_radius="32dp">
 
 
         <TextView
@@ -28,7 +30,7 @@
             android:layout_marginTop="80dp"
             android:layout_toEndOf="@id/imageView"
             android:maxLines="1"
-            android:text="vanntett" />
+            android:text="Vanntett" />
 
         <TextView
             android:id="@+id/navn"
@@ -51,10 +53,14 @@
             android:maxLines="1"
             android:text="Vindstyrke" />
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/imageView"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="0dp"
+            app:civ_border_color="#A6D2D81B"
+            app:civ_border_width="2dp"
             app:srcCompat="@mipmap/appicon_128" />
 
         <ImageView
@@ -66,6 +72,6 @@
             android:clickable="true"
             app:srcCompat="@drawable/edit_icon" />
 
-    </RelativeLayout>
+    </com.jcminarro.roundkornerlayout.RoundKornerRelativeLayout>
 </androidx.cardview.widget.CardView>
 
