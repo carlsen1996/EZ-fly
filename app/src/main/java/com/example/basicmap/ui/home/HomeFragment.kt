@@ -77,7 +77,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        job = Job()
         Log.d(TAG, "onCreate")
     }
 
@@ -90,14 +89,13 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
         // Not sure why this works, but savedInstanceState doesn't
         // Save the camera position, so we don't unnecessarily reset on onCreateView
         model.cameraPosition = map.cameraPosition
-
+        job.cancel() // Cancel all running jobs
         super.onDestroyView()
         Log.d(TAG, "onDestroyView")
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        job.cancel() // Cancel all running jobs
         Log.d(TAG, "onDestroy")
     }
 
@@ -110,6 +108,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
         val root = inflater.inflate(R.layout.fragment_home, container, false)
         val mapFragment = childFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
+
+        job = Job()
 
         mapFragment.getMapAsync(this)
 
