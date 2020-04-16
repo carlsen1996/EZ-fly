@@ -19,14 +19,13 @@
             android:layout_height="wrap_content"
             android:src="@mipmap/faq2"
             android:layout_centerInParent="true"/>
-        <Switch
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:id="@+id/darkSwitch"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true">
+            <com.mahfa.dnswitch.DayNightSwitch
+                android:id="@+id/darkSwitch"
+                android:layout_width="56dp"
+                android:layout_height="30dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"/>
 
-        </Switch>
 
         </RelativeLayout>
     </com.google.android.material.appbar.AppBarLayout>

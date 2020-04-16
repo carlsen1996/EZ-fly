@@ -1,17 +1,18 @@
-package com.example.basicmap.ui.faq
+package com.example.basicmap.ui.info
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Switch
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import com.example.basicmap.R
-import kotlinx.android.synthetic.main.fragment_faq.view.*
+import com.mahfa.dnswitch.DayNightSwitch
+import com.mahfa.dnswitch.DayNightSwitchListener
+import kotlinx.android.synthetic.main.fragment_info.view.*
 
 
-class FaqFragment : Fragment() {
+class InfoFragment : Fragment() {
     val questions = listOf(
         "Kan jeg fly dronen min i minusgrader?",
         "Hva hvis det regner/snør?",
@@ -35,23 +36,36 @@ class FaqFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val root = inflater.inflate(R.layout.fragment_faq, container, false)
+        val root = inflater.inflate(R.layout.fragment_info, container, false)
 
-        val adapter = FaqListAdapter(context!!, questions, answers)
+        val adapter = FaqListAdapter(requireContext(), questions, answers)
         root.faqListView.setAdapter(adapter)
 
-        var switch : Switch = root.darkSwitch
-        switch.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) {
+        var switch : DayNightSwitch = root.darkSwitch
+        val preferenceDarkMode = DarkPref(requireContext())
+        var userPreferenceDarkMode = preferenceDarkMode.getDarkPref()
+        if (userPreferenceDarkMode) {
+            switch.setIsNight(userPreferenceDarkMode)
+            root.faqimg.setImageResource(R.mipmap.faq)
+        }
+        else {
+            switch.setIsNight(userPreferenceDarkMode)
+            root.faqimg.setImageResource(R.mipmap.faq2)
+        }
+
+
+        switch.setListener(DayNightSwitchListener {
+            if (it) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
                 root.faqimg.setImageResource(R.mipmap.faq)
-
-            }
-            else {
+                preferenceDarkMode.setDarkPref(true)
+            } else {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                 root.faqimg.setImageResource(R.mipmap.faq2)
+                preferenceDarkMode.setDarkPref(false)
             }
-        }
+        })
+
 
         return root
     }

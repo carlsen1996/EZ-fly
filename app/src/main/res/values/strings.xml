@@ -4,7 +4,7 @@
     <string name="title_home">Home</string>
     <string name="title_places">Places</string>
     <string name="title_drones">Drones</string>
-    <string name="title_faq">FAQ</string>
+    <string name="title_info">info</string>
     <string-array name="vindstyrker">
         <item>"2 m/s"</item>
         <item>"8 m/s"</item>
