@@ -122,7 +122,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
 
         root.lagreLokasjonsKnapp.setOnClickListener {
             // This is only accessible from the popup, meaning the position has been set
-            val place = Place(model.position.value!!, model.address.value!!)
+            val place = Place(model.position.value!!, model.address.value)
             val places = placesViewModel.getPlaces().value!!
             places.add(place)
             placesViewModel.getPlaces().value = places
@@ -374,7 +374,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
 
             // Then textview is populated with address, postal code and city/place/location name
             activity?.runOnUiThread {
-                popup.locationNameView.text = "Adresse: " + addressToBeDisplayed
+                model.address.value = addressToBeDisplayed
             }
         }
         catch (e: IOException) {
