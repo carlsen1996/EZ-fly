@@ -1,10 +1,12 @@
 package com.example.basicmap.ui.info
 
 import android.os.Bundle
+import android.text.SpannableString
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.text.buildSpannedString
 import androidx.fragment.app.Fragment
 import com.example.basicmap.R
 import com.mahfa.dnswitch.DayNightSwitch
@@ -17,7 +19,10 @@ class InfoFragment : Fragment() {
         "Kan jeg fly dronen min i minusgrader?",
         "Hva hvis det regner/snør?",
         "Hvor høyt kan jeg fly?",
-        "Kan jeg fly om kvelden?"
+        "Kan jeg fly om kvelden?",
+        "Hvor finner jeg lover om droneflyging i Norge?",
+        "Produsert av: ",
+        "En spesiell takk til: "
     )
     val answers = listOf(
         listOf("Det er ikke anbefalt, men mulig. Batteriet mister raskt " +
@@ -28,7 +33,32 @@ class InfoFragment : Fragment() {
                 "her bør du sjekke din modell spesifikt."),
         listOf("Luftfartstilsynet sin regel er ikke høyere enn 120m over bakken."),
         listOf("Hovedregelen er at du alltid må kunne se dronen når den flys. Dersom " +
-                "det er mørkt og du har dårlig sikt, skal du ikke fly.")
+                "det er mørkt og du har dårlig sikt, skal du ikke fly."),
+        listOf("Du kan finne hovedreglene her : \n" +
+                "https://luftfartstilsynet.no/droner/hobbydrone/dronelek/\n" +
+                "Fullt regelverk her : \n"+
+                "https://lovdata.no/dokument/SF/forskrift/2015-11-30-1404\n"),
+        listOf("A\n"+
+                "J\n"+
+                "O\n"+
+                "P\n"+
+                "R\n"+
+                "T\n"),
+        listOf("Daniel Hellestveit\n"+
+                "Ove Bakken\n"+
+                "Lossius Solutions\n"+
+                "Raymond Andreassen Rainmanproductions\n"+
+                "Bård Brattvoll\n"+
+                "Atle Kristian Kolbeinsen\n"+
+                "Marius E Johansen\n"+
+                "Morten Obbink\n"+
+                "Andreas Gjetanger\n"+
+                "Torgrim Kiil\n"+
+                "Sanosh Senthilkumar\n"+
+                "Trond Glesaaen\n"+
+                "Kim Johnsen\n"
+                )
+
     )
 
     override fun onCreateView(
