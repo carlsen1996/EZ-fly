@@ -5,6 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
+
+
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
@@ -28,5 +31,16 @@
         android:layout_margin="6dp"
         android:layout="@layout/popup"
         app:layout_constraintBottom_toBottomOf="@+id/map" />
+
+    <ImageButton
+        android:id="@+id/flyplassButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:padding="3dp"
+        android:scaleType="fitCenter"
+        android:background="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ikkeflyikon" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

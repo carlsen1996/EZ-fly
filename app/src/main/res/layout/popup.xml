@@ -106,6 +106,26 @@
             android:contentDescription="ImageOfWeather"
             app:srcCompat="@drawable/ic_notifications_black_24dp" />
 
+        <Button
+            android:id="@+id/lagreLokasjonsKnapp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_below="@+id/weatherImageView"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="20dp" />
+
+        <TextView
+            android:id="@+id/explanationOfButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/lagreLokasjonsKnapp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="0dp"
+            android:text="Lagre:" />
+
         <TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"

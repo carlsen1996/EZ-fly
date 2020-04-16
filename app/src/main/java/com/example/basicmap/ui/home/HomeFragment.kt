@@ -2,15 +2,17 @@ package com.example.basicmap.ui.home
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.Color
-import android.location.Address
 import android.location.Geocoder
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -18,6 +20,10 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.basicmap.R
 import com.example.basicmap.lib.Met
+import com.example.basicmap.ui.places.Place
+import com.example.basicmap.ui.places.PlacesViewModel
+import com.example.basicmap.lib.getJsonDataFromAsset
+import com.example.basicmap.lib.initNoFlyLufthavnSirkel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -26,10 +32,12 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.android.libraries.places.api.Places
-import com.google.android.libraries.places.api.model.Place
-import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest
 import com.google.android.libraries.places.api.net.PlacesClient
 import kotlinx.android.synthetic.main.fragment_home.view.popupStub
+import com.google.gson.GsonBuilder
+import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.fragment_home.view.*
+import kotlinx.android.synthetic.main.fragment_home.view.flyplassButton
 import kotlinx.android.synthetic.main.popup.*
 import kotlinx.android.synthetic.main.popup.view.*
 import kotlinx.coroutines.*
@@ -49,11 +57,16 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
     private lateinit var map: GoogleMap
     private lateinit var placesClient: PlacesClient
 
+    private var currentAddress: String = ""
+
+    private var placesList = mutableListOf<com.example.basicmap.ui.places.Place>()
+
     // Transient reference to current marker, backed by model.position
     private var marker: Marker? = null
     private val zones = mutableListOf<Polygon>()
 
     private val model: HomeViewModel by viewModels()
+    private val placesViewModel: PlacesViewModel by viewModels()
 
     // Dummy job to make cancellation of running jobs easy
     private lateinit var job: Job
@@ -61,6 +74,10 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
     // Add all jobs to the same context
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
+
+    private var sirkelMutableListOver = mutableListOf<CircleOptions>()
+    private var ferdigsirkelMutableListOver = mutableListOf<Circle>()
+    private var lufthavnButtonTeller = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -102,8 +119,24 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
         Places.initialize(requireContext(), getString(R.string.google_maps_key))
         placesClient = Places.createClient(requireContext())
         locationClient = LocationServices.getFusedLocationProviderClient(requireContext())
+
+        root.lagreLokasjonsKnapp.setOnClickListener {
+            // This is only accessible from the popup, meaning the position has been set
+            val place = Place(model.position.value!!, model.address.value)
+            val places = placesViewModel.getPlaces().value!!
+            places.add(place)
+            placesViewModel.getPlaces().value = places
+            Toast.makeText(
+                activity,
+                "${model.address.value}, er lagt til i favoritter",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+
         return root
     }
+
+
 
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
@@ -115,6 +148,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
         // setMarker needs the map
         model.position.observe(viewLifecycleOwner, Observer {
             setMarker(it)
+        })
+        model.address.observe(viewLifecycleOwner, Observer {
+            popup.locationNameView.text = "Adresse: " + it
         })
 
         getLocationPermission()
@@ -129,6 +165,19 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
                 LatLng(59.942160986342856, 10.754415281116962)
             )
         )
+
+        leggTilLufthavner()
+        flyplassButton.setOnClickListener {
+            if (lufthavnButtonTeller == false) {
+                fjernLufthavner()
+                Log.d("KartLufthavnButton", "fjerner lufthavner")
+            }
+            else if (lufthavnButtonTeller == true) {
+                leggTilLufthavner()
+                Log.d("KartLufthavnButton", "legger til lufthavner")
+            }
+        }
+
     }
 
     private fun getLocationPermission() {
@@ -177,6 +226,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
 
         model.position.value = p0
     }
+
 
     fun setMarker(p: LatLng): Marker {
         marker?.remove()
@@ -324,7 +374,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
 
             // Then textview is populated with address, postal code and city/place/location name
             activity?.runOnUiThread {
-                popup.locationNameView.text = "Adresse: " + addressToBeDisplayed
+                model.address.value = addressToBeDisplayed
             }
         }
         catch (e: IOException) {
@@ -333,5 +383,28 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
             }
         }
     }
-}
 
+    private fun leggTilLufthavner() {
+        val jsonFilStringen = getJsonDataFromAsset(context!!, "lufthavnRawJson.json")
+        sirkelMutableListOver = initNoFlyLufthavnSirkel(jsonFilStringen, map)
+        for (optionini in sirkelMutableListOver) {
+            val sorkel: Circle = map.addCircle((optionini))
+            ferdigsirkelMutableListOver.add(sorkel)
+        }
+        lufthavnButtonTeller = false
+    }
+
+    private fun fjernLufthavner() {
+        if (ferdigsirkelMutableListOver.size > 0) {
+            for (sirkali in ferdigsirkelMutableListOver) {
+                sirkali.remove()
+            }
+        }
+        else {
+            Log.d("fjernLufthavner", "ferdigsirkelMutableListeOver er tom")
+        }
+        lufthavnButtonTeller = true
+    }
+
+
+}

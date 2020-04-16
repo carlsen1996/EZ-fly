@@ -4,7 +4,7 @@
     <string name="title_home">Home</string>
     <string name="title_places">Places</string>
     <string name="title_drones">Drones</string>
-    <string name="title_faq">FAQ</string>
+    <string name="title_info">info</string>
     <string-array name="vindstyrker">
         <item>"2 m/s"</item>
         <item>"8 m/s"</item>
@@ -12,4 +12,9 @@
         <item>"17 m/s"</item>
     </string-array>
     <string name="title_activity_main">MainActivity</string>
+    <string name="messageWithLink"><a href="https://www.google.com/">Tap here to open Link</a></string>
 </resources>
+
+
+
+
