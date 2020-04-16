@@ -87,6 +87,10 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
     }
 
     override fun onDestroyView() {
+        // Not sure why this works, but savedInstanceState doesn't
+        // Save the camera position, so we don't unnecessarily reset on onCreateView
+        model.cameraPosition = map.cameraPosition
+
         super.onDestroyView()
         Log.d(TAG, "onDestroyView")
     }
@@ -149,8 +153,10 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
             popup.locationNameView.text = "Adresse: " + it
         })
 
-        getLocationPermission()
-        getDeviceLocation()
+        if (model.cameraPosition == null) {
+            getLocationPermission()
+            getDeviceLocation()
+        }
 
         // Add a dummy zone
         addZone(
