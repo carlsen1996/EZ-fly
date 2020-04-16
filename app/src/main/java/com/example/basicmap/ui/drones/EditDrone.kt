@@ -1,6 +1,7 @@
 package com.example.basicmap.ui.drones
 
 import android.app.Activity
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
@@ -11,10 +12,15 @@ import androidx.appcompat.app.AlertDialog
 import com.bumptech.glide.Glide
 import com.example.basicmap.R
 import kotlinx.android.synthetic.main.activity_edit_drone.*
+import kotlinx.android.synthetic.main.activity_edit_drone.checkBox
+import kotlinx.android.synthetic.main.activity_edit_drone.navn
+import kotlinx.android.synthetic.main.activity_edit_drone.spinner
+import kotlinx.android.synthetic.main.activity_edit_drone.vindInfoKnapp
+import kotlinx.android.synthetic.main.activity_registrer_drone.*
 
 class EditDrone : AppCompatActivity() {
 
-    private lateinit var dronesViewModel: DronesViewModel
+    private var dronesViewModel = DronesViewModel()
     var droneList =  mutableListOf<Drone>()
     var droneBilde = ""
 
@@ -23,7 +29,6 @@ class EditDrone : AppCompatActivity() {
         setContentView(R.layout.activity_edit_drone)
         supportActionBar?.title = "Rediger"
 
-        dronesViewModel = DronesViewModel()
         droneList = dronesViewModel.getDroneList().value!!.toMutableList()
 
         val pos = getIntent().getIntExtra("pos", 0)
@@ -51,18 +56,24 @@ class EditDrone : AppCompatActivity() {
 
         //Endre drone informasjon
         endreKnapp.setOnClickListener {
-            drone.navn = navn.getText().toString()
-            when(spinner.selectedItem.toString()) {
-                "2 m/s" -> drone.maksVindStyrke = 2
-                "8 m/s" -> drone.maksVindStyrke = 8
-                "12 m/s" -> drone.maksVindStyrke = 12
-                "17 m/s" -> drone.maksVindStyrke = 17
+            if(navn.text.isNullOrEmpty()) {
+                val toast = Toast.makeText(this@EditDrone, "Velg navn på dronen din", Toast.LENGTH_LONG)
+                toast.show()
             }
-            drone.vanntett = checkBox.isChecked
-            drone.imgSrc = droneBilde
-            dronesViewModel.getDroneList().value = droneList
+            else {
+                drone.navn = navn.getText().toString()
+                when(spinner.selectedItem.toString()) {
+                    "2 m/s" -> drone.maksVindStyrke = 2
+                    "8 m/s" -> drone.maksVindStyrke = 8
+                    "12 m/s" -> drone.maksVindStyrke = 12
+                    "17 m/s" -> drone.maksVindStyrke = 17
+                }
+                drone.vanntett = checkBox.isChecked
+                drone.imgSrc = droneBilde
+                dronesViewModel.getDroneList().value = droneList
 
-            finish()
+                finish()
+            }
         }
         //Slett Drone
         slettKnapp.setOnClickListener {
@@ -78,6 +89,14 @@ class EditDrone : AppCompatActivity() {
             builder.setNegativeButton("Nei") { dialog, _ ->
                 dialog.dismiss()
             }
+            builder.show()
+        }
+        vindInfoKnapp.setOnClickListener {
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle("Maks vindstyrke")
+            builder.setMessage("Alle dronemodeller kommer med informasjon om den høyeste vindstyrken det er mulig for dronen og fly i. " +
+                    "Sjekk manualen eller besøk produsentens nettside for å finne din drones maks vindstyrke.")
+            builder.setPositiveButton("OK") { _: DialogInterface, _: Int -> }
             builder.show()
         }
         //Endre bilde

@@ -23,21 +23,20 @@ class DronesFragment : Fragment() {
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
 
-    private lateinit var dronesViewModel: DronesViewModel
+    private var dronesViewModel = DronesViewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        dronesViewModel = DronesViewModel()
         val root = inflater.inflate(R.layout.fragment_drones, container, false)
         loadData()
 
         //Fill recyclerview
         dronesViewModel.getDroneList().observe(viewLifecycleOwner, Observer<MutableList<Drone>> {
             viewManager = LinearLayoutManager(activity)
-            viewAdapter = ListAdapter(context!!, dronesViewModel.getDroneList().value)
+            viewAdapter = ListAdapter(requireContext(), dronesViewModel.getDroneList().value)
             recyclerView = root.recyclerView.apply {
                 setHasFixedSize(true)
                 layoutManager = viewManager
@@ -54,7 +53,7 @@ class DronesFragment : Fragment() {
         root.registrerKnapp.setOnClickListener {
             root.recycleViewTekst.visibility = INVISIBLE
             val intent = Intent(activity, RegistrerDrone::class.java)
-            startActivityForResult(intent, 1)
+            startActivity(intent)
         }
 
         return root
@@ -62,7 +61,7 @@ class DronesFragment : Fragment() {
 
     //Hent drone liste fra minne
     private fun loadData() {
-        val sharedPref: SharedPreferences = activity!!.getSharedPreferences("sharedPref", AppCompatActivity.MODE_PRIVATE)
+        val sharedPref: SharedPreferences = requireActivity().getSharedPreferences("sharedPref", AppCompatActivity.MODE_PRIVATE)
         val gson = GsonBuilder().create()
         val json = sharedPref.getString("droneList", null)
         val drones = gson.fromJson(json, Array<Drone>::class.java) ?: return
@@ -70,7 +69,7 @@ class DronesFragment : Fragment() {
     }
     //Lagre drone liste i minne
     private fun saveData() {
-        val sharedPref: SharedPreferences = activity!!.getSharedPreferences("sharedPref", AppCompatActivity.MODE_PRIVATE)
+        val sharedPref: SharedPreferences = requireActivity().getSharedPreferences("sharedPref", AppCompatActivity.MODE_PRIVATE)
         val editor: SharedPreferences.Editor = sharedPref.edit()
         val gson = GsonBuilder().create()
         val json = gson.toJson(dronesViewModel.getDroneList().value)

@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.activity_registrer_drone.*
 
 class RegistrerDrone : AppCompatActivity() {
 
-    private lateinit var dronesViewModel: DronesViewModel
+    private var dronesViewModel = DronesViewModel()
     var droneList =  mutableListOf<Drone>()
     var droneBilde = ""
 
@@ -22,7 +22,6 @@ class RegistrerDrone : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registrer_drone)
 
-        dronesViewModel = DronesViewModel()
         droneList = dronesViewModel.getDroneList().value!!.toMutableList()
         supportActionBar?.title = "Legg til ny Drone"
 
