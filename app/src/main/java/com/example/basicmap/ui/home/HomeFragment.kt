@@ -69,7 +69,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
 
     // Add all jobs to the same context
     override val coroutineContext: CoroutineContext
-        get() = job + Dispatchers.Main
+        get() = job + Dispatchers.IO
 
     private var sirkelMutableListOver = mutableListOf<CircleOptions>()
     private var ferdigsirkelMutableListOver = mutableListOf<Circle>()
@@ -223,11 +223,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
         marker = m
 
         launch {
-            withContext(Dispatchers.IO) {
-                val weather = Met().locationForecast(p)
-                populatePopup(weather)
-                displayAddressOfClickedArea(p)
-            }
+            val weather = Met().locationForecast(p)
+            populatePopup(weather)
+            displayAddressOfClickedArea(p)
         }
 
         return m
