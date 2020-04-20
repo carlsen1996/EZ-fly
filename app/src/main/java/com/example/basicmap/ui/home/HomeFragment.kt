@@ -147,7 +147,10 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
             setMarker(it)
         })
         model.address.observe(viewLifecycleOwner, Observer {
-            popup.locationNameView.text = "Adresse: " + it
+            if (it == "")
+                popup.locationNameView.text = "Ingen addresseinformasjon tilgjengelig"
+            else
+                popup.locationNameView.text = "Adresse: " + it
         })
         model.weather.observe(viewLifecycleOwner, Observer {
             populatePopup(it)
@@ -215,7 +218,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
     override fun onMapClick(p0: LatLng?) {
         if (p0 == null)
             return
-
         model.position.value = p0
     }
 
@@ -224,12 +226,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
         marker?.remove()
         val m = map.addMarker(MarkerOptions().position(p))
         marker = m
-
-        launch {
-            val weather = Met().locationForecast(p)
-            populatePopup(weather)
-            displayAddressOfClickedArea(p)
-        }
 
         return m
     }
@@ -337,39 +333,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
                 popup.setOnClickListener{
                     popup.visibility = View.INVISIBLE
                 }
-            }
-        }
-    }
-    /*
-        Looks up location names using Geocoder.getFromLocation.
-        When ready adds the name to the marker popup.
-     */
-    private fun displayAddressOfClickedArea(p: LatLng) {
-        val geoc: Geocoder = Geocoder(activity)
-
-        try {
-            val locations = geoc.getFromLocation(p.latitude, p.longitude, 1)
-            if (locations.size == 0)
-                return
-
-            // The following splits the string in order to remove unnecessary information. getAdressLine
-            // returns very full info, for example
-            // Frivoldveien 74, 4877, Grimstad, Norway.
-            // Country name is a given, and therefore reduntant,
-            // since our "marker" is limited to Norway (we use APIs for Norwegian weather only, and data
-            // on restricted zones only for Norway
-            val closestLocationAddress = locations[0].getAddressLine(0)
-            val stringArray = closestLocationAddress?.split(",")?.toTypedArray()
-            val addressToBeDisplayed = stringArray?.get(0) + "," + stringArray?.get(1)
-
-            // Then textview is populated with address, postal code and city/place/location name
-            activity?.runOnUiThread {
-                model.address.value = addressToBeDisplayed
-            }
-        }
-        catch (e: IOException) {
-            activity?.runOnUiThread {
-                popup.locationNameView.text = "Ingen addresseinformasjon tilgjengelig"
             }
         }
     }
