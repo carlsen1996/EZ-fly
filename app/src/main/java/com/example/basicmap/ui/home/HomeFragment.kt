@@ -2,17 +2,14 @@ package com.example.basicmap.ui.home
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.Color
-import android.location.Geocoder
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -34,15 +31,10 @@ import com.google.android.gms.maps.model.*
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.net.PlacesClient
 import kotlinx.android.synthetic.main.fragment_home.view.popupStub
-import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.fragment_home.*
-import kotlinx.android.synthetic.main.fragment_home.view.*
-import kotlinx.android.synthetic.main.fragment_home.view.flyplassButton
 import kotlinx.android.synthetic.main.popup.*
 import kotlinx.android.synthetic.main.popup.view.*
 import kotlinx.coroutines.*
-import java.io.IOException
-import java.lang.NullPointerException
 import java.util.*
 import java.util.Calendar.DAY_OF_WEEK
 import kotlin.coroutines.CoroutineContext
@@ -115,6 +107,15 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
 
         // viewStubs needs to be inflated
         root.popupStub.inflate()
+        model.address.observe(viewLifecycleOwner, Observer {
+            if (it == "")
+                popup.locationNameView.text = "Ingen addresseinformasjon tilgjengelig"
+            else
+                popup.locationNameView.text = "Adresse: " + it
+        })
+        model.weather.observe(viewLifecycleOwner, Observer {
+            populatePopup(it)
+        })
 
         Places.initialize(requireContext(), getString(R.string.google_maps_key))
         placesClient = Places.createClient(requireContext())
@@ -142,14 +143,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
         map = googleMap
 
         map.setOnMapClickListener(this)
-        // setMarker needs the map
-        model.position.observe(viewLifecycleOwner, Observer {
-            setMarker(it)
-        })
-        model.address.observe(viewLifecycleOwner, Observer {
-            popup.locationNameView.text = "Adresse: " + it
-        })
-
         if (model.cameraPosition == null) {
             getLocationPermission()
             getDeviceLocation()
@@ -209,26 +202,13 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
         }
     }
 
-    override fun onMapClick(p0: LatLng?) {
-        if (p0 == null)
+    override fun onMapClick(p: LatLng?) {
+        if (p == null)
             return
-
-        model.position.value = p0
-    }
-
-
-    fun setMarker(p: LatLng): Marker {
+        model.position.value = p
         marker?.remove()
         val m = map.addMarker(MarkerOptions().position(p))
         marker = m
-
-        launch {
-            val weather = Met().locationForecast(p)
-            populatePopup(weather)
-            displayAddressOfClickedArea(p)
-        }
-
-        return m
     }
 
     fun addZone(positions: List<LatLng>): Polygon? {
@@ -334,39 +314,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
                 popup.setOnClickListener{
                     popup.visibility = View.INVISIBLE
                 }
-            }
-        }
-    }
-    /*
-        Looks up location names using Geocoder.getFromLocation.
-        When ready adds the name to the marker popup.
-     */
-    private fun displayAddressOfClickedArea(p: LatLng) {
-        val geoc: Geocoder = Geocoder(activity)
-
-        try {
-            val locations = geoc.getFromLocation(p.latitude, p.longitude, 1)
-            if (locations.size == 0)
-                return
-
-            // The following splits the string in order to remove unnecessary information. getAdressLine
-            // returns very full info, for example
-            // Frivoldveien 74, 4877, Grimstad, Norway.
-            // Country name is a given, and therefore reduntant,
-            // since our "marker" is limited to Norway (we use APIs for Norwegian weather only, and data
-            // on restricted zones only for Norway
-            val closestLocationAddress = locations[0].getAddressLine(0)
-            val stringArray = closestLocationAddress?.split(",")?.toTypedArray()
-            val addressToBeDisplayed = stringArray?.get(0) + "," + stringArray?.get(1)
-
-            // Then textview is populated with address, postal code and city/place/location name
-            activity?.runOnUiThread {
-                model.address.value = addressToBeDisplayed
-            }
-        }
-        catch (e: IOException) {
-            activity?.runOnUiThread {
-                popup.locationNameView.text = "Ingen addresseinformasjon tilgjengelig"
             }
         }
     }
