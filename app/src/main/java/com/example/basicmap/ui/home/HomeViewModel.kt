@@ -4,17 +4,19 @@ import android.app.Application
 import android.location.Geocoder
 import androidx.lifecycle.*
 import com.example.basicmap.lib.Met
+import com.example.basicmap.ui.places.Place
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import java.io.IOException
 
 class HomeViewModel(application: Application) : AndroidViewModel(application) {
-    val position: MutableLiveData<LatLng> = MutableLiveData()
-    val address: LiveData<String> = Transformations.switchMap(position) {
+    val place: MutableLiveData<Place> = MutableLiveData()
+    val address: LiveData<String> = Transformations.switchMap(place) {
         liveData {
+            val p = it.position
             val geoc = Geocoder(application)
             try {
-                val locations = geoc.getFromLocation(it.latitude, it.longitude, 1)
+                val locations = geoc.getFromLocation(p.latitude, p.longitude, 1)
                 // The following splits the string in order to remove unnecessary information. getAdressLine
                 // returns very full info, for example
                 // Frivoldveien 74, 4877, Grimstad, Norway.
@@ -32,9 +34,9 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
             }
         }
     }
-    val weather: LiveData<Met.Kall> = Transformations.switchMap(position) {
+    val weather: LiveData<Met.Kall> = Transformations.switchMap(place) {
         liveData {
-            val w = Met().locationForecast(it)
+            val w = Met().locationForecast(it.position)
             emit(w)
         }
     }

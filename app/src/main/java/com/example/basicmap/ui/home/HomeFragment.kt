@@ -123,7 +123,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
 
         root.lagreLokasjonsKnapp.setOnClickListener {
             // This is only accessible from the popup, meaning the position has been set
-            val place = Place(model.position.value!!, model.address.value)
+            val place = model.place.value!!
             val places = placesViewModel.getPlaces().value!!
             places.add(place)
             placesViewModel.getPlaces().value = places
@@ -205,7 +205,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
     override fun onMapClick(p: LatLng?) {
         if (p == null)
             return
-        model.position.value = p
+        model.place.value = Place(p)
         marker?.remove()
         marker = map.addMarker(MarkerOptions().position(p))
     }
