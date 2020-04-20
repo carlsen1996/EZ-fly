@@ -149,6 +149,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
         model.address.observe(viewLifecycleOwner, Observer {
             popup.locationNameView.text = "Adresse: " + it
         })
+        model.weather.observe(viewLifecycleOwner, Observer {
+            populatePopup(it)
+        })
 
         if (model.cameraPosition == null) {
             getLocationPermission()
