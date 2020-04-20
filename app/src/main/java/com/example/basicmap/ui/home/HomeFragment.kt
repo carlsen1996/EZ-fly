@@ -24,7 +24,6 @@ import com.example.basicmap.ui.places.Place
 import com.example.basicmap.ui.places.PlacesViewModel
 import com.example.basicmap.lib.getJsonDataFromAsset
 import com.example.basicmap.lib.initNoFlyLufthavnSirkel
-import com.example.basicmap.ui.drones.DronesViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -58,18 +57,12 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
     private lateinit var map: GoogleMap
     private lateinit var placesClient: PlacesClient
 
-    private var currentAddress: String = ""
-
-    private var placesList = mutableListOf<com.example.basicmap.ui.places.Place>()
-
     // Transient reference to current marker, backed by model.position
     private var marker: Marker? = null
     private val zones = mutableListOf<Polygon>()
 
     private val model: HomeViewModel by viewModels()
     private val placesViewModel: PlacesViewModel by viewModels()
-
-    private var dronesViewModel = DronesViewModel()
 
     // Dummy job to make cancellation of running jobs easy
     private lateinit var job: Job
@@ -84,7 +77,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        job = Job()
         Log.d(TAG, "onCreate")
     }
 
@@ -94,13 +86,16 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
     }
 
     override fun onDestroyView() {
+        // Not sure why this works, but savedInstanceState doesn't
+        // Save the camera position, so we don't unnecessarily reset on onCreateView
+        model.cameraPosition = map.cameraPosition
+        job.cancel() // Cancel all running jobs
         super.onDestroyView()
         Log.d(TAG, "onDestroyView")
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        job.cancel() // Cancel all running jobs
         Log.d(TAG, "onDestroy")
     }
 
@@ -114,12 +109,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
         val mapFragment = childFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
 
-        mapFragment.getMapAsync(this)
+        job = Job()
 
-        Log.v("test", "printer droner")
-        for(drone in dronesViewModel.getDroneList().value!!) {
-            Log.v("navn", drone.navn)
-        }
+        mapFragment.getMapAsync(this)
 
         // viewStubs needs to be inflated
         root.popupStub.inflate()
@@ -148,9 +140,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
 
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
-        // FIXME: this is a hack that avoids conflicts between state handled by the map itself
-        // and state we manage ourselves.
-        map.clear()
 
         map.setOnMapClickListener(this)
         // setMarker needs the map
@@ -161,18 +150,10 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
             popup.locationNameView.text = "Adresse: " + it
         })
 
-        getLocationPermission()
-        getDeviceLocation()
-
-        // Add a dummy zone
-        addZone(
-            listOf(
-                LatLng(59.94195862876364, 10.76321694999933),
-                LatLng(59.94377610821358, 10.762283876538277),
-                LatLng(59.943641097920406, 10.759101770818233),
-                LatLng(59.942160986342856, 10.754415281116962)
-            )
-        )
+        if (model.cameraPosition == null) {
+            getLocationPermission()
+            getDeviceLocation()
+        }
 
         leggTilLufthavner()
         flyplassButton.setOnClickListener {
@@ -393,8 +374,15 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
     }
 
     private fun leggTilLufthavner() {
-        val jsonFilStringen = getJsonDataFromAsset(requireContext(), "lufthavnRawJson.json")
-        sirkelMutableListOver = initNoFlyLufthavnSirkel(jsonFilStringen, map)
+        if (sirkelMutableListOver.size == 0) {
+            val jsonFilStringen = getJsonDataFromAsset(requireContext(), "lufthavnRawJson.json")
+            sirkelMutableListOver = initNoFlyLufthavnSirkel(jsonFilStringen)
+        }
+
+        // Avoid redrawing circles
+        if (!lufthavnButtonTeller)
+            return
+
         for (optionini in sirkelMutableListOver) {
             val sorkel: Circle = map.addCircle((optionini))
             ferdigsirkelMutableListOver.add(sorkel)
