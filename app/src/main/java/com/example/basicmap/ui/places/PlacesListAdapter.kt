@@ -24,6 +24,7 @@ class PlacesListAdapter(val context: Context, val placesList: MutableList<Place>
                 builder.setMessage("Er du sikker på at du vil slette \n" + place.address + " ?")
                 builder.setPositiveButton("Ja") { dialog, which ->
                     slettPlace(pos)
+                    place.favorite = false
                 }
                 builder.setNegativeButton("Nei") { dialog, which ->
                     dialog.dismiss()
