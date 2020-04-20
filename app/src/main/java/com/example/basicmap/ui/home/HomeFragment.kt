@@ -207,8 +207,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
             return
         model.position.value = p
         marker?.remove()
-        val m = map.addMarker(MarkerOptions().position(p))
-        marker = m
+        marker = map.addMarker(MarkerOptions().position(p))
     }
 
     fun addZone(positions: List<LatLng>): Polygon? {
