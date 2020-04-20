@@ -6,6 +6,7 @@
     android:layout_height="wrap_content"
     android:visibility="invisible"
     android:padding="20dp"
+    android:layout_margin="6dp"
     android:clickable="true"
     android:focusable="true"
     app:cardCornerRadius="10dp"
