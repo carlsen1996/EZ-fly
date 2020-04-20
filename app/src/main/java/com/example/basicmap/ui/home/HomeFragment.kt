@@ -2,17 +2,14 @@ package com.example.basicmap.ui.home
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.Color
-import android.location.Geocoder
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -34,15 +31,10 @@ import com.google.android.gms.maps.model.*
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.net.PlacesClient
 import kotlinx.android.synthetic.main.fragment_home.view.popupStub
-import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.fragment_home.*
-import kotlinx.android.synthetic.main.fragment_home.view.*
-import kotlinx.android.synthetic.main.fragment_home.view.flyplassButton
 import kotlinx.android.synthetic.main.popup.*
 import kotlinx.android.synthetic.main.popup.view.*
 import kotlinx.coroutines.*
-import java.io.IOException
-import java.lang.NullPointerException
 import java.util.*
 import java.util.Calendar.DAY_OF_WEEK
 import kotlin.coroutines.CoroutineContext
@@ -115,6 +107,15 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
 
         // viewStubs needs to be inflated
         root.popupStub.inflate()
+        model.address.observe(viewLifecycleOwner, Observer {
+            if (it == "")
+                popup.locationNameView.text = "Ingen addresseinformasjon tilgjengelig"
+            else
+                popup.locationNameView.text = "Adresse: " + it
+        })
+        model.weather.observe(viewLifecycleOwner, Observer {
+            populatePopup(it)
+        })
 
         Places.initialize(requireContext(), getString(R.string.google_maps_key))
         placesClient = Places.createClient(requireContext())
@@ -142,20 +143,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
         map = googleMap
 
         map.setOnMapClickListener(this)
-        // setMarker needs the map
-        model.position.observe(viewLifecycleOwner, Observer {
-            setMarker(it)
-        })
-        model.address.observe(viewLifecycleOwner, Observer {
-            if (it == "")
-                popup.locationNameView.text = "Ingen addresseinformasjon tilgjengelig"
-            else
-                popup.locationNameView.text = "Adresse: " + it
-        })
-        model.weather.observe(viewLifecycleOwner, Observer {
-            populatePopup(it)
-        })
-
         if (model.cameraPosition == null) {
             getLocationPermission()
             getDeviceLocation()
@@ -215,19 +202,13 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
         }
     }
 
-    override fun onMapClick(p0: LatLng?) {
-        if (p0 == null)
+    override fun onMapClick(p: LatLng?) {
+        if (p == null)
             return
-        model.position.value = p0
-    }
-
-
-    fun setMarker(p: LatLng): Marker {
+        model.position.value = p
         marker?.remove()
         val m = map.addMarker(MarkerOptions().position(p))
         marker = m
-
-        return m
     }
 
     fun addZone(positions: List<LatLng>): Polygon? {
