@@ -31,7 +31,6 @@ class DronesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val root = inflater.inflate(R.layout.fragment_drones, container, false)
-        loadData()
 
         //Fill recyclerview
         dronesViewModel.getDroneList().observe(viewLifecycleOwner, Observer<MutableList<Drone>> {
@@ -58,14 +57,6 @@ class DronesFragment : Fragment() {
         return root
     }
 
-    //Hent drone liste fra minne
-    private fun loadData() {
-        val sharedPref: SharedPreferences = requireActivity().getSharedPreferences("sharedPref", AppCompatActivity.MODE_PRIVATE)
-        val gson = GsonBuilder().create()
-        val json = sharedPref.getString("droneList", null)
-        val drones = gson.fromJson(json, Array<Drone>::class.java) ?: return
-        dronesViewModel.getDroneList().value = drones.toMutableList()
-    }
     //Lagre drone liste i minne
     private fun saveData() {
         val sharedPref: SharedPreferences = requireActivity().getSharedPreferences("sharedPref", AppCompatActivity.MODE_PRIVATE)

@@ -24,6 +24,7 @@ import com.example.basicmap.ui.places.Place
 import com.example.basicmap.ui.places.PlacesViewModel
 import com.example.basicmap.lib.getJsonDataFromAsset
 import com.example.basicmap.lib.initNoFlyLufthavnSirkel
+import com.example.basicmap.ui.drones.DronesViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -67,6 +68,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
 
     private val model: HomeViewModel by viewModels()
     private val placesViewModel: PlacesViewModel by viewModels()
+
+    private var dronesViewModel = DronesViewModel()
 
     // Dummy job to make cancellation of running jobs easy
     private lateinit var job: Job
@@ -112,6 +115,11 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
             .findFragmentById(R.id.map) as SupportMapFragment
 
         mapFragment.getMapAsync(this)
+
+        Log.v("test", "printer droner")
+        for(drone in dronesViewModel.getDroneList().value!!) {
+            Log.v("navn", drone.navn)
+        }
 
         // viewStubs needs to be inflated
         root.popupStub.inflate()
@@ -385,7 +393,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
     }
 
     private fun leggTilLufthavner() {
-        val jsonFilStringen = getJsonDataFromAsset(context!!, "lufthavnRawJson.json")
+        val jsonFilStringen = getJsonDataFromAsset(requireContext(), "lufthavnRawJson.json")
         sirkelMutableListOver = initNoFlyLufthavnSirkel(jsonFilStringen, map)
         for (optionini in sirkelMutableListOver) {
             val sorkel: Circle = map.addCircle((optionini))

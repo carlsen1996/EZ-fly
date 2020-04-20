@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
@@ -25,7 +26,7 @@ class PlacesFragment : Fragment() {
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
 
-    private val placesViewModel: PlacesViewModel by viewModels()
+    private val placesViewModel = PlacesViewModel()
     var placesList =  mutableListOf<Place>()
 
     override fun onCreateView(
@@ -37,9 +38,9 @@ class PlacesFragment : Fragment() {
 
         loadData()
 
-        placesViewModel.getPlaces().observe(viewLifecycleOwner, Observer {
+        placesViewModel.getPlaces().observe(viewLifecycleOwner, Observer<MutableList<Place>> {
             viewManager = LinearLayoutManager(activity)
-            viewAdapter = PlacesListAdapter(requireContext(), it)
+            viewAdapter = PlacesListAdapter(requireContext(), placesViewModel.getPlaces().value)
             recyclerView = root.recyclerView.apply {
                 setHasFixedSize(true)
                 layoutManager = viewManager
@@ -47,6 +48,9 @@ class PlacesFragment : Fragment() {
             }
             if(viewAdapter.itemCount == 0) {
                 recycleViewTekstPlaces.visibility = VISIBLE
+            }
+            else {
+                recycleViewTekstPlaces.visibility = INVISIBLE
             }
             saveData()
         })
@@ -58,22 +62,18 @@ class PlacesFragment : Fragment() {
         val sharedPrefPlaces: SharedPreferences = requireActivity().getSharedPreferences("sharedPrefPlaces", AppCompatActivity.MODE_PRIVATE)
         val gson = GsonBuilder().create()
         val json = sharedPrefPlaces.getString("placesList", null)
-        val places = gson.fromJson(json, Array<Place>::class.java)
-        if(places == null) {
-            return
-        }
+        val places = gson.fromJson(json, Array<Place>::class.java) ?: return
         Log.d("placeslist", json)
         placesViewModel.getPlaces().value = places.toMutableList()
     }
 
     private fun saveData() {
         Log.d("saveData", "")
-        val sharedPref: SharedPreferences = activity!!.getSharedPreferences("sharedPrefPlaces", AppCompatActivity.MODE_PRIVATE)
+        val sharedPref: SharedPreferences = requireActivity().getSharedPreferences("sharedPrefPlaces", AppCompatActivity.MODE_PRIVATE)
         val editor: SharedPreferences.Editor = sharedPref.edit()
         val gson = GsonBuilder().create()
         val json = gson.toJson(placesViewModel.getPlaces().value)
         editor.putString("placesList", json)
         editor.apply()
     }
-
 }

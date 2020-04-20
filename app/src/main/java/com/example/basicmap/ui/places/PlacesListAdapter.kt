@@ -8,14 +8,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.place_kort.view.*
 import com.example.basicmap.R.layout.place_kort
+import com.example.basicmap.ui.places.Place
+import com.example.basicmap.ui.places.PlacesViewModel
 
 
-class PlacesListAdapter(val context: Context, val placesList: MutableList<com.example.basicmap.ui.places.Place>) : RecyclerView.Adapter<PlacesListAdapter.PlacesViewHolder>() {
-
+class PlacesListAdapter(val context: Context, val placesList: MutableList<Place>?) : RecyclerView.Adapter<PlacesListAdapter.PlacesViewHolder>() {
+    private val placesViewModel = PlacesViewModel()
     inner class PlacesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun setData(place: com.example.basicmap.ui.places.Place, pos: Int) {
-            itemView.placeAdresse.setText(place.address)
+        fun setData(place: Place, pos: Int) {
+            itemView.placeAdresse.text = place.address
             itemView.placeDeleteKnapp.setOnClickListener {
                 val builder = androidx.appcompat.app.AlertDialog.Builder(context)
                 builder.setTitle("Slett lokasjon/plass")
@@ -30,17 +32,8 @@ class PlacesListAdapter(val context: Context, val placesList: MutableList<com.ex
             }
         }
         fun slettPlace(pos: Int) {
-            placesList.removeAt(pos)
-            notifyDataSetChanged()
-            saveData()
-        }
-        private fun saveData() {
-            val sharedPref: SharedPreferences = context.getSharedPreferences("sharedPrefPlaces", AppCompatActivity.MODE_PRIVATE)
-            val editor: SharedPreferences.Editor = sharedPref.edit()
-            val gson = GsonBuilder().create()
-            val json = gson.toJson(placesList)
-            editor.putString("placesList", json)
-            editor.apply()
+            placesList?.removeAt(pos)
+            placesViewModel.getPlaces().value = placesList
         }
 
     }
@@ -51,13 +44,13 @@ class PlacesListAdapter(val context: Context, val placesList: MutableList<com.ex
     }
 
     override fun onBindViewHolder(holder: PlacesViewHolder, position: Int) {
-        val place: com.example.basicmap.ui.places.Place = placesList.elementAt(position)
+        val place: Place = placesList!!.elementAt(position)
         holder.setData(place, position)
     }
 
 
     override fun getItemCount(): Int {
-        return placesList.size
+        return placesList!!.size
     }
 
 }

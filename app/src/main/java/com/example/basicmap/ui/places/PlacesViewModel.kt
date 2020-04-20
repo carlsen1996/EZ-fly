@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 
 class PlacesViewModel : ViewModel() {
     companion object {
-        val places = MutableLiveData(mutableListOf<Place>())
+        var places = MutableLiveData(mutableListOf<Place>())
     }
 
     fun getPlaces() = places
