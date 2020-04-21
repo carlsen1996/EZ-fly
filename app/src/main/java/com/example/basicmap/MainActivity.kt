@@ -56,10 +56,10 @@ class MainActivity : AppCompatActivity() {
 
         // This is a bit ugly, but should work
         // FIXME: icon sizes are wrong
-        tabs.getTabAt(0)?.setIcon(R.mipmap.round_place_black_18dp)
-        tabs.getTabAt(1)?.setIcon(R.mipmap.round_explore_black_18dp)
+        tabs.getTabAt(0)?.setIcon(R.drawable.ic_place_black_18dp)
+        tabs.getTabAt(1)?.setIcon(R.drawable.ic_explore_18dp)
         tabs.getTabAt(2)?.setIcon(R.mipmap.drone4)
-        tabs.getTabAt(3)?.setIcon(R.mipmap.round_help_black_18dp)
+        tabs.getTabAt(3)?.setIcon(R.drawable.ic_help_black_18dp)
 
 
         val preferenceDarkMode = DarkPref(this)
