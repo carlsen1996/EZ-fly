@@ -123,15 +123,25 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
 
         root.lagreLokasjonsKnapp.setOnClickListener {
             // This is only accessible from the popup, meaning the position has been set
-            val place = Place(model.position.value!!, model.address.value)
+            val place = model.place.value!!
+            place.address = model.address.value ?: ""
             val places = placesViewModel.getPlaces().value!!
-            places.add(place)
-            placesViewModel.getPlaces().value = places
-            Toast.makeText(
+            val toast = Toast.makeText(
                 activity,
-                "${model.address.value}, er lagt til i favoritter",
+                "",
                 Toast.LENGTH_SHORT
-            ).show()
+            )
+            if (place.favorite) {
+                toast.setText("${model.address.value}, er fjernet fra favoritter")
+                place.favorite = false
+                places.remove(place)
+            } else {
+                toast.setText("${model.address.value}, er lagt til i favoritter")
+                place.favorite = true
+                places.add(place)
+            }
+            placesViewModel.getPlaces().value = places
+            toast.show()
         }
 
         return root
@@ -205,7 +215,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
     override fun onMapClick(p: LatLng?) {
         if (p == null)
             return
-        model.position.value = p
+        model.place.value = Place(p)
         marker?.remove()
         marker = map.addMarker(MarkerOptions().position(p))
     }

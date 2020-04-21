@@ -4,5 +4,6 @@ import com.google.android.gms.maps.model.LatLng
 
 data class Place(
     var position: LatLng,
-    var address: String?
+    var address: String = "",
+    var favorite: Boolean = false
 )
