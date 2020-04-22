@@ -234,8 +234,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
     @SuppressLint("SetTextI18n")
     private fun populatePopup(weather: Met.Kall) {
         activity?.runOnUiThread {
-            var weatherIconName = weather.properties.timeseries[0].data.next_1_hours.summary.symbol_code
-            popup.weatherImageView.setImageResource(R.mipmap.clearsky_day) //istedenfor clearsky_day skal weatherIconName inn. Det burde fungere hvis man klarer å appende inn den strengen
             popup.visibility = View.VISIBLE
             popup.timeView.text = "Nå:"
             popup.windSpeedView.text = "Vindhastighet: ${weather.properties.timeseries[0].data.instant.details.wind_speed} m/s"
@@ -244,6 +242,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
             popup.precipitationView.text = "Regn: ${weather.properties.timeseries[0].data.next_1_hours.details.precipitation_amount} mm"
             popup.fogView.text = "Tåke: ${weather.properties.timeseries[0].data.instant.details.fog_area_fraction}%"
             popup.textView.text = "Klikk for neste dagers værvarsel"
+            val weatherIconName = weather.properties.timeseries[0].data.next_1_hours.summary.symbol_code
+            val id = resources.getIdentifier(weatherIconName, "mipmap", requireActivity().packageName)
+            popup.weatherImageView.setImageResource(id)
             popup.setOnClickListener {
                 val times = mutableListOf<Met.Numb>()
                 val day = listOf("Søndag", "Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag")
