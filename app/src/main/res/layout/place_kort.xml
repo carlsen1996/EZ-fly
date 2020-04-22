@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cardView"
@@ -9,42 +8,11 @@
     android:layout_alignParentTop="true"
     android:layout_alignParentEnd="true"
     android:layout_alignParentBottom="true"
-    android:layout_marginTop="10dp"
+    android:layout_margin="5dp"
     app:cardCornerRadius="10dp"
     android:clickable="false">
 
-    <RelativeLayout
-        android:id="@+id/placeKort"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="20dp">
+    <include layout="@layout/weather"/>
 
-
-        <TextView
-            android:id="@+id/placeAdresse"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="20dp"
-            android:layout_toEndOf="@id/placeImageView"
-            android:maxLines="1"
-            android:textAlignment="viewStart" />
-
-        <ImageView
-            android:id="@+id/placeImageView"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            app:srcCompat="@android:drawable/ic_menu_mylocation" />
-
-        <ImageView
-            android:id="@+id/placeDeleteKnapp"
-            android:layout_width="17dp"
-            android:layout_height="14dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:clickable="true"
-            app:srcCompat="@android:drawable/ic_menu_delete" />
-
-    </RelativeLayout>
 </androidx.cardview.widget.CardView>
 
