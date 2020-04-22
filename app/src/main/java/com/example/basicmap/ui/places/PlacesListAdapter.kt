@@ -9,6 +9,7 @@ import com.example.basicmap.lib.Met
 import com.example.basicmap.ui.places.Place
 import com.example.basicmap.ui.places.PlacesViewModel
 import kotlinx.android.synthetic.main.popup.view.*
+import kotlinx.android.synthetic.main.weather.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
