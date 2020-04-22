@@ -31,10 +31,10 @@ import com.google.android.gms.maps.model.*
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import kotlinx.android.synthetic.main.fragment_home.view.popupStub
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.popup.*
 import kotlinx.android.synthetic.main.popup.view.*
+import kotlinx.android.synthetic.main.weather.view.*
 import kotlinx.coroutines.*
 import java.util.*
 import java.util.Calendar.DAY_OF_WEEK
@@ -109,9 +109,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
         // Run `onMapReady` when the map is ready to be used.
         // Anything that require the map needs to be there.
         mapFragment.getMapAsync(this)
-
-        // viewStubs needs to be inflated
-        root.popupStub.inflate()
 
         // Update the UI when address/weather changes.
         // When `model.place` is set in `onMapClick` the model will automatically
