@@ -102,20 +102,28 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
         val mapFragment = childFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
 
+        // This is no longer used, so might be removed
         job = Job()
 
+        // Run `onMapReady` when the map is ready to be used.
+        // Anything that require the map needs to be there.
         mapFragment.getMapAsync(this)
 
         // viewStubs needs to be inflated
         root.popupStub.inflate()
-        model.address.observe(viewLifecycleOwner, Observer {
-            if (it == "")
+
+        // Update the UI when address/weather changes.
+        // When `model.place` is set in `onMapClick` the model will automatically
+        // fetch the associated address and weather info in the background,
+        // notifying us here when done.
+        model.address.observe(viewLifecycleOwner, Observer { address ->
+            if (address == "")
                 popup.locationNameView.text = "Ingen addresseinformasjon tilgjengelig"
             else
-                popup.locationNameView.text = "Adresse: " + it
+                popup.locationNameView.text = "Adresse: " + address
         })
-        model.weather.observe(viewLifecycleOwner, Observer {
-            populatePopup(it)
+        model.weather.observe(viewLifecycleOwner, Observer { weather ->
+            populatePopup(weather)
         })
 
         Places.initialize(requireContext(), getString(R.string.google_maps_key))
@@ -216,6 +224,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
     override fun onMapClick(p: LatLng?) {
         if (p == null)
             return
+        // Store the location in the view model, it will do the necessary work of
+        // fetching weather and address info
         model.place.value = Place(p)
         marker?.remove()
         marker = map.addMarker(MarkerOptions().position(p))
@@ -231,6 +241,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
         zones.add(polygon)
         return polygon
     }
+
     @SuppressLint("SetTextI18n")
     private fun populatePopup(weather: Met.Kall) {
         activity?.runOnUiThread {

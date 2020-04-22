@@ -11,6 +11,14 @@ import java.io.IOException
 
 class HomeViewModel(application: Application) : AndroidViewModel(application) {
     val place: MutableLiveData<Place> = MutableLiveData()
+
+    /*
+        Transformations express dependencies between livedata.
+
+        Whenever place changes it will transformed into an address by the code below.
+
+        Same goes for weather.
+     */
     val address: LiveData<String> = Transformations.switchMap(place) {
         liveData {
             val p = it.position
