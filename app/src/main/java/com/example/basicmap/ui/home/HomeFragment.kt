@@ -39,6 +39,7 @@ import java.util.*
 import java.util.Calendar.DAY_OF_WEEK
 import kotlin.coroutines.CoroutineContext
 
+
 private val TAG = "HomeFragment"
 
 class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListener, CoroutineScope {
@@ -241,6 +242,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
             popup.precipitationView.text = "Regn: ${weather.properties.timeseries[0].data.next_1_hours.details.precipitation_amount} mm"
             popup.fogView.text = "Tåke: ${weather.properties.timeseries[0].data.instant.details.fog_area_fraction}%"
             popup.textView.text = "Klikk for neste dagers værvarsel"
+            val weatherIconName = weather.properties.timeseries[0].data.next_1_hours.summary.symbol_code
+            val id = resources.getIdentifier(weatherIconName, "mipmap", requireActivity().packageName)
+            popup.weatherImageView.setImageResource(id)
             popup.setOnClickListener {
                 val times = mutableListOf<Met.Numb>()
                 val day = listOf("Søndag", "Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag")
