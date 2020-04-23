@@ -351,8 +351,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
     fun populatePopupWithAstroData(astroData: Met.AstronomicalData) {
 
         activity?.runOnUiThread{
-            popup.sunSetTimeView.text = "Solnedgang: ${astroData.sunset}"
-            popup.sunRiseTimeView.text = "Soloppgang: ${astroData.sunrise}"
+            //popup.sunSetTimeView.text = "Solnedgang: ${astroData.sunset}"
+            //popup.sunRiseTimeView.text = "Soloppgang: ${astroData.sunrise}"
         }
     }
 

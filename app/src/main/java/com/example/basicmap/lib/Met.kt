@@ -6,8 +6,6 @@ import com.github.kittinunf.fuel.coroutines.awaitString
 import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 
@@ -45,7 +43,8 @@ class Met {
     data class Kall(val properties: Properties)
 
     //astronomical data: (formatting-"template" available here: https://api.met.no/weatherapi/sunrise/2.0/.json?lat=40.7127&lon=-74.0059&date=2020-04-23&offset=-05:00#
-    data class sunrise(val desc: String?, val time: String?)
+    //ENDRE TIL STOR BOKSTAV PÅ DISSE OGSÅ
+    data class Sunrise(val desc: String?, val time: String?)
     data class sunset(val time: String?)
     data class solarnoon(val time: String?, val elevation: String?)
     data class solarmidnight(val time: String?, val elevation: String?)
@@ -62,26 +61,26 @@ class Met {
     data class polarnightstart(val time: String?)
 
     data class location(val height: String?,
-                        val time: time,
+                        val time: List<time>,
                         val latitude: String?,
                         val longitude: String?)
 
-    data class time(val sunrise: sunrise,
-                    val moonposition: moonposition,
+    data class time(val sunrise: Sunrise?,
+                    val moonposition: moonposition?,
                     val date: String?,
-                    val solarmidnight: solarmidnight,
-                    val moonset: moonset,
-                    val low_moon: low_moon,
-                    val high_moon: high_moon,
-                    val solarnoon: solarnoon,
-                    val moonrise: moonrise,
-                    val moonphase: moonphase,
-                    val sunset: sunset,
-                    val moonshadow: moonshadow)
+                    val solarmidnight: solarmidnight?,
+                    val moonset: moonset?,
+                    val low_moon: low_moon?,
+                    val high_moon: high_moon?,
+                    val solarnoon: solarnoon?,
+                    val moonrise: moonrise?,
+                    val moonphase: moonphase?,
+                    val sunset: sunset?,
+                    val moonshadow: moonshadow?)
 
-    data class meta(val licenseurl: String?)
+    data class AstroMeta(val licenseurl: String?)
 
-    data class AstronomicalData(val location: location, val meta: meta)
+    data class AstronomicalData(val location: location, val meta: AstroMeta)
 
 
     suspend fun locationForecast(p: LatLng): Kall {
@@ -123,23 +122,19 @@ class Met {
         */
 
 
-        val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
-        var placeholderDate = sdf.format(Date())
-
-        val currentDatePlusTime: String = sdf.toString()
-        val placeholderDateStringList: List<String> = currentDatePlusTime.split(" ")
-        val currentDate: String = placeholderDateStringList[0]
+        val sdf = SimpleDateFormat("YYYY-MM-DD")
+        val currentDate = sdf.format(Date())
 
         //poenget med de 5 kodesnuttene over, er å gjøre formatet på datoen "spiselig" for meterologisk institutts API: YYYY-MM-DD
 
-        val baseSunsetUrl = "https://api.met.no/weatherapi/sunrise/2.0/.json"
-        val fullSunsetUrl =
-            "${baseSunsetUrl}?lat=${p.latitude}&lon=${p.longitude}&date=${currentDate}&offset=+01:00"
-        //sett inn sunset her; få igang et kall fra browser
 
+        //https://api.met.no/weatherapi/sunrise/2.0/.json?lat=40.7127&lon=-74.0059&date=2020-04-22&offset=-05:00 (New York, as JSON)
+        val baseSunsetUrl = "https://api.met.no/weatherapi/sunrise/2.0/.json"
+        val fullSunsetUrl = "${baseSunsetUrl}?lat=${p.latitude}&lon=${p.longitude}&date=${currentDate}&offset=+01:00"
+        //sett inn sunset her; få igang et kall fra browser
         val gson = Gson()
         val response = Fuel.get(fullSunsetUrl).awaitString()
-        Log.d("Url", fullSunsetUrl + "TESTING TESTING TESTING")
+        Log.d("Url", fullSunsetUrl + "TESTING ASTRODATA")
         val astronomicalData = gson.fromJson(response, AstronomicalData::class.java)
 
         return astronomicalData
