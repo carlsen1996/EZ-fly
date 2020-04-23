@@ -49,5 +49,12 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    val astronomicalData: LiveData<Met.AstronomicalData> = Transformations.switchMap(place) {
+        liveData {
+            val astro = Met().receiveAstroData(it.position)
+            emit(astro)
+        }
+    }
+
     var cameraPosition: CameraPosition? = null
 }

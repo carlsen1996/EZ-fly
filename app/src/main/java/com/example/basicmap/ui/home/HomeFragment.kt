@@ -124,6 +124,10 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
             populatePopup(weather)
         })
 
+        model.astronomicalData.observe(viewLifecycleOwner, Observer { astronomicalData ->
+            populatePopupWithAstroData(astronomicalData)
+        })
+
         Places.initialize(requireContext(), getString(R.string.google_maps_key))
         placesClient = Places.createClient(requireContext())
         locationClient = LocationServices.getFusedLocationProviderClient(requireContext())
@@ -336,6 +340,14 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
                         "Regn: ${times[4].data.next_6_hours.details.precipitation_amount} mm\n"
             }
 
+        }
+    }
+
+    fun populatePopupWithAstroData(astroData: Met.AstronomicalData) {
+
+        activity?.runOnUiThread{
+            //popup.sunSetTimeView.text = "Solnedgang: ${astroData.sunset}"
+            //popup.sunRiseTimeView.text = "Soloppgang: ${astroData.sunrise}"
         }
     }
 
