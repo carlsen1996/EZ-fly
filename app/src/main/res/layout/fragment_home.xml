@@ -21,10 +21,6 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Use a stub which is inflated on startup.
-         This way we can reuse the layout for the popup.
-            -->
-
     <include layout="@layout/popup"/>
 
     <ImageButton
