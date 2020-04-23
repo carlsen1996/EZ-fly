@@ -94,6 +94,36 @@
             tools:layout_editor_absoluteX="23dp"
             tools:layout_editor_absoluteY="143dp" />
 
+        <TextView
+            android:id="@+id/sunRiseTimeView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="30dp"
+            android:layout_toStartOf="@+id/weatherImageView"
+            android:maxHeight="100dp"
+            android:padding="8dp"
+            android:text=""
+            tools:layout_editor_absoluteX="23dp"
+            tools:layout_editor_absoluteY="143dp" />
+
+        <TextView
+            android:id="@+id/sunSetTimeView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/textView"
+            android:layout_below="@+id/sunRiseTimeView"
+            android:layout_marginEnd="60dp"
+            android:layout_marginBottom="81dp"
+            android:layout_toStartOf="@+id/explanationOfButton"
+            android:maxHeight="100dp"
+            android:padding="8dp"
+            android:text=""
+            tools:layout_editor_absoluteX="23dp"
+            tools:layout_editor_absoluteY="143dp" />
+
+
         <ImageView
             android:id="@+id/weatherImageView"
             android:layout_width="50dp"

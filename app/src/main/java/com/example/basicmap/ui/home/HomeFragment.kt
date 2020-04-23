@@ -229,6 +229,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
         model.place.value = Place(p)
         marker?.remove()
         marker = map.addMarker(MarkerOptions().position(p))
+
     }
 
     fun addZone(positions: List<LatLng>): Polygon? {
@@ -253,6 +254,10 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
             popup.precipitationView.text = "Regn: ${weather.properties.timeseries[0].data.next_1_hours.details.precipitation_amount} mm"
             popup.fogView.text = "Tåke: ${weather.properties.timeseries[0].data.instant.details.fog_area_fraction}%"
             popup.textView.text = "Klikk for neste dagers værvarsel"
+
+            //hvordan fikse dette her...
+            popup.sunSetTimeView.text = "Solnedgang: weather.
+
             val weatherIconName = weather.properties.timeseries[0].data.next_1_hours.summary.symbol_code
             val id = resources.getIdentifier(weatherIconName, "mipmap", requireActivity().packageName)
             popup.weatherImageView.setImageResource(id)
