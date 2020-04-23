@@ -6,6 +6,7 @@ import com.github.kittinunf.fuel.coroutines.awaitString
 import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
 import java.text.SimpleDateFormat
+import java.time.ZoneOffset.UTC
 import java.util.*
 
 
@@ -122,21 +123,21 @@ class Met {
         */
 
 
-        val sdf = SimpleDateFormat("YYYY-MM-DD")
+        val sdf = SimpleDateFormat("YYYY-MM-dd")
         val currentDate = sdf.format(Date())
-
+        Log.d("Date CHECK", currentDate)
         //poenget med de 5 kodesnuttene over, er å gjøre formatet på datoen "spiselig" for meterologisk institutts API: YYYY-MM-DD
 
 
-        //https://api.met.no/weatherapi/sunrise/2.0/.json?lat=40.7127&lon=-74.0059&date=2020-04-22&offset=-05:00 (New York, as JSON)
         val baseSunsetUrl = "https://api.met.no/weatherapi/sunrise/2.0/.json"
         val fullSunsetUrl = "${baseSunsetUrl}?lat=${p.latitude}&lon=${p.longitude}&date=${currentDate}&offset=+01:00"
         //sett inn sunset her; få igang et kall fra browser
         val gson = Gson()
-        val response = Fuel.get(fullSunsetUrl).awaitString()
         Log.d("Url", fullSunsetUrl + "TESTING ASTRODATA")
-        val astronomicalData = gson.fromJson(response, AstronomicalData::class.java)
+        val response = Fuel.get(fullSunsetUrl).awaitString()
+        println(response)
 
+        val astronomicalData = gson.fromJson(response, AstronomicalData::class.java)
         return astronomicalData
     }
 }
