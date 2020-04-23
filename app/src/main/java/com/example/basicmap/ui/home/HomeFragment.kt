@@ -126,6 +126,10 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
             populatePopup(weather)
         })
 
+        model.astronomicalData.observe(viewLifecycleOwner, Observer { astronomicalData ->
+            populatePopupWithAstroData(astronomicalData)
+        })
+
         Places.initialize(requireContext(), getString(R.string.google_maps_key))
         placesClient = Places.createClient(requireContext())
         locationClient = LocationServices.getFusedLocationProviderClient(requireContext())
@@ -255,9 +259,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
             popup.fogView.text = "Tåke: ${weather.properties.timeseries[0].data.instant.details.fog_area_fraction}%"
             popup.textView.text = "Klikk for neste dagers værvarsel"
 
-            //hvordan fikse dette her...
-            popup.sunSetTimeView.text = "Solnedgang: weather.
-
             val weatherIconName = weather.properties.timeseries[0].data.next_1_hours.summary.symbol_code
             val id = resources.getIdentifier(weatherIconName, "mipmap", requireActivity().packageName)
             popup.weatherImageView.setImageResource(id)
@@ -344,6 +345,14 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
                     popup.visibility = View.INVISIBLE
                 }
             }
+        }
+    }
+
+    fun populatePopupWithAstroData(astroData: Met.AstronomicalData) {
+
+        activity?.runOnUiThread{
+            popup.sunSetTimeView.text = "Solnedgang: ${astroData.sunset}"
+            popup.sunRiseTimeView.text = "Soloppgang: ${astroData.sunrise}"
         }
     }
 
