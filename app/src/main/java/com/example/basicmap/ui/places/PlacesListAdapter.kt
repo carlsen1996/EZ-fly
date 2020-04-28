@@ -1,11 +1,9 @@
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.basicmap.R.layout.place_kort
-import com.example.basicmap.R.layout.popup
 import com.example.basicmap.lib.Met
 import com.example.basicmap.ui.places.Place
 import com.example.basicmap.ui.places.PlacesViewModel
@@ -45,15 +43,15 @@ class PlacesListAdapter(val context: Context, val placesList: MutableList<Place>
             GlobalScope.launch {
                 val weather = Met().locationForecast(place.position)
                 withContext(Dispatchers.Main) {
-                    itemView.cardView.windSpeedView.text =
+                    itemView.cardView.day1.text =
                         "Vindhastighet: ${weather.properties.timeseries[0].data.instant.details.wind_speed} m/s"
-                    itemView.cardView.maxGustView.text =
+                    itemView.cardView.day2.text =
                         "Max vindkast: ${weather.properties.timeseries[0].data.instant.details.wind_speed_of_gust} m/s"
-                    itemView.cardView.temperatureView.text =
+                    itemView.cardView.day3.text =
                         "Temperatur: ${weather.properties.timeseries[0].data.instant.details.air_temperature} °C"
-                    itemView.cardView.precipitationView.text =
+                    itemView.cardView.day4.text =
                         "Regn: ${weather.properties.timeseries[0].data.next_1_hours.details.precipitation_amount} mm"
-                    itemView.cardView.fogView.text =
+                    itemView.cardView.day5.text =
                         "Tåke: ${weather.properties.timeseries[0].data.instant.details.fog_area_fraction}%"
                     itemView.cardView.textView.text = "Klikk for neste dagers værvarsel"
                 }
