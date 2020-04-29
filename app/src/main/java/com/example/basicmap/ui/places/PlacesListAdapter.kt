@@ -43,17 +43,17 @@ class PlacesListAdapter(val context: Context, val placesList: MutableList<Place>
             GlobalScope.launch {
                 val weather = Met().locationForecast(place.position)
                 withContext(Dispatchers.Main) {
-                    itemView.cardView.day1.text =
-                        "Vindhastighet: ${weather.properties.timeseries[0].data.instant.details.wind_speed} m/s"
-                    itemView.cardView.day2.text =
-                        "Max vindkast: ${weather.properties.timeseries[0].data.instant.details.wind_speed_of_gust} m/s"
-                    itemView.cardView.day3.text =
-                        "Temperatur: ${weather.properties.timeseries[0].data.instant.details.air_temperature} °C"
-                    itemView.cardView.day4.text =
-                        "Regn: ${weather.properties.timeseries[0].data.next_1_hours.details.precipitation_amount} mm"
-                    itemView.cardView.day5.text =
-                        "Tåke: ${weather.properties.timeseries[0].data.instant.details.fog_area_fraction}%"
-                    itemView.cardView.textView.text = "Klikk for neste dagers værvarsel"
+//                    itemView.cardView.day1.text =
+//                        "Vindhastighet: ${weather.properties.timeseries[0].data.instant.details.wind_speed} m/s"
+//                    itemView.cardView.day2.text =
+//                        "Max vindkast: ${weather.properties.timeseries[0].data.instant.details.wind_speed_of_gust} m/s"
+//                    itemView.cardView.day3.text =
+//                        "Temperatur: ${weather.properties.timeseries[0].data.instant.details.air_temperature} °C"
+//                    itemView.cardView.day4.text =
+//                        "Regn: ${weather.properties.timeseries[0].data.next_1_hours.details.precipitation_amount} mm"
+//                    itemView.cardView.day5.text =
+//                        "Tåke: ${weather.properties.timeseries[0].data.instant.details.fog_area_fraction}%"
+//                    itemView.cardView.textView.text = "Klikk for neste dagers værvarsel"
                 }
             }
 
