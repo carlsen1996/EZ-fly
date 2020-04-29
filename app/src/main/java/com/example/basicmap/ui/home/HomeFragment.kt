@@ -271,82 +271,83 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
             }
             var tempNow = weather.properties.timeseries[0].data.instant.details.air_temperature?.toDouble()?.roundToInt().toString()
 
+            popup.precipitationView.text = "NEDBØR\n${weather.properties.timeseries[0].data.instant.details.fog_area_fraction}%" //regn eller nedbør riktig her?
+            popup.visibilityView.text = "TÅKE\n${weather.properties.timeseries[0].data.instant.details.fog_area_fraction}%"
+            popup.kpindexView.text = "KP\n3"
 
             popup.tempValue.text = "${tempNow}°C"
-            popup.day0.text = "Nå:\n" +
-                    "Vindhastighet: ${weather.properties.timeseries[0].data.instant.details.wind_speed} m/s\n" +
-                    "Max vindkast: ${weather.properties.timeseries[0].data.instant.details.wind_speed_of_gust} m/s\n" +
-                    "Temperatur: ${weather.properties.timeseries[0].data.instant.details.air_temperature} °C\n" +
-                    "Regn: ${weather.properties.timeseries[0].data.next_1_hours.details.precipitation_amount} mm\n" +
-                    "Tåke: ${weather.properties.timeseries[0].data.instant.details.fog_area_fraction}%"
 
-            popup.precipitationView.text = "Nedbør:\n${weather.properties.timeseries[0].data.instant.details.fog_area_fraction}%" //regn eller nedbør riktig her?
-            popup.visibilityView.text = "Tåke:\n${weather.properties.timeseries[0].data.instant.details.fog_area_fraction}%"
-            popup.kpindexView.text = "KP-index:\n3"
-            dayNow++
-            popup.day1.text = "${day[dayNow]}:\n" +
-                    "Vindhastighet: ${times[0].data.instant.details.wind_speed} m/s\n" +
-                    "Max vindkast: ${times[0].data.instant.details.wind_speed_of_gust} m/s\n" +
-                    "Temperatur: ${times[0].data.instant.details.air_temperature} °C\n" +
-                    "Regn: ${times[0].data.next_6_hours.details.precipitation_amount} mm\n" +
-                    "Tåke: ${times[0].data.instant.details.fog_area_fraction}%"
-            dayNow++
-            if (dayNow == 7) {
-                dayNow = 0
-            }
-            popup.day2.text = "${day[dayNow]}:\n" +
-                    "Vindhastighet: ${times[1].data.instant.details.wind_speed} m/s\n" +
-                    "Max vindkast: ${times[1].data.instant.details.wind_speed_of_gust} m/s\n" +
-                    "Temperatur: ${times[1].data.instant.details.air_temperature} °C\n" +
-                    "Regn: ${times[1].data.next_6_hours.details.precipitation_amount} mm\n" +
-                    "Tåke: ${times[1].data.instant.details.fog_area_fraction}%"
-            dayNow++
-            if (dayNow == 7) {
-                dayNow = 0
-            }
-            if (times[2].data.next_6_hours.details.precipitation_amount == null) {
-                popup.day3.text = "${day[dayNow]}\n" +
-                        "Vindhastighet: ${times[2].data.instant.details.wind_speed} m/s\n" +
-                        "Temperatur: ${times[2].data.instant.details.air_temperature} °C\n" +
-                        "Regn: ${times[2].data.next_1_hours.details.precipitation_amount} mm\n"
-
-            } else {
-                popup.day3.text = "${day[dayNow]}:\n" +
-                        "Vindhastighet: ${times[2].data.instant.details.wind_speed} m/s\n" +
-                        "Temperatur: ${times[2].data.instant.details.air_temperature} °C\n" +
-                        "Regn: ${times[2].data.next_6_hours.details.precipitation_amount} mm\n"
-            }
-            dayNow++
-            if (dayNow == 7) {
-                dayNow = 0
-            }
-            if (times[3].data.next_6_hours.details.precipitation_amount == null) {
-                popup.day4.text = "${day[dayNow]}:\n" +
-                        "Vindhastighet: ${times[3].data.instant.details.wind_speed} m/s\n" +
-                        "Temperatur: ${times[3].data.instant.details.air_temperature} °C\n" +
-                        "Regn: ${times[3].data.next_1_hours.details.precipitation_amount} mm\n"
-            } else {
-                popup.day4.text = "${day[dayNow]}:\n" +
-                        "Vindhastighet: ${times[3].data.instant.details.wind_speed} m/s\n" +
-                        "Temperatur: ${times[3].data.instant.details.air_temperature} °C\n" +
-                        "Regn: ${times[3].data.next_6_hours.details.precipitation_amount} mm\n"
-            }
-
-            dayNow++
-            if (dayNow == 7) {
-                dayNow = 0
-            }
-            if (times[4].data.next_6_hours.details.precipitation_amount == null) {
-                popup.day5.text = "${day[dayNow]}:\n" +
-                        "Vindhastighet: ${times[4].data.instant.details.wind_speed} m/s\n" +
-                        "Temperatur: ${times[4].data.instant.details.air_temperature} °C\n" +
-                        "Regn: ${times[4].data.next_1_hours.details.precipitation_amount} mm\n"
-            } else {
-                popup.day5.text = "${day[dayNow]}:\n" +
-                        "Vindhastighet: ${times[4].data.instant.details.wind_speed} m/s\n" +
-                        "Temperatur: ${times[4].data.instant.details.air_temperature} °C\n" +
-                        "Regn: ${times[4].data.next_6_hours.details.precipitation_amount} mm\n"
-            }
+//            popup.day0.text = "Nå:\n" +
+//                    "Vindhastighet: ${weather.properties.timeseries[0].data.instant.details.wind_speed} m/s\n" +
+//                    "Max vindkast: ${weather.properties.timeseries[0].data.instant.details.wind_speed_of_gust} m/s\n" +
+//                    "Temperatur: ${weather.properties.timeseries[0].data.instant.details.air_temperature} °C\n" +
+//                    "Regn: ${weather.properties.timeseries[0].data.next_1_hours.details.precipitation_amount} mm\n" +
+//                    "Tåke: ${weather.properties.timeseries[0].data.instant.details.fog_area_fraction}%"
+//
+//            dayNow++
+//            popup.day1.text = "${day[dayNow]}:\n" +
+//                    "Vindhastighet: ${times[0].data.instant.details.wind_speed} m/s\n" +
+//                    "Max vindkast: ${times[0].data.instant.details.wind_speed_of_gust} m/s\n" +
+//                    "Temperatur: ${times[0].data.instant.details.air_temperature} °C\n" +
+//                    "Regn: ${times[0].data.next_6_hours.details.precipitation_amount} mm\n" +
+//                    "Tåke: ${times[0].data.instant.details.fog_area_fraction}%"
+//            dayNow++
+//            if (dayNow == 7) {
+//                dayNow = 0
+//            }
+//            popup.day2.text = "${day[dayNow]}:\n" +
+//                    "Vindhastighet: ${times[1].data.instant.details.wind_speed} m/s\n" +
+//                    "Max vindkast: ${times[1].data.instant.details.wind_speed_of_gust} m/s\n" +
+//                    "Temperatur: ${times[1].data.instant.details.air_temperature} °C\n" +
+//                    "Regn: ${times[1].data.next_6_hours.details.precipitation_amount} mm\n" +
+//                    "Tåke: ${times[1].data.instant.details.fog_area_fraction}%"
+//            dayNow++
+//            if (dayNow == 7) {
+//                dayNow = 0
+//            }
+//            if (times[2].data.next_6_hours.details.precipitation_amount == null) {
+//                popup.day3.text = "${day[dayNow]}\n" +
+//                        "Vindhastighet: ${times[2].data.instant.details.wind_speed} m/s\n" +
+//                        "Temperatur: ${times[2].data.instant.details.air_temperature} °C\n" +
+//                        "Regn: ${times[2].data.next_1_hours.details.precipitation_amount} mm\n"
+//
+//            } else {
+//                popup.day3.text = "${day[dayNow]}:\n" +
+//                        "Vindhastighet: ${times[2].data.instant.details.wind_speed} m/s\n" +
+//                        "Temperatur: ${times[2].data.instant.details.air_temperature} °C\n" +
+//                        "Regn: ${times[2].data.next_6_hours.details.precipitation_amount} mm\n"
+//            }
+//            dayNow++
+//            if (dayNow == 7) {
+//                dayNow = 0
+//            }
+//            if (times[3].data.next_6_hours.details.precipitation_amount == null) {
+//                popup.day4.text = "${day[dayNow]}:\n" +
+//                        "Vindhastighet: ${times[3].data.instant.details.wind_speed} m/s\n" +
+//                        "Temperatur: ${times[3].data.instant.details.air_temperature} °C\n" +
+//                        "Regn: ${times[3].data.next_1_hours.details.precipitation_amount} mm\n"
+//            } else {
+//                popup.day4.text = "${day[dayNow]}:\n" +
+//                        "Vindhastighet: ${times[3].data.instant.details.wind_speed} m/s\n" +
+//                        "Temperatur: ${times[3].data.instant.details.air_temperature} °C\n" +
+//                        "Regn: ${times[3].data.next_6_hours.details.precipitation_amount} mm\n"
+//            }
+//
+//            dayNow++
+//            if (dayNow == 7) {
+//                dayNow = 0
+//            }
+//            if (times[4].data.next_6_hours.details.precipitation_amount == null) {
+//                popup.day5.text = "${day[dayNow]}:\n" +
+//                        "Vindhastighet: ${times[4].data.instant.details.wind_speed} m/s\n" +
+//                        "Temperatur: ${times[4].data.instant.details.air_temperature} °C\n" +
+//                        "Regn: ${times[4].data.next_1_hours.details.precipitation_amount} mm\n"
+//            } else {
+//                popup.day5.text = "${day[dayNow]}:\n" +
+//                        "Vindhastighet: ${times[4].data.instant.details.wind_speed} m/s\n" +
+//                        "Temperatur: ${times[4].data.instant.details.air_temperature} °C\n" +
+//                        "Regn: ${times[4].data.next_6_hours.details.precipitation_amount} mm\n"
+//            }
 
         }
     }

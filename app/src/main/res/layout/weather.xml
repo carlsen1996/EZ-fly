@@ -180,7 +180,7 @@
     <RelativeLayout
         android:id="@+id/bottomBar"
         android:layout_width="300dp"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="220dp"
         android:background="@drawable/daybar_shape"
@@ -214,102 +214,6 @@
             android:text="precipitation"
             android:textColor="@color/quantum_white_100" />
     </RelativeLayout>
-    <TextView
-        android:id="@+id/day0"
-        android:visibility="gone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:padding="8dp"
-        android:text="" />
-
-    <TextView
-        android:id="@+id/day1"
-        android:visibility="gone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/day0"
-        android:padding="8dp"
-        android:text=""
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="-2dp" />
-
-    <TextView
-        android:id="@+id/day2"
-        android:visibility="gone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:text=""
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/day1"
-        tools:layout_editor_absoluteX="26dp"
-        tools:layout_editor_absoluteY="187dp" />
-
-    <TextView
-        android:id="@+id/day3"
-        android:visibility="gone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:text=""
-        android:layout_below="@+id/day2"
-        android:layout_alignParentStart="true"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="46dp" />
-
-    <TextView
-        android:id="@+id/day4"
-        android:visibility="gone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:text=""
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/day3"
-        tools:layout_editor_absoluteX="20dp"
-        tools:layout_editor_absoluteY="101dp" />
-
-
-    <TextView
-        android:id="@+id/day5"
-        android:visibility="gone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:text=""
-        android:layout_below="@+id/day4"
-        android:layout_alignParentStart="true"
-        tools:layout_editor_absoluteX="23dp"
-        tools:layout_editor_absoluteY="143dp" />
-
-    <ImageView
-        android:id="@+id/weatherImageView"
-        android:visibility="gone"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="20dp"
-        android:contentDescription="ImageOfWeather"
-        app:srcCompat="@drawable/ic_notifications_black_24dp" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:visibility="gone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/day4"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="15dp"
-        android:textSize="12sp"
-        android:text="Klikk for neste dagers værvarsel" />
 
     <ImageButton
         android:id="@+id/lagreLokasjonsKnapp"
