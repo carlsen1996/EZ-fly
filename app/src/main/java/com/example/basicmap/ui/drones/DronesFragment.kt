@@ -14,6 +14,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.basicmap.R
+import com.example.basicmap.lib.saveDrones
 import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.fragment_drones.view.*
 
@@ -44,7 +45,7 @@ class DronesFragment : Fragment() {
             if(viewAdapter.itemCount == 0) {
                 root.recycleViewTekst.visibility = VISIBLE
             }
-            saveData()
+            saveDrones(requireContext(), it)
         })
 
         //Add drone
@@ -55,16 +56,6 @@ class DronesFragment : Fragment() {
         }
 
         return root
-    }
-
-    //Lagre drone liste i minne
-    private fun saveData() {
-        val sharedPref: SharedPreferences = requireActivity().getSharedPreferences("sharedPref", AppCompatActivity.MODE_PRIVATE)
-        val editor: SharedPreferences.Editor = sharedPref.edit()
-        val gson = GsonBuilder().create()
-        val json = gson.toJson(dronesViewModel.getDroneList().value)
-        editor.putString("droneList", json)
-        editor.apply()
     }
 }
 
