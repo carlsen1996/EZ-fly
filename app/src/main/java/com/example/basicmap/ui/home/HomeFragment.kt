@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -33,7 +34,9 @@ import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.popup.*
+import kotlinx.android.synthetic.main.weather.*
 import kotlinx.android.synthetic.main.weather.view.*
+import kotlinx.android.synthetic.main.weather.view.lagreLokasjonsKnapp
 import kotlinx.coroutines.*
 import java.util.*
 import java.util.Calendar.DAY_OF_WEEK
@@ -276,6 +279,10 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
                     "Temperatur: ${weather.properties.timeseries[0].data.instant.details.air_temperature} °C\n" +
                     "Regn: ${weather.properties.timeseries[0].data.next_1_hours.details.precipitation_amount} mm\n" +
                     "Tåke: ${weather.properties.timeseries[0].data.instant.details.fog_area_fraction}%"
+
+            popup.precipitationView.text = "Nedbør:\n${weather.properties.timeseries[0].data.instant.details.fog_area_fraction}%" //regn eller nedbør riktig her?
+            popup.visibilityView.text = "Tåke:\n${weather.properties.timeseries[0].data.instant.details.fog_area_fraction}%"
+            popup.kpindexView.text = "KP-index:\n3"
             dayNow++
             popup.day1.text = "${day[dayNow]}:\n" +
                     "Vindhastighet: ${times[0].data.instant.details.wind_speed} m/s\n" +
