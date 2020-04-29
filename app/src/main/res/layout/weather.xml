@@ -242,7 +242,7 @@
         tools:layout_editor_absoluteY="143dp" />
 
     <TextView
-        android:id="@+id/addressView"
+        android:id="@+id/locationNameView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/bottomBar"
@@ -252,20 +252,7 @@
         android:layout_marginTop="12dp"
         android:layout_marginEnd="131dp"
         android:layout_marginBottom="-47dp"
-        android:layout_toStartOf="@+id/lagreLokasjonsKnapp"
-        android:text="Adresse" />
-
-    <TextView
-        android:id="@+id/locationNameView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:maxHeight="100dp"
-        android:padding="8dp"
-        android:text=""
-        android:layout_below="@+id/day5"
-        android:layout_alignParentStart="true"
-        tools:layout_editor_absoluteX="23dp"
-        tools:layout_editor_absoluteY="143dp" />
+        android:layout_toStartOf="@+id/lagreLokasjonsKnapp"/>
 
     <ImageView
         android:id="@+id/weatherImageView"
@@ -282,7 +269,7 @@
         app:srcCompat="@drawable/ic_notifications_black_24dp" />
 
 
-    <Button
+    <ImageButton
         android:id="@+id/lagreLokasjonsKnapp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -292,7 +279,8 @@
         android:layout_marginTop="7dp"
         android:layout_marginEnd="56dp"
         android:layout_marginBottom="-42dp"
-        android:text="Lagre sted" />
+        android:src="@android:drawable/btn_star_big_on"
+        android:visibility="visible" />
 
     <TextView
         android:id="@+id/textView"
