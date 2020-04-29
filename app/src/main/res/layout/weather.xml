@@ -24,7 +24,7 @@
         android:background="@drawable/daybar_shape">
 
         <Button
-            android:layout_width="50dp"
+            android:layout_width="55dp"
             android:layout_height="20dp"
             android:background="@drawable/daybar_button_shape"
             android:textColor="@color/quantum_white_100"
@@ -32,7 +32,7 @@
         </Button>
 
         <Button
-            android:layout_width="50dp"
+            android:layout_width="55dp"
             android:layout_height="20dp"
             android:background="@drawable/daybar_button_shape"
             android:textColor="@color/quantum_white_100"
@@ -40,7 +40,7 @@
         </Button>
 
         <Button
-            android:layout_width="50dp"
+            android:layout_width="55dp"
             android:layout_height="20dp"
             android:background="@drawable/daybar_button_shape"
             android:textColor="@color/quantum_white_100"
@@ -48,7 +48,7 @@
         </Button>
 
         <Button
-            android:layout_width="50dp"
+            android:layout_width="55dp"
             android:layout_height="20dp"
             android:background="@drawable/daybar_button_shape"
             android:textColor="@color/quantum_white_100"
@@ -56,7 +56,7 @@
         </Button>
 
         <Button
-            android:layout_width="50dp"
+            android:layout_width="55dp"
             android:layout_height="20dp"
             android:background="@drawable/daybar_button_shape"
             android:textColor="@color/quantum_white_100"
@@ -64,7 +64,7 @@
         </Button>
 
         <Button
-            android:layout_width="50dp"
+            android:layout_width="55dp"
             android:layout_height="20dp"
             android:background="@color/quantum_black_100"
             android:textColor="@color/quantum_white_100"
@@ -74,6 +74,65 @@
 
 
     </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/tempContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dayBar"
+        android:layout_marginLeft="38dp"
+        android:layout_marginTop="17dp"
+        android:background="@drawable/daybar_shape">
+
+        <TextView
+            android:id="@+id/tempValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1"
+            android:textColor="@color/quantum_white_100"
+            android:textSize="43sp" />
+
+        <TextView
+            android:id="@+id/minTempValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_toRightOf="@+id/tempValue"
+            android:text="Min: 3"
+            android:textColor="@color/quantum_white_100"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/maxTempValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_toRightOf="@+id/tempValue"
+            android:text="Max: 3"
+            android:textColor="@color/quantum_white_100"
+            android:textSize="10sp" />
+
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/windContainer"
+        android:layout_width="100dp"
+        android:layout_height="60dp"
+        android:background="@drawable/daybar_shape"
+        android:layout_marginTop="140dp"
+        android:layout_marginLeft="38dp"
+        ></RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/sunContainer"
+        android:layout_width="100dp"
+        android:layout_height="60dp"
+        android:background="@drawable/daybar_shape"
+        android:layout_marginTop="140dp"
+        android:layout_marginLeft="262dp"
+        ></RelativeLayout>
 
     <RelativeLayout
         android:layout_width="300dp"
