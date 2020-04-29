@@ -270,9 +270,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
                     "Regn: ${weather.properties.timeseries[0].data.next_1_hours.details.precipitation_amount} mm\n" +
                     "Tåke: ${weather.properties.timeseries[0].data.instant.details.fog_area_fraction}%"
 
-            popup.precipitationView.text = "Nedbør:\n${weather.properties.timeseries[0].data.instant.details.fog_area_fraction}%" //regn eller nedbør riktig her?
-            popup.visibilityView.text = "Tåke:\n${weather.properties.timeseries[0].data.instant.details.fog_area_fraction}%"
-            popup.kpindexView.text = "KP-index:\n3"
+            popup.precipitationView.text = "NEDBØR\n${weather.properties.timeseries[0].data.instant.details.fog_area_fraction}%" //regn eller nedbør riktig her?
+            popup.visibilityView.text = "TÅKE\n${weather.properties.timeseries[0].data.instant.details.fog_area_fraction}%"
+            popup.kpindexView.text = "KP\n3"
             dayNow++
             popup.day1.text = "${day[dayNow]}:\n" +
                     "Vindhastighet: ${times[0].data.instant.details.wind_speed} m/s\n" +
