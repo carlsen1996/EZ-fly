@@ -125,7 +125,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
         })
 
         model.astronomicalData.observe(viewLifecycleOwner, Observer { astronomicalData ->
-            populatePopupWithAstroData(astronomicalData)
+            if (astronomicalData != null)
+                populatePopupWithAstroData(astronomicalData)
         })
 
         Places.initialize(requireContext(), getString(R.string.google_maps_key))
