@@ -2,6 +2,7 @@ package com.example.basicmap.lib
 
 import android.util.Log
 import com.github.kittinunf.fuel.Fuel
+import com.github.kittinunf.fuel.core.HttpException
 import com.github.kittinunf.fuel.coroutines.awaitString
 import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
@@ -99,7 +100,7 @@ class Met {
         return weather
     }
 
-    suspend fun receiveAstroData(p: LatLng): AstronomicalData {
+    suspend fun receiveAstroData(p: LatLng): AstronomicalData? {
 
         /* meterologisk institutts instruksjoner for bruk av sunset/sunrise api:
         Parameters
@@ -133,7 +134,13 @@ class Met {
         val fullSunsetUrl = "${baseSunsetUrl}?lat=${p.latitude}&lon=${p.longitude}&date=${currentDate}&offset=+01:00"
         //sett inn sunset her; få igang et kall fra browser
         val gson = Gson()
-        val response = Fuel.get(fullSunsetUrl).awaitString()
+        var response: String? = null
+        try {
+            response = Fuel.get(fullSunsetUrl).awaitString()
+        } catch(e: Exception) {
+            Log.d("sunrise", e.toString())
+            return null
+        }
         Log.d("Url", fullSunsetUrl + "TESTING ASTRODATA")
         val astronomicalData = gson.fromJson(response, AstronomicalData::class.java)
 
