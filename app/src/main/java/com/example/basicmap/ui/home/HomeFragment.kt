@@ -38,6 +38,7 @@ import kotlinx.coroutines.*
 import java.util.*
 import java.util.Calendar.DAY_OF_WEEK
 import kotlin.coroutines.CoroutineContext
+import kotlin.math.roundToInt
 
 
 private val TAG = "HomeFragment"
@@ -260,6 +261,10 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
                     times.add(weather.properties.timeseries[i])
                 }
             }
+            var tempNow = weather.properties.timeseries[0].data.instant.details.air_temperature?.toDouble()?.roundToInt().toString()
+
+
+            popup.tempValue.text = "${tempNow}°C"
             popup.day0.text = "Nå:\n" +
                     "Vindhastighet: ${weather.properties.timeseries[0].data.instant.details.wind_speed} m/s\n" +
                     "Max vindkast: ${weather.properties.timeseries[0].data.instant.details.wind_speed_of_gust} m/s\n" +
