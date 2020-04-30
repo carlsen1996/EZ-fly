@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
+import com.example.basicmap.lib.loadDrones
 import com.example.basicmap.ui.drones.Drone
 import com.example.basicmap.ui.drones.DronesFragment
 import com.example.basicmap.ui.drones.DronesViewModel
@@ -34,7 +35,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val viewPager: ViewPager = findViewById(R.id.view_pager)
-        loadDrones()
+        val drones = loadDrones(application)
+        dronesViewModel.getDroneList().value = drones?.toMutableList()
 
         // While this is deprecated, ViewPager2 introduces a bunch of unnecessary complications
         // with scrolling.
@@ -71,13 +73,5 @@ class MainActivity : AppCompatActivity() {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         }
 
-    }
-    //Get dronelist from device memory
-    private fun loadDrones() {
-        val sharedPref: SharedPreferences = getSharedPreferences("sharedPref", AppCompatActivity.MODE_PRIVATE)
-        val gson = GsonBuilder().create()
-        val json = sharedPref.getString("droneList", null)
-        val drones = gson.fromJson(json, Array<Drone>::class.java) ?: return
-        dronesViewModel.getDroneList().value = drones.toMutableList()
     }
 }
