@@ -147,28 +147,34 @@
     </RelativeLayout>
 
 
-    <RelativeLayout
-        android:id="@+id/windContainer"
-        android:layout_width="100dp"
-        android:layout_height="60dp"
-        android:background="@color/quantum_grey800"
-        >
+    <LinearLayout
+        android:showDividers="middle"
+        android:divider="@drawable/empty_tall_divider"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center">
 
-        <ImageView
-            android:layout_width="70dp"
-            android:layout_height="55dp"
-            android:src="@drawable/ic_winds"
-            android:layout_centerInParent="true">
-        </ImageView>
+        <RelativeLayout
+            android:id="@+id/windContainer"
+            android:layout_width="100dp"
+            android:layout_height="60dp"
+            android:background="@color/quantum_grey800">
 
-    </RelativeLayout>
+            <ImageView
+                android:layout_width="70dp"
+                android:layout_height="55dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_winds" />
 
-    <RelativeLayout
-        android:id="@+id/sunContainer"
-        android:layout_width="100dp"
-        android:layout_height="60dp"
-        android:background="@drawable/daybar_shape"
-        ></RelativeLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/sunContainer"
+            android:layout_width="100dp"
+            android:layout_height="60dp"
+            android:background="@drawable/daybar_shape" />
+
+    </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/bottomBar"
@@ -207,18 +213,24 @@
             android:textColor="@color/quantum_white_100" />
     </RelativeLayout>
 
-    <ImageButton
-        android:id="@+id/lagreLokasjonsKnapp"
+    <LinearLayout
+        android:layout_gravity="center"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/common_google_signin_btn_icon_light_normal_background"
-        android:src="@android:drawable/btn_star_big_off"
-        android:visibility="visible" />
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/locationNameView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="placeholder address" />
+        <TextView
+            android:id="@+id/locationNameView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="placeholder address" />
+
+        <ImageButton
+            android:id="@+id/lagreLokasjonsKnapp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/common_google_signin_btn_icon_light_normal_background"
+            android:src="@android:drawable/btn_star_big_off"
+            android:visibility="visible" />
+    </LinearLayout>
 
 </LinearLayout>
