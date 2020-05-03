@@ -18,6 +18,7 @@
             android:id="@+id/gotoButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="7dp"
             android:src="@android:drawable/ic_menu_compass"
             android:visibility="visible" />
 
@@ -27,9 +28,11 @@
             android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:textStyle="bold"
             android:text="placeholder address" />
 
         <ImageButton
+            android:padding="7dp"
             android:id="@+id/lagreLokasjonsKnapp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
