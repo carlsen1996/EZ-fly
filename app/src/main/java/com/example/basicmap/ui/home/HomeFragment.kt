@@ -254,7 +254,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
     private fun populatePopup(weather: Met.Kall) {
         activity?.runOnUiThread {
             var botview = BottomSheetBehavior.from(popup)
-            botview.state = BottomSheetBehavior.STATE_HALF_EXPANDED
+            botview.state = BottomSheetBehavior.STATE_EXPANDED
             popup.visibility = View.VISIBLE
             val weatherIconName = weather.properties.timeseries[0].data.next_1_hours.summary.symbol_code
             val id = resources.getIdentifier(weatherIconName, "mipmap", requireActivity().packageName)
