@@ -4,16 +4,40 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
+    android:layout_margin="5dp"
     android:showDividers="middle"
     android:divider="@drawable/empty_tall_divider"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <View
-        android:layout_width="70dp"
-        android:layout_height="4dp"
-        android:layout_centerHorizontal="true"
-        android:background="@color/quantum_grey400" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:id="@+id/gotoButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/design_default_color_background"
+            android:src="@android:drawable/ic_menu_compass"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/locationNameView"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="placeholder address" />
+
+        <ImageButton
+            android:id="@+id/lagreLokasjonsKnapp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/design_default_color_background"
+            android:src="@android:drawable/star_big_off"
+            android:visibility="visible" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -213,24 +237,5 @@
             android:textColor="@color/quantum_white_100" />
     </RelativeLayout>
 
-    <LinearLayout
-        android:layout_gravity="center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:id="@+id/locationNameView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="placeholder address" />
-
-        <ImageButton
-            android:id="@+id/lagreLokasjonsKnapp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/common_google_signin_btn_icon_light_normal_background"
-            android:src="@android:drawable/btn_star_big_off"
-            android:visibility="visible" />
-    </LinearLayout>
 
 </LinearLayout>
