@@ -11,9 +11,8 @@
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
         app:behavior_hideable = "true"
         android:visibility="invisible"
-        app:behavior_peekHeight = "200dp"
         android:background="@android:color/white"
-        android:layout_height="350dp">
+        android:layout_height="wrap_content">
 
         <include layout="@layout/weather"/>
 
