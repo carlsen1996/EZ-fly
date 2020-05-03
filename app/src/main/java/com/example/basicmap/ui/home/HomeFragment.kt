@@ -121,7 +121,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
             if (address == "")
                 popup.locationNameView.text = "Ingen addresseinformasjon tilgjengelig"
             else
-                popup.locationNameView.text = "Adresse: " + address
+                popup.locationNameView.text = address
         })
         model.weather.observe(viewLifecycleOwner, Observer { weather ->
             populatePopup(weather)
