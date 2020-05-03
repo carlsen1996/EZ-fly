@@ -21,6 +21,7 @@ class PlacesListAdapter(val context: Context, val placesList: MutableList<Place>
 
         fun setData(place: Place, pos: Int) {
             itemView.locationNameView.text = place.address
+            itemView.lagreLokasjonsKnapp.setImageResource(android.R.drawable.star_big_on)
             itemView.lagreLokasjonsKnapp.setOnClickListener {
                 val builder = androidx.appcompat.app.AlertDialog.Builder(context)
                 builder.setTitle("Slett lokasjon/plass")
