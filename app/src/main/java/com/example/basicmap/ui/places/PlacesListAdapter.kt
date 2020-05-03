@@ -13,6 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlin.math.roundToInt
 
 
 class PlacesListAdapter(val context: Context, val placesList: MutableList<Place>?) : RecyclerView.Adapter<PlacesListAdapter.PlacesViewHolder>() {
@@ -44,17 +45,14 @@ class PlacesListAdapter(val context: Context, val placesList: MutableList<Place>
             GlobalScope.launch {
                 val weather = Met().locationForecast(place.position)
                 withContext(Dispatchers.Main) {
-//                    itemView.cardView.day1.text =
-//                        "Vindhastighet: ${weather.properties.timeseries[0].data.instant.details.wind_speed} m/s"
-//                    itemView.cardView.day2.text =
-//                        "Max vindkast: ${weather.properties.timeseries[0].data.instant.details.wind_speed_of_gust} m/s"
-//                    itemView.cardView.day3.text =
-//                        "Temperatur: ${weather.properties.timeseries[0].data.instant.details.air_temperature} °C"
-//                    itemView.cardView.day4.text =
-//                        "Regn: ${weather.properties.timeseries[0].data.next_1_hours.details.precipitation_amount} mm"
-//                    itemView.cardView.day5.text =
-//                        "Tåke: ${weather.properties.timeseries[0].data.instant.details.fog_area_fraction}%"
-//                    itemView.cardView.textView.text = "Klikk for neste dagers værvarsel"
+                    var tempNow = weather.properties.timeseries[0].data.instant.details.air_temperature?.toDouble()?.roundToInt().toString()
+
+                    itemView.cardView.precipitationView.text = "NEDBØR\n${weather.properties.timeseries[0].data.instant.details.fog_area_fraction}%" //regn eller nedbør riktig her?
+                    itemView.cardView.visibilityView.text = "TÅKE\n${weather.properties.timeseries[0].data.instant.details.fog_area_fraction}%"
+                    itemView.cardView.kpindexView.text = "KP\n3"
+
+                    itemView.cardView.tempValue.text = "${tempNow}°C"
+
                 }
             }
 
