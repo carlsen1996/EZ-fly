@@ -147,10 +147,12 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
                 Toast.LENGTH_SHORT
             )
             if (place.favorite) {
+                popup.lagreLokasjonsKnapp.setImageResource(android.R.drawable.star_big_off)
                 toast.setText("${model.address.value}, er fjernet fra favoritter")
                 place.favorite = false
                 places.remove(place)
             } else {
+                popup.lagreLokasjonsKnapp.setImageResource(android.R.drawable.star_big_on)
                 toast.setText("${model.address.value}, er lagt til i favoritter")
                 place.favorite = true
                 places.add(place)
