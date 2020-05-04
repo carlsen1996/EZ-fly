@@ -10,7 +10,10 @@ import com.google.android.gms.maps.model.LatLng
 import java.io.IOException
 
 class HomeViewModel(application: Application) : AndroidViewModel(application) {
-    val place: MutableLiveData<Place> = MutableLiveData()
+
+    companion object {
+        val place: MutableLiveData<Place> = MutableLiveData()
+    }
 
     /*
         Transformations express dependencies between livedata.
@@ -49,5 +52,14 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    val astronomicalData: LiveData<Met.AstronomicalData?> = Transformations.switchMap(place) {
+        liveData {
+            val astro = Met().receiveAstroData(it.position)
+            emit(astro)
+        }
+    }
+
     var cameraPosition: CameraPosition? = null
+
+    fun getPlace() = place
 }

@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.basicmap.R
 import com.example.basicmap.lib.loadPlaces
 import com.example.basicmap.lib.savePlaces
+import com.example.basicmap.ui.home.HomeViewModel
 import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.fragment_places.*
 import kotlinx.android.synthetic.main.fragment_places.view.*
@@ -29,6 +30,7 @@ class PlacesFragment : Fragment() {
     private lateinit var viewManager: RecyclerView.LayoutManager
 
     private val placesViewModel = PlacesViewModel()
+    val homeViewModel: HomeViewModel by viewModels()
     var placesList =  mutableListOf<Place>()
 
     override fun onCreateView(
@@ -42,8 +44,10 @@ class PlacesFragment : Fragment() {
 
         placesViewModel.getPlaces().observe(viewLifecycleOwner, Observer<MutableList<Place>> {
             viewManager = LinearLayoutManager(activity)
-            viewAdapter = PlacesListAdapter(requireContext(), placesViewModel.getPlaces().value)
+            viewAdapter = PlacesListAdapter(this, placesViewModel.getPlaces().value)
             recyclerView = root.recyclerView.apply {
+
+
                 setHasFixedSize(true)
                 layoutManager = viewManager
                 adapter = viewAdapter

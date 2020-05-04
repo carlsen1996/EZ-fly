@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:layout_margin="5dp"
+    android:showDividers="middle"
+    android:divider="@drawable/empty_tall_divider"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:id="@+id/gotoButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="7dp"
+            android:src="@android:drawable/ic_menu_compass"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/locationNameView"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textStyle="bold"
+            android:text="placeholder address" />
+
+        <ImageButton
+            android:padding="7dp"
+            android:id="@+id/lagreLokasjonsKnapp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/star_big_off"
+            android:visibility="visible" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/dayBar"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:background="@drawable/daybar_shape">
+
+        <Button
+            android:layout_width="55dp"
+            android:layout_height="20dp"
+            android:background="@drawable/daybar_button_shape"
+            android:textColor="@color/quantum_white_100"
+            android:text="man">
+        </Button>
+
+        <Button
+            android:layout_width="55dp"
+            android:layout_height="20dp"
+            android:background="@drawable/daybar_button_shape"
+            android:textColor="@color/quantum_white_100"
+            android:text="man">
+        </Button>
+
+        <Button
+            android:layout_width="55dp"
+            android:layout_height="20dp"
+            android:background="@drawable/daybar_button_shape"
+            android:textColor="@color/quantum_white_100"
+            android:text="man">
+        </Button>
+
+        <Button
+            android:layout_width="55dp"
+            android:layout_height="20dp"
+            android:background="@drawable/daybar_button_shape"
+            android:textColor="@color/quantum_white_100"
+            android:text="man">
+        </Button>
+
+        <Button
+            android:layout_width="55dp"
+            android:layout_height="20dp"
+            android:background="@drawable/daybar_button_shape"
+            android:textColor="@color/quantum_white_100"
+            android:text="man">
+        </Button>
+
+        <Button
+            android:layout_width="55dp"
+            android:layout_height="20dp"
+            android:background="@color/quantum_black_100"
+            android:textColor="@color/quantum_white_100"
+            android:text="man">
+        </Button>
+
+
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="336dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/daybar_shape"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:id="@+id/tempContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/daybar_shape">
+
+            <TextView
+                android:id="@+id/tempValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="70°C"
+                android:layout_marginTop="4dp"
+                android:textFontWeight="1"
+                android:textColor="@color/quantum_white_100"
+                android:textSize="40sp"
+                android:fontFamily="@font/lato_light"/>
+
+            <TextView
+                android:id="@+id/minTempValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="12dp"
+                android:layout_toRightOf="@+id/tempValue"
+                android:text="Min: 3"
+                android:textColor="@color/quantum_white_100"
+                android:fontFamily="@font/lato_regular"
+                android:textSize="10sp" />
+
+            <TextView
+                android:id="@+id/maxTempValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="24dp"
+                android:layout_toRightOf="@+id/tempValue"
+                android:text="Max: 3"
+                android:fontFamily="@font/lato_regular"
+                android:textColor="@color/quantum_white_100"
+                android:textSize="10sp" />
+
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="70dp"
+            android:layout_height="60dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/daybar_shape">
+
+            <ImageView
+                android:id="@+id/weatherImageView"
+                android:layout_centerInParent="true"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:contentDescription="ImageOfWeather"
+                app:srcCompat="@drawable/ic_notifications_black_24dp" />
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:showDividers="middle"
+        android:divider="@drawable/empty_tall_divider"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+        <RelativeLayout
+            android:id="@+id/windContainer"
+            android:layout_width="100dp"
+            android:layout_height="60dp"
+            android:background="@color/quantum_grey800">
+
+            <ImageView
+                android:layout_width="70dp"
+                android:layout_height="55dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_winds" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/sunContainer"
+            android:layout_width="100dp"
+            android:layout_height="60dp"
+            android:background="@drawable/daybar_shape" />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/bottomBar"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/daybar_shape"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <TextView
+            android:id="@+id/kpindexView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerHorizontal="true"
+            android:text="Kp Index"
+            android:textColor="@color/quantum_white_100" />
+
+
+        <TextView
+            android:id="@+id/visibilityView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="visibility"
+            android:textColor="@color/quantum_white_100" />
+
+        <TextView
+            android:id="@+id/precipitationView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerHorizontal="true"
+            android:text="precipitation"
+            android:textColor="@color/quantum_white_100" />
+    </RelativeLayout>
+
+
+</LinearLayout>

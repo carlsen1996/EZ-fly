@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -30,14 +31,18 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.net.PlacesClient
-import kotlinx.android.synthetic.main.fragment_home.view.popupStub
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.popup.*
-import kotlinx.android.synthetic.main.popup.view.*
+import kotlinx.android.synthetic.main.weather.*
+import kotlinx.android.synthetic.main.weather.view.*
+import kotlinx.android.synthetic.main.weather.view.lagreLokasjonsKnapp
 import kotlinx.coroutines.*
 import java.util.*
 import java.util.Calendar.DAY_OF_WEEK
 import kotlin.coroutines.CoroutineContext
+import kotlin.math.roundToInt
 
 
 private val TAG = "HomeFragment"
@@ -109,9 +114,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
         // Anything that require the map needs to be there.
         mapFragment.getMapAsync(this)
 
-        // viewStubs needs to be inflated
-        root.popupStub.inflate()
-
         // Update the UI when address/weather changes.
         // When `model.place` is set in `onMapClick` the model will automatically
         // fetch the associated address and weather info in the background,
@@ -120,10 +122,15 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
             if (address == "")
                 popup.locationNameView.text = "Ingen addresseinformasjon tilgjengelig"
             else
-                popup.locationNameView.text = "Adresse: " + address
+                popup.locationNameView.text = address
         })
         model.weather.observe(viewLifecycleOwner, Observer { weather ->
             populatePopup(weather)
+        })
+
+        model.astronomicalData.observe(viewLifecycleOwner, Observer { astronomicalData ->
+            if (astronomicalData != null)
+                populatePopupWithAstroData(astronomicalData)
         })
 
         Places.initialize(requireContext(), getString(R.string.google_maps_key))
@@ -132,7 +139,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
 
         root.lagreLokasjonsKnapp.setOnClickListener {
             // This is only accessible from the popup, meaning the position has been set
-            val place = model.place.value!!
+            val place = model.getPlace().value!!
             place.address = model.address.value ?: ""
             val places = placesViewModel.getPlaces().value!!
             val toast = Toast.makeText(
@@ -141,16 +148,21 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
                 Toast.LENGTH_SHORT
             )
             if (place.favorite) {
+                popup.lagreLokasjonsKnapp.setImageResource(android.R.drawable.star_big_off)
                 toast.setText("${model.address.value}, er fjernet fra favoritter")
                 place.favorite = false
                 places.remove(place)
             } else {
+                popup.lagreLokasjonsKnapp.setImageResource(android.R.drawable.star_big_on)
                 toast.setText("${model.address.value}, er lagt til i favoritter")
                 place.favorite = true
                 places.add(place)
             }
             placesViewModel.getPlaces().value = places
             toast.show()
+        }
+        root.gotoButton.setOnClickListener {
+            map.animateCamera(CameraUpdateFactory.newLatLng(model.getPlace().value!!.position))
         }
 
         return root
@@ -162,6 +174,34 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
         map = googleMap
 
         map.setOnMapClickListener(this)
+
+        // Make sure new markers are inside the viewport
+        model.getPlace().observe(viewLifecycleOwner, Observer {
+            Log.d("place observer", "foo")
+            if (it == null)
+                return@Observer
+
+            if (it.favorite) {
+                popup.lagreLokasjonsKnapp.setImageResource(android.R.drawable.star_big_on)
+            } else {
+                popup.lagreLokasjonsKnapp.setImageResource(android.R.drawable.star_big_off)
+            }
+
+            val oldPlace = marker?.tag as Place?
+            if (oldPlace == it) {
+                return@Observer
+            }
+
+            marker?.remove()
+            marker = map.addMarker(MarkerOptions().position(it.position))
+            marker?.setTag(it)
+            val bounds = map.projection.visibleRegion.latLngBounds
+            if (!bounds.contains(it.position)) {
+                Log.d("place observer", "move.")
+                map.animateCamera(CameraUpdateFactory.newLatLng(it.position))
+            }
+        })
+
         if (model.cameraPosition == null) {
             getLocationPermission()
             getDeviceLocation()
@@ -226,9 +266,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
             return
         // Store the location in the view model, it will do the necessary work of
         // fetching weather and address info
-        model.place.value = Place(p)
-        marker?.remove()
-        marker = map.addMarker(MarkerOptions().position(p))
+        model.getPlace().value = Place(p)
     }
 
     fun addZone(positions: List<LatLng>): Polygon? {
@@ -245,100 +283,112 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
     @SuppressLint("SetTextI18n")
     private fun populatePopup(weather: Met.Kall) {
         activity?.runOnUiThread {
+            var botview = BottomSheetBehavior.from(popup)
+            botview.state = BottomSheetBehavior.STATE_EXPANDED
             popup.visibility = View.VISIBLE
-            popup.timeView.text = "Nå:"
-            popup.windSpeedView.text = "Vindhastighet: ${weather.properties.timeseries[0].data.instant.details.wind_speed} m/s"
-            popup.maxGustView.text = "Max vindkast: ${weather.properties.timeseries[0].data.instant.details.wind_speed_of_gust} m/s"
-            popup.temperatureView.text = "Temperatur: ${weather.properties.timeseries[0].data.instant.details.air_temperature} °C"
-            popup.precipitationView.text = "Regn: ${weather.properties.timeseries[0].data.next_1_hours.details.precipitation_amount} mm"
-            popup.fogView.text = "Tåke: ${weather.properties.timeseries[0].data.instant.details.fog_area_fraction}%"
-            popup.textView.text = "Klikk for neste dagers værvarsel"
             val weatherIconName = weather.properties.timeseries[0].data.next_1_hours.summary.symbol_code
             val id = resources.getIdentifier(weatherIconName, "mipmap", requireActivity().packageName)
             popup.weatherImageView.setImageResource(id)
-            popup.setOnClickListener {
-                val times = mutableListOf<Met.Numb>()
-                val day = listOf("Søndag", "Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag")
-                var dayNow = Calendar.getInstance().get(DAY_OF_WEEK) - 1
-                for (i in 6..75) {
-                    val time = weather.properties.timeseries[i].time
-                    val hour1 = time[11]
-                    val hour2 = time[12]
-                    val hour = "${hour1}${hour2}"
-                    if (hour == "12") {
-                        times.add(weather.properties.timeseries[i])
-                    }
-                }
-                dayNow++
-                popup.timeView.text = "${day[dayNow]}:\n" +
-                        "Vindhastighet: ${times[0].data.instant.details.wind_speed} m/s\n" +
-                        "Max vindkast: ${times[0].data.instant.details.wind_speed_of_gust} m/s\n" +
-                        "Temperatur: ${times[0].data.instant.details.air_temperature} °C\n" +
-                        "Regn: ${times[0].data.next_6_hours.details.precipitation_amount} mm\n" +
-                        "Tåke: ${times[0].data.instant.details.fog_area_fraction}%"
-                dayNow++
-                if (dayNow == 7) {
-                    dayNow = 0
-                }
-                popup.windSpeedView.text = "${day[dayNow]}:\n" +
-                        "Vindhastighet: ${times[1].data.instant.details.wind_speed} m/s\n" +
-                        "Max vindkast: ${times[1].data.instant.details.wind_speed_of_gust} m/s\n" +
-                        "Temperatur: ${times[1].data.instant.details.air_temperature} °C\n" +
-                        "Regn: ${times[1].data.next_6_hours.details.precipitation_amount} mm\n" +
-                        "Tåke: ${times[1].data.instant.details.fog_area_fraction}%"
-                dayNow++
-                if (dayNow == 7) {
-                    dayNow = 0
-                }
-                if (times[2].data.next_6_hours.details.precipitation_amount == null) {
-                    popup.maxGustView.text = "${day[dayNow]}\n" +
-                            "Vindhastighet: ${times[2].data.instant.details.wind_speed} m/s\n" +
-                            "Temperatur: ${times[2].data.instant.details.air_temperature} °C\n" +
-                            "Regn: ${times[2].data.next_1_hours.details.precipitation_amount} mm\n"
-
-                } else {
-                    popup.maxGustView.text = "${day[dayNow]}:\n" +
-                            "Vindhastighet: ${times[2].data.instant.details.wind_speed} m/s\n" +
-                            "Temperatur: ${times[2].data.instant.details.air_temperature} °C\n" +
-                            "Regn: ${times[2].data.next_6_hours.details.precipitation_amount} mm\n"
-                }
-                dayNow++
-                if (dayNow == 7) {
-                    dayNow = 0
-                }
-                if (times[3].data.next_6_hours.details.precipitation_amount == null) {
-                    popup.temperatureView.text = "${day[dayNow]}:\n" +
-                            "Vindhastighet: ${times[3].data.instant.details.wind_speed} m/s\n" +
-                            "Temperatur: ${times[3].data.instant.details.air_temperature} °C\n" +
-                            "Regn: ${times[3].data.next_1_hours.details.precipitation_amount} mm\n"
-                } else {
-                    popup.temperatureView.text = "${day[dayNow]}:\n" +
-                            "Vindhastighet: ${times[3].data.instant.details.wind_speed} m/s\n" +
-                            "Temperatur: ${times[3].data.instant.details.air_temperature} °C\n" +
-                            "Regn: ${times[3].data.next_6_hours.details.precipitation_amount} mm\n"
-                }
-
-                dayNow++
-                if (dayNow == 7) {
-                    dayNow = 0
-                }
-                if (times[4].data.next_6_hours.details.precipitation_amount == null) {
-                    popup.precipitationView.text = "${day[dayNow]}:\n" +
-                            "Vindhastighet: ${times[4].data.instant.details.wind_speed} m/s\n" +
-                            "Temperatur: ${times[4].data.instant.details.air_temperature} °C\n" +
-                            "Regn: ${times[4].data.next_1_hours.details.precipitation_amount} mm\n"
-                } else {
-                    popup.precipitationView.text = "${day[dayNow]}:\n" +
-                            "Vindhastighet: ${times[4].data.instant.details.wind_speed} m/s\n" +
-                            "Temperatur: ${times[4].data.instant.details.air_temperature} °C\n" +
-                            "Regn: ${times[4].data.next_6_hours.details.precipitation_amount} mm\n"
-                }
-                popup.fogView.text = ""
-                popup.textView.text = "Klikk for å gå tilbake til kartet"
-                popup.setOnClickListener{
-                    popup.visibility = View.INVISIBLE
+            val times = mutableListOf<Met.Numb>()
+            val day = listOf("Søndag", "Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag")
+            var dayNow = Calendar.getInstance().get(DAY_OF_WEEK) - 1
+            for (i in 6..75) {
+                val time = weather.properties.timeseries[i].time
+                val hour1 = time[11]
+                val hour2 = time[12]
+                val hour = "${hour1}${hour2}"
+                if (hour == "12") {
+                    times.add(weather.properties.timeseries[i])
                 }
             }
+            var tempNow = weather.properties.timeseries[0].data.instant.details.air_temperature?.toDouble()?.roundToInt().toString()
+
+            popup.precipitationView.text = "NEDBØR\n${weather.properties.timeseries[0].data.instant.details.fog_area_fraction}%" //regn eller nedbør riktig her?
+            popup.visibilityView.text = "TÅKE\n${weather.properties.timeseries[0].data.instant.details.fog_area_fraction}%"
+            popup.kpindexView.text = "KP\n3"
+
+            popup.tempValue.text = "${tempNow}°C"
+
+//            popup.day0.text = "Nå:\n" +
+//                    "Vindhastighet: ${weather.properties.timeseries[0].data.instant.details.wind_speed} m/s\n" +
+//                    "Max vindkast: ${weather.properties.timeseries[0].data.instant.details.wind_speed_of_gust} m/s\n" +
+//                    "Temperatur: ${weather.properties.timeseries[0].data.instant.details.air_temperature} °C\n" +
+//                    "Regn: ${weather.properties.timeseries[0].data.next_1_hours.details.precipitation_amount} mm\n" +
+//                    "Tåke: ${weather.properties.timeseries[0].data.instant.details.fog_area_fraction}%"
+//
+//            dayNow++
+//            popup.day1.text = "${day[dayNow]}:\n" +
+//                    "Vindhastighet: ${times[0].data.instant.details.wind_speed} m/s\n" +
+//                    "Max vindkast: ${times[0].data.instant.details.wind_speed_of_gust} m/s\n" +
+//                    "Temperatur: ${times[0].data.instant.details.air_temperature} °C\n" +
+//                    "Regn: ${times[0].data.next_6_hours.details.precipitation_amount} mm\n" +
+//                    "Tåke: ${times[0].data.instant.details.fog_area_fraction}%"
+//            dayNow++
+//            if (dayNow == 7) {
+//                dayNow = 0
+//            }
+//            popup.day2.text = "${day[dayNow]}:\n" +
+//                    "Vindhastighet: ${times[1].data.instant.details.wind_speed} m/s\n" +
+//                    "Max vindkast: ${times[1].data.instant.details.wind_speed_of_gust} m/s\n" +
+//                    "Temperatur: ${times[1].data.instant.details.air_temperature} °C\n" +
+//                    "Regn: ${times[1].data.next_6_hours.details.precipitation_amount} mm\n" +
+//                    "Tåke: ${times[1].data.instant.details.fog_area_fraction}%"
+//            dayNow++
+//            if (dayNow == 7) {
+//                dayNow = 0
+//            }
+//            if (times[2].data.next_6_hours.details.precipitation_amount == null) {
+//                popup.day3.text = "${day[dayNow]}\n" +
+//                        "Vindhastighet: ${times[2].data.instant.details.wind_speed} m/s\n" +
+//                        "Temperatur: ${times[2].data.instant.details.air_temperature} °C\n" +
+//                        "Regn: ${times[2].data.next_1_hours.details.precipitation_amount} mm\n"
+//
+//            } else {
+//                popup.day3.text = "${day[dayNow]}:\n" +
+//                        "Vindhastighet: ${times[2].data.instant.details.wind_speed} m/s\n" +
+//                        "Temperatur: ${times[2].data.instant.details.air_temperature} °C\n" +
+//                        "Regn: ${times[2].data.next_6_hours.details.precipitation_amount} mm\n"
+//            }
+//            dayNow++
+//            if (dayNow == 7) {
+//                dayNow = 0
+//            }
+//            if (times[3].data.next_6_hours.details.precipitation_amount == null) {
+//                popup.day4.text = "${day[dayNow]}:\n" +
+//                        "Vindhastighet: ${times[3].data.instant.details.wind_speed} m/s\n" +
+//                        "Temperatur: ${times[3].data.instant.details.air_temperature} °C\n" +
+//                        "Regn: ${times[3].data.next_1_hours.details.precipitation_amount} mm\n"
+//            } else {
+//                popup.day4.text = "${day[dayNow]}:\n" +
+//                        "Vindhastighet: ${times[3].data.instant.details.wind_speed} m/s\n" +
+//                        "Temperatur: ${times[3].data.instant.details.air_temperature} °C\n" +
+//                        "Regn: ${times[3].data.next_6_hours.details.precipitation_amount} mm\n"
+//            }
+//
+//            dayNow++
+//            if (dayNow == 7) {
+//                dayNow = 0
+//            }
+//            if (times[4].data.next_6_hours.details.precipitation_amount == null) {
+//                popup.day5.text = "${day[dayNow]}:\n" +
+//                        "Vindhastighet: ${times[4].data.instant.details.wind_speed} m/s\n" +
+//                        "Temperatur: ${times[4].data.instant.details.air_temperature} °C\n" +
+//                        "Regn: ${times[4].data.next_1_hours.details.precipitation_amount} mm\n"
+//            } else {
+//                popup.day5.text = "${day[dayNow]}:\n" +
+//                        "Vindhastighet: ${times[4].data.instant.details.wind_speed} m/s\n" +
+//                        "Temperatur: ${times[4].data.instant.details.air_temperature} °C\n" +
+//                        "Regn: ${times[4].data.next_6_hours.details.precipitation_amount} mm\n"
+//            }
+
+        }
+    }
+
+    fun populatePopupWithAstroData(astroData: Met.AstronomicalData) {
+
+        activity?.runOnUiThread{
+            //popup.sunSetTimeView.text = "Solnedgang: ${astroData.sunset}"
+            //popup.sunRiseTimeView.text = "Soloppgang: ${astroData.sunrise}"
         }
     }
 

@@ -1,28 +1,31 @@
-import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.basicmap.R.layout.popup
+import com.example.basicmap.R.layout.place_kort
 import com.example.basicmap.lib.Met
 import com.example.basicmap.ui.places.Place
+import com.example.basicmap.ui.places.PlacesFragment
 import com.example.basicmap.ui.places.PlacesViewModel
-import kotlinx.android.synthetic.main.popup.view.*
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.place_kort.view.*
+import kotlinx.android.synthetic.main.weather.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlin.math.roundToInt
 
 
-class PlacesListAdapter(val context: Context, val placesList: MutableList<Place>?) : RecyclerView.Adapter<PlacesListAdapter.PlacesViewHolder>() {
+class PlacesListAdapter(val fragment: PlacesFragment, val placesList: MutableList<Place>?) : RecyclerView.Adapter<PlacesListAdapter.PlacesViewHolder>() {
     private val placesViewModel = PlacesViewModel()
     inner class PlacesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun setData(place: Place, pos: Int) {
             itemView.locationNameView.text = place.address
+            itemView.lagreLokasjonsKnapp.setImageResource(android.R.drawable.star_big_on)
             itemView.lagreLokasjonsKnapp.setOnClickListener {
-                val builder = androidx.appcompat.app.AlertDialog.Builder(context)
+                val builder = androidx.appcompat.app.AlertDialog.Builder(fragment.requireActivity())
                 builder.setTitle("Slett lokasjon/plass")
                 builder.setMessage("Er du sikker på at du vil slette \n" + place.address + " ?")
                 builder.setPositiveButton("Ja") { dialog, which ->
@@ -35,7 +38,12 @@ class PlacesListAdapter(val context: Context, val placesList: MutableList<Place>
                 builder.show()
             }
 
-            itemView.popup.visibility = View.VISIBLE
+            itemView.gotoButton.setOnClickListener {
+                fragment.homeViewModel.getPlace().value = place
+                fragment.requireActivity().view_pager.setCurrentItem(0, true)
+            }
+
+            itemView.cardView
 
             // This is a bit ugly, but works.
             // Would be cool to push the coroutines to livedata and just observe here, we'll see
@@ -43,17 +51,18 @@ class PlacesListAdapter(val context: Context, val placesList: MutableList<Place>
             GlobalScope.launch {
                 val weather = Met().locationForecast(place.position)
                 withContext(Dispatchers.Main) {
-                    itemView.popup.windSpeedView.text =
-                        "Vindhastighet: ${weather.properties.timeseries[0].data.instant.details.wind_speed} m/s"
-                    itemView.popup.maxGustView.text =
-                        "Max vindkast: ${weather.properties.timeseries[0].data.instant.details.wind_speed_of_gust} m/s"
-                    itemView.popup.temperatureView.text =
-                        "Temperatur: ${weather.properties.timeseries[0].data.instant.details.air_temperature} °C"
-                    itemView.popup.precipitationView.text =
-                        "Regn: ${weather.properties.timeseries[0].data.next_1_hours.details.precipitation_amount} mm"
-                    itemView.popup.fogView.text =
-                        "Tåke: ${weather.properties.timeseries[0].data.instant.details.fog_area_fraction}%"
-                    itemView.popup.textView.text = "Klikk for neste dagers værvarsel"
+                    val weatherIconName = weather.properties.timeseries[0].data.next_1_hours.summary.symbol_code
+                    val id = fragment.resources.getIdentifier(weatherIconName, "mipmap", fragment.requireActivity().packageName)
+                    itemView.cardView.weatherImageView.setImageResource(id)
+
+                    var tempNow = weather.properties.timeseries[0].data.instant.details.air_temperature?.toDouble()?.roundToInt().toString()
+
+                    itemView.cardView.precipitationView.text = "NEDBØR\n${weather.properties.timeseries[0].data.instant.details.fog_area_fraction}%" //regn eller nedbør riktig her?
+                    itemView.cardView.visibilityView.text = "TÅKE\n${weather.properties.timeseries[0].data.instant.details.fog_area_fraction}%"
+                    itemView.cardView.kpindexView.text = "KP\n3"
+
+                    itemView.cardView.tempValue.text = "${tempNow}°C"
+
                 }
             }
 
@@ -65,7 +74,7 @@ class PlacesListAdapter(val context: Context, val placesList: MutableList<Place>
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlacesViewHolder {
-        val view = LayoutInflater.from(context).inflate(popup, parent, false)
+        val view = LayoutInflater.from(fragment.    requireContext()).inflate(place_kort, parent, false)
         return PlacesViewHolder(view)
     }
 
