@@ -174,6 +174,25 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
         map = googleMap
 
         map.setOnMapClickListener(this)
+
+        // Make sure new markers are inside the viewport
+        model.getPlace().observe(viewLifecycleOwner, Observer {
+            Log.d("place observer", "foo")
+            val oldPlace = marker?.tag as Place?
+            if (oldPlace == it) {
+                return@Observer
+            }
+
+            marker?.remove()
+            marker = map.addMarker(MarkerOptions().position(it.position))
+            marker?.setTag(it)
+            val bounds = map.projection.visibleRegion.latLngBounds
+            if (!bounds.contains(it.position)) {
+                Log.d("place observer", "move.")
+                map.animateCamera(CameraUpdateFactory.newLatLng(it.position))
+            }
+        })
+
         if (model.cameraPosition == null) {
             getLocationPermission()
             getDeviceLocation()
@@ -239,8 +258,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
         // Store the location in the view model, it will do the necessary work of
         // fetching weather and address info
         model.getPlace().value = Place(p)
-        marker?.remove()
-        marker = map.addMarker(MarkerOptions().position(p))
     }
 
     fun addZone(positions: List<LatLng>): Polygon? {
