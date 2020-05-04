@@ -40,7 +40,7 @@ import kotlinx.android.synthetic.main.weather.view.*
 import kotlinx.android.synthetic.main.weather.view.lagreLokasjonsKnapp
 import kotlinx.coroutines.*
 import java.util.*
-import java.util.Calendar.DAY_OF_WEEK
+import java.util.Calendar.*
 import kotlin.coroutines.CoroutineContext
 import kotlin.math.roundToInt
 
@@ -291,7 +291,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
             popup.weatherImageView.setImageResource(id)
             val times = mutableListOf<Met.Numb>()
             val day = listOf("Søndag", "Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag")
-            var dayNow = Calendar.getInstance().get(DAY_OF_WEEK) - 1
             for (i in 6..75) {
                 val time = weather.properties.timeseries[i].time
                 val hour1 = time[11]
@@ -301,6 +300,25 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
                     times.add(weather.properties.timeseries[i])
                 }
             }
+
+            var dayNow = Calendar.getInstance().get(DAY_OF_WEEK)
+
+            dayBar.setOnCheckedChangeListener { group, checkedId ->
+
+            }
+
+            when(dayNow) {
+                MONDAY -> dayBar.check(R.id.monday)
+                TUESDAY -> dayBar.check(R.id.tuesday)
+                WEDNESDAY -> dayBar.check(R.id.wednesday)
+                THURSDAY -> dayBar.check(R.id.thursday)
+                FRIDAY -> dayBar.check(R.id.friday)
+                SATURDAY -> dayBar.check(R.id.saturday)
+                SUNDAY -> dayBar.check(R.id.sunday)
+                else -> null
+            }
+
+
             var tempNow = weather.properties.timeseries[0].data.instant.details.air_temperature?.toDouble()?.roundToInt().toString()
 
             popup.precipitationView.text = "NEDBØR\n${weather.properties.timeseries[0].data.instant.details.fog_area_fraction}%" //regn eller nedbør riktig her?
