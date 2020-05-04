@@ -54,7 +54,7 @@
             android:gravity="center"
             android:button="@drawable/empty_radio"
             android:background="@drawable/daybar_button_shape"
-            android:textColor="@color/quantum_white_100"
+            android:textColor="@color/radio_color"
             android:text="man">
         </RadioButton>
 
@@ -64,7 +64,7 @@
             android:layout_width="55dp"
             android:layout_height="20dp"
             android:background="@drawable/daybar_button_shape"
-            android:textColor="@color/quantum_white_100"
+            android:textColor="@color/radio_color"
             android:text="man">
         </RadioButton>
 
@@ -74,7 +74,7 @@
             android:layout_width="55dp"
             android:layout_height="20dp"
             android:background="@drawable/daybar_button_shape"
-            android:textColor="@color/quantum_white_100"
+            android:textColor="@color/radio_color"
             android:text="man">
         </RadioButton>
 
@@ -84,7 +84,7 @@
             android:layout_width="55dp"
             android:layout_height="20dp"
             android:background="@drawable/daybar_button_shape"
-            android:textColor="@color/quantum_white_100"
+            android:textColor="@color/radio_color"
             android:text="man">
         </RadioButton>
 
@@ -94,7 +94,7 @@
             android:layout_width="55dp"
             android:layout_height="20dp"
             android:background="@drawable/daybar_button_shape"
-            android:textColor="@color/quantum_white_100"
+            android:textColor="@color/radio_color"
             android:text="man">
         </RadioButton>
 
@@ -104,7 +104,7 @@
             android:layout_width="55dp"
             android:layout_height="20dp"
             android:background="@color/quantum_black_100"
-            android:textColor="@color/quantum_white_100"
+            android:textColor="@color/radio_color"
             android:text="man">
         </RadioButton>
 
