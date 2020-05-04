@@ -1,4 +1,3 @@
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -6,7 +5,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.basicmap.R.layout.place_kort
 import com.example.basicmap.lib.Met
 import com.example.basicmap.ui.places.Place
+import com.example.basicmap.ui.places.PlacesFragment
 import com.example.basicmap.ui.places.PlacesViewModel
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.place_kort.view.*
 import kotlinx.android.synthetic.main.weather.view.*
 import kotlinx.coroutines.Dispatchers
@@ -16,7 +17,7 @@ import kotlinx.coroutines.withContext
 import kotlin.math.roundToInt
 
 
-class PlacesListAdapter(val context: Context, val placesList: MutableList<Place>?) : RecyclerView.Adapter<PlacesListAdapter.PlacesViewHolder>() {
+class PlacesListAdapter(val fragment: PlacesFragment, val placesList: MutableList<Place>?) : RecyclerView.Adapter<PlacesListAdapter.PlacesViewHolder>() {
     private val placesViewModel = PlacesViewModel()
     inner class PlacesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -24,7 +25,7 @@ class PlacesListAdapter(val context: Context, val placesList: MutableList<Place>
             itemView.locationNameView.text = place.address
             itemView.lagreLokasjonsKnapp.setImageResource(android.R.drawable.star_big_on)
             itemView.lagreLokasjonsKnapp.setOnClickListener {
-                val builder = androidx.appcompat.app.AlertDialog.Builder(context)
+                val builder = androidx.appcompat.app.AlertDialog.Builder(fragment.requireActivity())
                 builder.setTitle("Slett lokasjon/plass")
                 builder.setMessage("Er du sikker på at du vil slette \n" + place.address + " ?")
                 builder.setPositiveButton("Ja") { dialog, which ->
@@ -37,6 +38,11 @@ class PlacesListAdapter(val context: Context, val placesList: MutableList<Place>
                 builder.show()
             }
 
+            itemView.gotoButton.setOnClickListener {
+                fragment.homeViewModel.getPlace().value = place
+                fragment.requireActivity().view_pager.setCurrentItem(0, true)
+            }
+
             itemView.cardView
 
             // This is a bit ugly, but works.
@@ -46,7 +52,7 @@ class PlacesListAdapter(val context: Context, val placesList: MutableList<Place>
                 val weather = Met().locationForecast(place.position)
                 withContext(Dispatchers.Main) {
                     val weatherIconName = weather.properties.timeseries[0].data.next_1_hours.summary.symbol_code
-                    val id = context.resources.getIdentifier(weatherIconName, "mipmap", context.packageName)
+                    val id = fragment.resources.getIdentifier(weatherIconName, "mipmap", fragment.requireActivity().packageName)
                     itemView.cardView.weatherImageView.setImageResource(id)
 
                     var tempNow = weather.properties.timeseries[0].data.instant.details.air_temperature?.toDouble()?.roundToInt().toString()
@@ -68,7 +74,7 @@ class PlacesListAdapter(val context: Context, val placesList: MutableList<Place>
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlacesViewHolder {
-        val view = LayoutInflater.from(context).inflate(place_kort, parent, false)
+        val view = LayoutInflater.from(fragment.    requireContext()).inflate(place_kort, parent, false)
         return PlacesViewHolder(view)
     }
 
