@@ -22,21 +22,21 @@ fun saveDrones(context: Context, drones: List<Drone>?): String? {
     return json
 }
 
-fun loadDrones(context: Context): MutableList<Drone>? {
+fun loadDrones(context: Context): MutableList<Drone> {
     val sharedPref: SharedPreferences =
         context.getSharedPreferences(SHARED_PREF, AppCompatActivity.MODE_PRIVATE)
     val gson = GsonBuilder().create()
     val json = sharedPref.getString(DRONES, null)
-    val drones = gson.fromJson(json, Array<Drone>::class.java) ?: return null
+    val drones = gson.fromJson(json, Array<Drone>::class.java) ?: return mutableListOf()
     return drones.toMutableList()
 }
 
-fun loadPlaces(context: Context): MutableList<Place>? {
+fun loadPlaces(context: Context): MutableList<Place> {
     val sharedPrefPlaces: SharedPreferences =
         context.getSharedPreferences(SHARED_PREF, AppCompatActivity.MODE_PRIVATE)
     val gson = GsonBuilder().create()
     val json = sharedPrefPlaces.getString(PLACES, null)
-    val places = gson.fromJson(json, Array<Place>::class.java) ?: return null
+    val places = gson.fromJson(json, Array<Place>::class.java) ?: return mutableListOf()
     return places.toMutableList()
 }
 
