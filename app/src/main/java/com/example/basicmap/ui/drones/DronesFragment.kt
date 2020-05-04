@@ -33,15 +33,17 @@ class DronesFragment : Fragment() {
     ): View? {
         val root = inflater.inflate(R.layout.fragment_drones, container, false)
 
+        viewManager = LinearLayoutManager(activity)
+        viewAdapter = ListAdapter(requireContext(), dronesViewModel.getDroneList().value)
+        recyclerView = root.recyclerView.apply {    
+            setHasFixedSize(true)
+            layoutManager = viewManager
+            adapter = viewAdapter
+        }
+
         //Fill recyclerview
         dronesViewModel.getDroneList().observe(viewLifecycleOwner, Observer<MutableList<Drone>> {
-            viewManager = LinearLayoutManager(activity)
-            viewAdapter = ListAdapter(requireContext(), dronesViewModel.getDroneList().value)
-            recyclerView = root.recyclerView.apply {
-                setHasFixedSize(true)
-                layoutManager = viewManager
-                adapter = viewAdapter
-            }
+            viewAdapter.notifyDataSetChanged()
             if(viewAdapter.itemCount == 0) {
                 root.recycleViewTekst.visibility = VISIBLE
             }

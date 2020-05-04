@@ -29,7 +29,7 @@ class EditDrone : AppCompatActivity() {
         setContentView(R.layout.activity_edit_drone)
         supportActionBar?.title = "Rediger"
 
-        droneList = dronesViewModel.getDroneList().value!!.toMutableList()
+        droneList = dronesViewModel.getDroneList().value!!
 
         val pos = getIntent().getIntExtra("pos", 0)
         val drone = droneList.elementAt(pos)

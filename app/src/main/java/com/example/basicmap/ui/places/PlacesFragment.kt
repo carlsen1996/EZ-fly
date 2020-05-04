@@ -41,17 +41,16 @@ class PlacesFragment : Fragment() {
         val root = inflater.inflate(R.layout.fragment_places, container, false)
 
         placesViewModel.getPlaces().value = loadPlaces(requireContext())
+        viewManager = LinearLayoutManager(activity)
+        viewAdapter = PlacesListAdapter(this, placesViewModel.getPlaces().value)
+        recyclerView = root.recyclerView.apply {
+            setHasFixedSize(true)
+            layoutManager = viewManager
+            adapter = viewAdapter
+        }
 
         placesViewModel.getPlaces().observe(viewLifecycleOwner, Observer<MutableList<Place>> {
-            viewManager = LinearLayoutManager(activity)
-            viewAdapter = PlacesListAdapter(this, placesViewModel.getPlaces().value)
-            recyclerView = root.recyclerView.apply {
-
-
-                setHasFixedSize(true)
-                layoutManager = viewManager
-                adapter = viewAdapter
-            }
+            viewAdapter.notifyDataSetChanged()
             if(viewAdapter.itemCount == 0) {
                 recycleViewTekstPlaces.visibility = VISIBLE
             }

@@ -22,7 +22,7 @@ class RegistrerDrone : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registrer_drone)
 
-        droneList = dronesViewModel.getDroneList().value!!.toMutableList()
+        droneList = dronesViewModel.getDroneList().value!!
         supportActionBar?.title = "Legg til ny Drone"
 
         //Registrer
