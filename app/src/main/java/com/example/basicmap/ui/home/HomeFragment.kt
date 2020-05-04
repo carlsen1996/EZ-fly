@@ -161,6 +161,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
             placesViewModel.getPlaces().value = places
             toast.show()
         }
+        root.gotoButton.setOnClickListener {
+            map.animateCamera(CameraUpdateFactory.newLatLng(model.getPlace().value!!.position))
+        }
 
         return root
     }
