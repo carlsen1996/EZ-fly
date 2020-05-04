@@ -178,6 +178,15 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
         // Make sure new markers are inside the viewport
         model.getPlace().observe(viewLifecycleOwner, Observer {
             Log.d("place observer", "foo")
+            if (it == null)
+                return@Observer
+
+            if (it.favorite) {
+                popup.lagreLokasjonsKnapp.setImageResource(android.R.drawable.star_big_on)
+            } else {
+                popup.lagreLokasjonsKnapp.setImageResource(android.R.drawable.star_big_off)
+            }
+
             val oldPlace = marker?.tag as Place?
             if (oldPlace == it) {
                 return@Observer
