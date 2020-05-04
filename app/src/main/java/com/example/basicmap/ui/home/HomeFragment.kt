@@ -138,7 +138,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
 
         root.lagreLokasjonsKnapp.setOnClickListener {
             // This is only accessible from the popup, meaning the position has been set
-            val place = model.place.value!!
+            val place = model.getPlace().value!!
             place.address = model.address.value ?: ""
             val places = placesViewModel.getPlaces().value!!
             val toast = Toast.makeText(
@@ -234,7 +234,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
             return
         // Store the location in the view model, it will do the necessary work of
         // fetching weather and address info
-        model.place.value = Place(p)
+        model.getPlace().value = Place(p)
         marker?.remove()
         marker = map.addMarker(MarkerOptions().position(p))
     }
