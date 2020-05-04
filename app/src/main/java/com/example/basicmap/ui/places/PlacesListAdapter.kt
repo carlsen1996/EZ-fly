@@ -45,6 +45,10 @@ class PlacesListAdapter(val context: Context, val placesList: MutableList<Place>
             GlobalScope.launch {
                 val weather = Met().locationForecast(place.position)
                 withContext(Dispatchers.Main) {
+                    val weatherIconName = weather.properties.timeseries[0].data.next_1_hours.summary.symbol_code
+                    val id = context.resources.getIdentifier(weatherIconName, "mipmap", context.packageName)
+                    itemView.cardView.weatherImageView.setImageResource(id)
+
                     var tempNow = weather.properties.timeseries[0].data.instant.details.air_temperature?.toDouble()?.roundToInt().toString()
 
                     itemView.cardView.precipitationView.text = "NEDBØR\n${weather.properties.timeseries[0].data.instant.details.fog_area_fraction}%" //regn eller nedbør riktig her?
