@@ -40,7 +40,7 @@
             android:visibility="visible" />
     </LinearLayout>
 
-    <LinearLayout
+    <RadioGroup
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/dayBar"
@@ -48,57 +48,69 @@
         android:orientation="horizontal"
         android:background="@drawable/daybar_shape">
 
-        <Button
+        <RadioButton
+            android:layout_width="55dp"
+            android:layout_height="20dp"
+            android:gravity="center"
+            android:button="@drawable/empty_radio"
+            android:background="@drawable/daybar_button_shape"
+            android:textColor="@color/quantum_white_100"
+            android:text="man">
+        </RadioButton>
+
+        <RadioButton
+            android:gravity="center"
+            android:button="@drawable/empty_radio"
             android:layout_width="55dp"
             android:layout_height="20dp"
             android:background="@drawable/daybar_button_shape"
             android:textColor="@color/quantum_white_100"
             android:text="man">
-        </Button>
+        </RadioButton>
 
-        <Button
+        <RadioButton
+            android:gravity="center"
+            android:button="@drawable/empty_radio"
             android:layout_width="55dp"
             android:layout_height="20dp"
             android:background="@drawable/daybar_button_shape"
             android:textColor="@color/quantum_white_100"
             android:text="man">
-        </Button>
+        </RadioButton>
 
-        <Button
+        <RadioButton
+            android:gravity="center"
+            android:button="@drawable/empty_radio"
             android:layout_width="55dp"
             android:layout_height="20dp"
             android:background="@drawable/daybar_button_shape"
             android:textColor="@color/quantum_white_100"
             android:text="man">
-        </Button>
+        </RadioButton>
 
-        <Button
+        <RadioButton
+            android:gravity="center"
+            android:button="@drawable/empty_radio"
             android:layout_width="55dp"
             android:layout_height="20dp"
             android:background="@drawable/daybar_button_shape"
             android:textColor="@color/quantum_white_100"
             android:text="man">
-        </Button>
+        </RadioButton>
 
-        <Button
-            android:layout_width="55dp"
-            android:layout_height="20dp"
-            android:background="@drawable/daybar_button_shape"
-            android:textColor="@color/quantum_white_100"
-            android:text="man">
-        </Button>
-
-        <Button
+        <RadioButton
+            android:gravity="center"
+            android:button="@drawable/empty_radio"
             android:layout_width="55dp"
             android:layout_height="20dp"
             android:background="@color/quantum_black_100"
             android:textColor="@color/quantum_white_100"
             android:text="man">
-        </Button>
+        </RadioButton>
 
 
 
-    </LinearLayout>
+    </RadioGroup>
 
     <RelativeLayout
         android:layout_width="336dp"
