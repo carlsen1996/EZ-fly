@@ -288,12 +288,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
             var botview = BottomSheetBehavior.from(popup)
             botview.state = BottomSheetBehavior.STATE_EXPANDED
             popup.visibility = View.VISIBLE
-            val weatherIconName = weather.properties.timeseries[0].data.next_1_hours.summary.symbol_code
-            val id = resources.getIdentifier(weatherIconName, "mipmap", requireActivity().packageName)
-            popup.weatherImageView.setImageResource(id)
-            val times = mutableListOf<Met.Numb>()
-            val day = listOf("Søndag", "Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag")
-
 
             val utc = DateTimeFormatter.ISO_INSTANT.withZone(ZoneId.of("UTC"))
             val timeseries = weather.properties.timeseries
@@ -336,18 +330,23 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
                     val time = data.time
                     val datetime = LocalDateTime.from(utc.parse(time))
 
-                    if (datetime.hour == 12) {
+                    if (datetime.dayOfWeek == now.dayOfWeek || datetime.hour == 12) {
+                        Log.d("now", datetime.toString())
                         val tempNow = data.data.instant.details.air_temperature?.toDouble()?.roundToInt().toString()
-                        popup.precipitationView.text = "NEDBØR\n${data.data.instant.details.fog_area_fraction}%" //regn eller nedbør riktig her?
+                        popup.precipitationView.text = "NEDBØR\n${data.data.next_6_hours?.details?.probability_of_precipitation ?: ""}%" //regn eller nedbør riktig her?
                         popup.visibilityView.text = "TÅKE\n${data.data.instant.details.fog_area_fraction}%"
                         popup.kpindexView.text = "KP\n3"
-
                         popup.tempValue.text = "${tempNow}°C"
 
+                        val weatherIconName = data.data.next_6_hours?.summary?.symbol_code
+                        val id = resources.getIdentifier(weatherIconName, "mipmap", requireActivity().packageName)
+                        popup.weatherImageView.setImageResource(id)
+
+                        break
                     }
                 }
             }
-
+            dayBar.clearCheck()
             when(now.dayOfWeek) {
                 DayOfWeek.MONDAY -> dayBar.check(R.id.monday)
                 DayOfWeek.TUESDAY -> dayBar.check(R.id.tuesday)

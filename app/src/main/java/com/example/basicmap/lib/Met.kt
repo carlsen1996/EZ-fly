@@ -37,7 +37,7 @@ class Met {
     data class Summary(val symbol_code: String)
     data class Next1hours(val summary: Summary, val details: Details)
     data class Next6hours(val summary: Summary, val details: Details)
-    data class Data(val instant: Instant, val next_1_hours: Next1hours, val next_6_hours: Next6hours)
+    data class Data(val instant: Instant, val next_1_hours: Next1hours?, val next_6_hours: Next6hours?)
     data class Numb(val time: String, val data: Data)
     data class Meta(val updated_at: String, val units: Details)
     data class Properties(val meta: Meta, val timeseries: List<Numb>)
