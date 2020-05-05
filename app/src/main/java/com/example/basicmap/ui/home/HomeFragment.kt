@@ -39,6 +39,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import java.time.DayOfWeek
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -316,13 +317,15 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
                 R.id.saturday to DayOfWeek.SATURDAY,
                 R.id.sunday to DayOfWeek.SUNDAY
             )
-
+            val now = LocalDate.now()
             for (data in timeseries) {
                 val time = data.time
-                val datetime = LocalDateTime.from(utc.parse(time))
+                val datetime = LocalDate.from(utc.parse(time))
+
+                if (datetime.isAfter(now.plusDays(6)))
+                    break
                 days[datetime.dayOfWeek]?.add(data)
             }
-            val now = LocalDateTime.now()
 
 
             dayBar.setOnCheckedChangeListener { group, checkedId ->
