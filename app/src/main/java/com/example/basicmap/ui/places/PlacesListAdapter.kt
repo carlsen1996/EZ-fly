@@ -4,6 +4,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.basicmap.R.layout.place_kort
 import com.example.basicmap.lib.Met
+import com.example.basicmap.lib.populateWeather
 import com.example.basicmap.ui.places.Place
 import com.example.basicmap.ui.places.PlacesFragment
 import com.example.basicmap.ui.places.PlacesViewModel
@@ -14,7 +15,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kotlin.math.roundToInt
 
 
 class PlacesListAdapter(val fragment: PlacesFragment, val placesList: MutableList<Place>?) : RecyclerView.Adapter<PlacesListAdapter.PlacesViewHolder>() {
@@ -49,24 +49,9 @@ class PlacesListAdapter(val fragment: PlacesFragment, val placesList: MutableLis
             // Would be cool to push the coroutines to livedata and just observe here, we'll see
             // if that's doable in the future.
             GlobalScope.launch {
-                val weather = Met().locationForecast(place.position)
+                val weather = Met().locationForecast(place.position) ?: return@launch
                 withContext(Dispatchers.Main) {
-                    val weatherIconName = weather?.properties?.timeseries?.get(0)?.data?.next_1_hours?.summary?.symbol_code
-                    val id = fragment.resources.getIdentifier(weatherIconName, "mipmap", fragment.requireActivity().packageName)
-                    itemView.cardView.weatherImageView.setImageResource(id)
-
-                    var tempNow = weather?.properties?.timeseries?.get(0)?.data?.instant?.details?.air_temperature?.toDouble()?.roundToInt().toString()
-
-                    if (weather != null) {
-                        itemView.cardView.precipitationView.text = "NEDBØR\n${weather.properties.timeseries[0].data.instant.details.fog_area_fraction}%"
-                    } //regn eller nedbør riktig her?
-                    if (weather != null) {
-                        itemView.cardView.visibilityView.text = "TÅKE\n${weather.properties.timeseries[0].data.instant.details.fog_area_fraction}%"
-                    }
-                    itemView.cardView.kpindexView.text = "KP\n3"
-
-                    itemView.cardView.tempValue.text = "${tempNow}°C"
-
+                    populateWeather(fragment.requireContext(), itemView.cardView, weather)
                 }
             }
 

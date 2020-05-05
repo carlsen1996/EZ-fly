@@ -19,6 +19,7 @@ import com.example.basicmap.R
 import com.example.basicmap.lib.Met
 import com.example.basicmap.lib.getJsonDataFromAsset
 import com.example.basicmap.lib.initNoFlyLufthavnSirkel
+import com.example.basicmap.lib.populateWeather
 import com.example.basicmap.ui.places.Place
 import com.example.basicmap.ui.places.PlacesViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -33,18 +34,11 @@ import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.popup.*
-import kotlinx.android.synthetic.main.weather.*
 import kotlinx.android.synthetic.main.weather.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import java.time.DayOfWeek
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 import kotlin.coroutines.CoroutineContext
-import kotlin.math.roundToInt
 
 
 private val TAG = "HomeFragment"
@@ -286,80 +280,11 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
 
     @SuppressLint("SetTextI18n")
     private fun populatePopup(weather: Met.Kall) {
-        activity?.runOnUiThread {
-            val botview = BottomSheetBehavior.from(popup)
-            botview.state = BottomSheetBehavior.STATE_EXPANDED
-            popup.visibility = View.VISIBLE
+        val botview = BottomSheetBehavior.from(popup)
+        botview.state = BottomSheetBehavior.STATE_EXPANDED
+        popup.visibility = View.VISIBLE
 
-            val utc = DateTimeFormatter.ISO_INSTANT.withZone(ZoneId.of("UTC"))
-            val timeseries = weather.properties.timeseries
-
-            val days = mapOf(
-                DayOfWeek.MONDAY to mutableListOf<Met.Numb>(),
-                DayOfWeek.TUESDAY to mutableListOf<Met.Numb>(),
-                DayOfWeek.WEDNESDAY to mutableListOf<Met.Numb>(),
-                DayOfWeek.THURSDAY to mutableListOf<Met.Numb>(),
-                DayOfWeek.FRIDAY to mutableListOf<Met.Numb>(),
-                DayOfWeek.SATURDAY to mutableListOf<Met.Numb>(),
-                DayOfWeek.SUNDAY to mutableListOf<Met.Numb>()
-            )
-            val now = LocalDate.now()
-            for (data in timeseries) {
-                val time = data.time
-                val date = LocalDate.from(utc.parse(time))
-
-                if (date.isAfter(now.plusDays(6)))
-                    break
-
-                days[date.dayOfWeek]?.add(data)
-            }
-
-            val idToDays = mapOf(
-                R.id.monday to DayOfWeek.MONDAY,
-                R.id.tuesday to DayOfWeek.TUESDAY,
-                R.id.wednesday to DayOfWeek.WEDNESDAY,
-                R.id.thursday to DayOfWeek.THURSDAY,
-                R.id.friday to DayOfWeek.FRIDAY,
-                R.id.saturday to DayOfWeek.SATURDAY,
-                R.id.sunday to DayOfWeek.SUNDAY
-            )
-            dayBar.setOnCheckedChangeListener { group, checkedId ->
-                if (checkedId < 0)
-                    return@setOnCheckedChangeListener
-
-                for (data in days[idToDays.get(checkedId)]!!) {
-                    val time = data.time
-                    val datetime = LocalDateTime.from(utc.parse(time))
-
-                    if (datetime.dayOfWeek == now.dayOfWeek || datetime.hour == 12) {
-                        Log.d("now", datetime.toString())
-                        val tempNow = data.data.instant.details.air_temperature?.toDouble()?.roundToInt().toString()
-                        popup.precipitationView.text = "NEDBØR\n${data.data.next_6_hours?.details?.probability_of_precipitation ?: ""}%" //regn eller nedbør riktig her?
-                        popup.visibilityView.text = "TÅKE\n${data.data.instant.details.fog_area_fraction}%"
-                        popup.kpindexView.text = "KP\n3"
-                        popup.tempValue.text = "${tempNow}°C"
-
-                        val weatherIconName = data.data.next_6_hours?.summary?.symbol_code
-                        val id = resources.getIdentifier(weatherIconName, "mipmap", requireActivity().packageName)
-                        popup.weatherImageView.setImageResource(id)
-                        break
-                    }
-                }
-            }
-
-            dayBar.clearCheck()
-            when(now.dayOfWeek) {
-                DayOfWeek.MONDAY -> dayBar.check(R.id.monday)
-                DayOfWeek.TUESDAY -> dayBar.check(R.id.tuesday)
-                DayOfWeek.WEDNESDAY -> dayBar.check(R.id.wednesday)
-                DayOfWeek.THURSDAY -> dayBar.check(R.id.thursday)
-                DayOfWeek.FRIDAY -> dayBar.check(R.id.friday)
-                DayOfWeek.SATURDAY -> dayBar.check(R.id.saturday)
-                DayOfWeek.SUNDAY -> dayBar.check(R.id.sunday)
-                null -> dayBar.clearCheck()
-            }
-
-        }
+        populateWeather(requireContext(), popup, weather)
     }
 
     fun populatePopupWithAstroData(astroData: Met.AstronomicalData) {
