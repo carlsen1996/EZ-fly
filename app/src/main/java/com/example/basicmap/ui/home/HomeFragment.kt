@@ -172,6 +172,11 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
         map = googleMap
 
         map.setOnMapClickListener(this)
+        map.setOnMarkerClickListener {
+            val botview = BottomSheetBehavior.from(popup)
+            botview.state = BottomSheetBehavior.STATE_EXPANDED
+            true
+        }
 
         // Make sure new markers are inside the viewport
         model.getPlace().observe(viewLifecycleOwner, Observer {
