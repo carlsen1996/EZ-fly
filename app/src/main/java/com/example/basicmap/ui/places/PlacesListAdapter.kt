@@ -51,14 +51,18 @@ class PlacesListAdapter(val fragment: PlacesFragment, val placesList: MutableLis
             GlobalScope.launch {
                 val weather = Met().locationForecast(place.position)
                 withContext(Dispatchers.Main) {
-                    val weatherIconName = weather.properties.timeseries[0].data.next_1_hours?.summary?.symbol_code
+                    val weatherIconName = weather?.properties?.timeseries?.get(0)?.data?.next_1_hours?.summary?.symbol_code
                     val id = fragment.resources.getIdentifier(weatherIconName, "mipmap", fragment.requireActivity().packageName)
                     itemView.cardView.weatherImageView.setImageResource(id)
 
-                    var tempNow = weather.properties.timeseries[0].data.instant.details.air_temperature?.toDouble()?.roundToInt().toString()
+                    var tempNow = weather?.properties?.timeseries?.get(0)?.data?.instant?.details?.air_temperature?.toDouble()?.roundToInt().toString()
 
-                    itemView.cardView.precipitationView.text = "NEDBØR\n${weather.properties.timeseries[0].data.instant.details.fog_area_fraction}%" //regn eller nedbør riktig her?
-                    itemView.cardView.visibilityView.text = "TÅKE\n${weather.properties.timeseries[0].data.instant.details.fog_area_fraction}%"
+                    if (weather != null) {
+                        itemView.cardView.precipitationView.text = "NEDBØR\n${weather.properties.timeseries[0].data.instant.details.fog_area_fraction}%"
+                    } //regn eller nedbør riktig her?
+                    if (weather != null) {
+                        itemView.cardView.visibilityView.text = "TÅKE\n${weather.properties.timeseries[0].data.instant.details.fog_area_fraction}%"
+                    }
                     itemView.cardView.kpindexView.text = "KP\n3"
 
                     itemView.cardView.tempValue.text = "${tempNow}°C"

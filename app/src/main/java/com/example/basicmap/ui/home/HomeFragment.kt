@@ -127,7 +127,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
                 popup.locationNameView.text = address
         })
         model.weather.observe(viewLifecycleOwner, Observer { weather ->
-            populatePopup(weather)
+            if (weather != null) {
+                populatePopup(weather)
+            }
         })
 
         model.astronomicalData.observe(viewLifecycleOwner, Observer { astronomicalData ->

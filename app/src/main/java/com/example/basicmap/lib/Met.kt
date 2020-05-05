@@ -84,12 +84,19 @@ class Met {
     data class AstronomicalData(val location: location, val meta: AstroMeta)
 
 
-    suspend fun locationForecast(p: LatLng): Kall {
-        val baseUrl =  "https://in2000-apiproxy.ifi.uio.no/weatherapi/locationforecast/2.0/.json"
+    suspend fun locationForecast(p: LatLng): Kall? {
+        val baseUrl = "https://in2000-apiproxy.ifi.uio.no/weatherapi/locationforecast/2.0/.json"
         val fullUrl = "${baseUrl}?lat=${p.latitude}&lon=${p.longitude}"
-
         val gson = Gson()
-        val response = Fuel.get(fullUrl).awaitString()
+        var response: String? = null
+
+        try {
+            response = Fuel.get(fullUrl).awaitString()
+        } catch (e: Exception) {
+            Log.d("locationForecast", e.toString())
+            return null
+        }
+
         val weather = gson.fromJson(response, Kall::class.java)
         //Log.d("temp verdi", weather.properties.timeseries[0].data.instant.details.air_temperature) //test som henter nåværende temp
         //Log.d("regn verdi", weather.properties.timeseries[0].data.next_1_hours.details.precipitation_amount)//test som henter nåværende regn

@@ -45,7 +45,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
             }
         }
     }
-    val weather: LiveData<Met.Kall> = Transformations.switchMap(place) {
+    val weather: LiveData<Met.Kall?> = Transformations.switchMap(place) {
         liveData {
             val w = Met().locationForecast(it.position)
             emit(w)
