@@ -4,7 +4,6 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.graphics.Color
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -18,10 +17,10 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.basicmap.R
 import com.example.basicmap.lib.Met
-import com.example.basicmap.ui.places.Place
-import com.example.basicmap.ui.places.PlacesViewModel
 import com.example.basicmap.lib.getJsonDataFromAsset
 import com.example.basicmap.lib.initNoFlyLufthavnSirkel
+import com.example.basicmap.ui.places.Place
+import com.example.basicmap.ui.places.PlacesViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -32,15 +31,18 @@ import com.google.android.gms.maps.model.*
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.popup.*
 import kotlinx.android.synthetic.main.weather.*
 import kotlinx.android.synthetic.main.weather.view.*
-import kotlinx.android.synthetic.main.weather.view.lagreLokasjonsKnapp
-import kotlinx.coroutines.*
-import java.util.*
-import java.util.Calendar.DAY_OF_WEEK
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import java.time.DayOfWeek
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import kotlin.coroutines.CoroutineContext
 import kotlin.math.roundToInt
 
@@ -283,103 +285,77 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
     @SuppressLint("SetTextI18n")
     private fun populatePopup(weather: Met.Kall) {
         activity?.runOnUiThread {
-            var botview = BottomSheetBehavior.from(popup)
+            val botview = BottomSheetBehavior.from(popup)
             botview.state = BottomSheetBehavior.STATE_EXPANDED
             popup.visibility = View.VISIBLE
-            val weatherIconName = weather.properties.timeseries[0].data.next_1_hours.summary.symbol_code
-            val id = resources.getIdentifier(weatherIconName, "mipmap", requireActivity().packageName)
-            popup.weatherImageView.setImageResource(id)
-            val times = mutableListOf<Met.Numb>()
-            val day = listOf("Søndag", "Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag")
-            var dayNow = Calendar.getInstance().get(DAY_OF_WEEK) - 1
-            for (i in 6..75) {
-                val time = weather.properties.timeseries[i].time
-                val hour1 = time[11]
-                val hour2 = time[12]
-                val hour = "${hour1}${hour2}"
-                if (hour == "12") {
-                    times.add(weather.properties.timeseries[i])
+
+            val utc = DateTimeFormatter.ISO_INSTANT.withZone(ZoneId.of("UTC"))
+            val timeseries = weather.properties.timeseries
+
+            val days = mapOf(
+                DayOfWeek.MONDAY to mutableListOf<Met.Numb>(),
+                DayOfWeek.TUESDAY to mutableListOf<Met.Numb>(),
+                DayOfWeek.WEDNESDAY to mutableListOf<Met.Numb>(),
+                DayOfWeek.THURSDAY to mutableListOf<Met.Numb>(),
+                DayOfWeek.FRIDAY to mutableListOf<Met.Numb>(),
+                DayOfWeek.SATURDAY to mutableListOf<Met.Numb>(),
+                DayOfWeek.SUNDAY to mutableListOf<Met.Numb>()
+            )
+            val now = LocalDate.now()
+            for (data in timeseries) {
+                val time = data.time
+                val date = LocalDate.from(utc.parse(time))
+
+                if (date.isAfter(now.plusDays(6)))
+                    break
+
+                days[date.dayOfWeek]?.add(data)
+            }
+
+            val idToDays = mapOf(
+                R.id.monday to DayOfWeek.MONDAY,
+                R.id.tuesday to DayOfWeek.TUESDAY,
+                R.id.wednesday to DayOfWeek.WEDNESDAY,
+                R.id.thursday to DayOfWeek.THURSDAY,
+                R.id.friday to DayOfWeek.FRIDAY,
+                R.id.saturday to DayOfWeek.SATURDAY,
+                R.id.sunday to DayOfWeek.SUNDAY
+            )
+            dayBar.setOnCheckedChangeListener { group, checkedId ->
+                if (checkedId < 0)
+                    return@setOnCheckedChangeListener
+
+                for (data in days[idToDays.get(checkedId)]!!) {
+                    val time = data.time
+                    val datetime = LocalDateTime.from(utc.parse(time))
+
+                    if (datetime.dayOfWeek == now.dayOfWeek || datetime.hour == 12) {
+                        Log.d("now", datetime.toString())
+                        val tempNow = data.data.instant.details.air_temperature?.toDouble()?.roundToInt().toString()
+                        popup.precipitationView.text = "NEDBØR\n${data.data.next_6_hours?.details?.probability_of_precipitation ?: ""}%" //regn eller nedbør riktig her?
+                        popup.visibilityView.text = "TÅKE\n${data.data.instant.details.fog_area_fraction}%"
+                        popup.kpindexView.text = "KP\n3"
+                        popup.tempValue.text = "${tempNow}°C"
+
+                        val weatherIconName = data.data.next_6_hours?.summary?.symbol_code
+                        val id = resources.getIdentifier(weatherIconName, "mipmap", requireActivity().packageName)
+                        popup.weatherImageView.setImageResource(id)
+                        break
+                    }
                 }
             }
-            var tempNow = weather.properties.timeseries[0].data.instant.details.air_temperature?.toDouble()?.roundToInt().toString()
 
-            popup.precipitationView.text = "NEDBØR\n${weather.properties.timeseries[0].data.instant.details.fog_area_fraction}%" //regn eller nedbør riktig her?
-            popup.visibilityView.text = "TÅKE\n${weather.properties.timeseries[0].data.instant.details.fog_area_fraction}%"
-            popup.kpindexView.text = "KP\n3"
-
-            popup.tempValue.text = "${tempNow}°C"
-
-//            popup.day0.text = "Nå:\n" +
-//                    "Vindhastighet: ${weather.properties.timeseries[0].data.instant.details.wind_speed} m/s\n" +
-//                    "Max vindkast: ${weather.properties.timeseries[0].data.instant.details.wind_speed_of_gust} m/s\n" +
-//                    "Temperatur: ${weather.properties.timeseries[0].data.instant.details.air_temperature} °C\n" +
-//                    "Regn: ${weather.properties.timeseries[0].data.next_1_hours.details.precipitation_amount} mm\n" +
-//                    "Tåke: ${weather.properties.timeseries[0].data.instant.details.fog_area_fraction}%"
-//
-//            dayNow++
-//            popup.day1.text = "${day[dayNow]}:\n" +
-//                    "Vindhastighet: ${times[0].data.instant.details.wind_speed} m/s\n" +
-//                    "Max vindkast: ${times[0].data.instant.details.wind_speed_of_gust} m/s\n" +
-//                    "Temperatur: ${times[0].data.instant.details.air_temperature} °C\n" +
-//                    "Regn: ${times[0].data.next_6_hours.details.precipitation_amount} mm\n" +
-//                    "Tåke: ${times[0].data.instant.details.fog_area_fraction}%"
-//            dayNow++
-//            if (dayNow == 7) {
-//                dayNow = 0
-//            }
-//            popup.day2.text = "${day[dayNow]}:\n" +
-//                    "Vindhastighet: ${times[1].data.instant.details.wind_speed} m/s\n" +
-//                    "Max vindkast: ${times[1].data.instant.details.wind_speed_of_gust} m/s\n" +
-//                    "Temperatur: ${times[1].data.instant.details.air_temperature} °C\n" +
-//                    "Regn: ${times[1].data.next_6_hours.details.precipitation_amount} mm\n" +
-//                    "Tåke: ${times[1].data.instant.details.fog_area_fraction}%"
-//            dayNow++
-//            if (dayNow == 7) {
-//                dayNow = 0
-//            }
-//            if (times[2].data.next_6_hours.details.precipitation_amount == null) {
-//                popup.day3.text = "${day[dayNow]}\n" +
-//                        "Vindhastighet: ${times[2].data.instant.details.wind_speed} m/s\n" +
-//                        "Temperatur: ${times[2].data.instant.details.air_temperature} °C\n" +
-//                        "Regn: ${times[2].data.next_1_hours.details.precipitation_amount} mm\n"
-//
-//            } else {
-//                popup.day3.text = "${day[dayNow]}:\n" +
-//                        "Vindhastighet: ${times[2].data.instant.details.wind_speed} m/s\n" +
-//                        "Temperatur: ${times[2].data.instant.details.air_temperature} °C\n" +
-//                        "Regn: ${times[2].data.next_6_hours.details.precipitation_amount} mm\n"
-//            }
-//            dayNow++
-//            if (dayNow == 7) {
-//                dayNow = 0
-//            }
-//            if (times[3].data.next_6_hours.details.precipitation_amount == null) {
-//                popup.day4.text = "${day[dayNow]}:\n" +
-//                        "Vindhastighet: ${times[3].data.instant.details.wind_speed} m/s\n" +
-//                        "Temperatur: ${times[3].data.instant.details.air_temperature} °C\n" +
-//                        "Regn: ${times[3].data.next_1_hours.details.precipitation_amount} mm\n"
-//            } else {
-//                popup.day4.text = "${day[dayNow]}:\n" +
-//                        "Vindhastighet: ${times[3].data.instant.details.wind_speed} m/s\n" +
-//                        "Temperatur: ${times[3].data.instant.details.air_temperature} °C\n" +
-//                        "Regn: ${times[3].data.next_6_hours.details.precipitation_amount} mm\n"
-//            }
-//
-//            dayNow++
-//            if (dayNow == 7) {
-//                dayNow = 0
-//            }
-//            if (times[4].data.next_6_hours.details.precipitation_amount == null) {
-//                popup.day5.text = "${day[dayNow]}:\n" +
-//                        "Vindhastighet: ${times[4].data.instant.details.wind_speed} m/s\n" +
-//                        "Temperatur: ${times[4].data.instant.details.air_temperature} °C\n" +
-//                        "Regn: ${times[4].data.next_1_hours.details.precipitation_amount} mm\n"
-//            } else {
-//                popup.day5.text = "${day[dayNow]}:\n" +
-//                        "Vindhastighet: ${times[4].data.instant.details.wind_speed} m/s\n" +
-//                        "Temperatur: ${times[4].data.instant.details.air_temperature} °C\n" +
-//                        "Regn: ${times[4].data.next_6_hours.details.precipitation_amount} mm\n"
-//            }
+            dayBar.clearCheck()
+            when(now.dayOfWeek) {
+                DayOfWeek.MONDAY -> dayBar.check(R.id.monday)
+                DayOfWeek.TUESDAY -> dayBar.check(R.id.tuesday)
+                DayOfWeek.WEDNESDAY -> dayBar.check(R.id.wednesday)
+                DayOfWeek.THURSDAY -> dayBar.check(R.id.thursday)
+                DayOfWeek.FRIDAY -> dayBar.check(R.id.friday)
+                DayOfWeek.SATURDAY -> dayBar.check(R.id.saturday)
+                DayOfWeek.SUNDAY -> dayBar.check(R.id.sunday)
+                null -> dayBar.clearCheck()
+            }
 
         }
     }
