@@ -43,7 +43,7 @@ import kotlin.coroutines.CoroutineContext
 
 private val TAG = "HomeFragment"
 
-class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListener, CoroutineScope {
+class HomeFragment : Fragment(), OnMapReadyCallback, CoroutineScope {
 
     private val PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1
     private var locationPermissionGranted = false
@@ -171,7 +171,14 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
 
-        map.setOnMapClickListener(this)
+        map.setOnMapClickListener {
+            if (it == null)
+                return@setOnMapClickListener
+            // Store the location in the view model, it will do the necessary work of
+            // fetching weather and address info
+            model.getPlace().value = Place(it)
+        }
+
         map.setOnMarkerClickListener {
             val botview = BottomSheetBehavior.from(popup)
             botview.state = BottomSheetBehavior.STATE_EXPANDED
@@ -262,14 +269,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
                 Log.d("location", "didn't get location")
             }
         }
-    }
-
-    override fun onMapClick(p: LatLng?) {
-        if (p == null)
-            return
-        // Store the location in the view model, it will do the necessary work of
-        // fetching weather and address info
-        model.getPlace().value = Place(p)
     }
 
     fun addZone(positions: List<LatLng>): Polygon? {
