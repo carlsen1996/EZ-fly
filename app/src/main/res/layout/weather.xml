@@ -212,13 +212,32 @@
             android:id="@+id/windContainer"
             android:layout_width="100dp"
             android:layout_height="60dp"
-            android:background="@color/quantum_grey800">
+
+            android:background="@color/quantum_grey100">
 
             <ImageView
-                android:layout_width="70dp"
-                android:layout_height="55dp"
-                android:layout_centerInParent="true"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:alpha=".12"
                 android:src="@drawable/ic_winds" />
+
+
+            <TextView
+                android:id="@+id/windSpeedAverageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="5dp" />
+
+            <TextView
+                android:id="@+id/windGustView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="15dp"
+                android:layout_below="@+id/windSpeedAverageView"
+                />
 
         </RelativeLayout>
 

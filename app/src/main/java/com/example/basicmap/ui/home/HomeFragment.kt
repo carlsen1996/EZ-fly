@@ -338,6 +338,11 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
                         popup.visibilityView.text = "TÅKE\n${data.data.instant.details.fog_area_fraction}%"
                         popup.kpindexView.text = "KP\n3"
                         popup.tempValue.text = "${tempNow}°C"
+                        popup.windSpeedAverageView.text = "AVG?: ${data.data.instant.details.wind_speed}m/sek"
+                        popup.windGustView.text = "MAX: ${data.data.instant.details.wind_speed_of_gust}m/sek"
+
+
+
 
                         val weatherIconName = data.data.next_6_hours?.summary?.symbol_code
                         val id = resources.getIdentifier(weatherIconName, "mipmap", requireActivity().packageName)
