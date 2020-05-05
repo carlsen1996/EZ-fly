@@ -4,7 +4,6 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.graphics.Color
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -18,10 +17,10 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.basicmap.R
 import com.example.basicmap.lib.Met
-import com.example.basicmap.ui.places.Place
-import com.example.basicmap.ui.places.PlacesViewModel
 import com.example.basicmap.lib.getJsonDataFromAsset
 import com.example.basicmap.lib.initNoFlyLufthavnSirkel
+import com.example.basicmap.ui.places.Place
+import com.example.basicmap.ui.places.PlacesViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -32,15 +31,17 @@ import com.google.android.gms.maps.model.*
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.popup.*
 import kotlinx.android.synthetic.main.weather.*
 import kotlinx.android.synthetic.main.weather.view.*
-import kotlinx.android.synthetic.main.weather.view.lagreLokasjonsKnapp
-import kotlinx.coroutines.*
-import java.util.*
-import java.util.Calendar.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import java.time.DayOfWeek
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import kotlin.coroutines.CoroutineContext
 import kotlin.math.roundToInt
 
@@ -291,41 +292,70 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListene
             popup.weatherImageView.setImageResource(id)
             val times = mutableListOf<Met.Numb>()
             val day = listOf("Søndag", "Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag")
-            for (i in 6..75) {
-                val time = weather.properties.timeseries[i].time
-                val hour1 = time[11]
-                val hour2 = time[12]
-                val hour = "${hour1}${hour2}"
-                if (hour == "12") {
-                    times.add(weather.properties.timeseries[i])
+
+
+            val utc = DateTimeFormatter.ISO_INSTANT.withZone(ZoneId.of("UTC"))
+            val timeseries = weather.properties.timeseries
+
+            val days = mapOf(
+                DayOfWeek.MONDAY to mutableListOf<Met.Numb>(),
+                DayOfWeek.TUESDAY to mutableListOf<Met.Numb>(),
+                DayOfWeek.WEDNESDAY to mutableListOf<Met.Numb>(),
+                DayOfWeek.THURSDAY to mutableListOf<Met.Numb>(),
+                DayOfWeek.FRIDAY to mutableListOf<Met.Numb>(),
+                DayOfWeek.SATURDAY to mutableListOf<Met.Numb>(),
+                DayOfWeek.SUNDAY to mutableListOf<Met.Numb>()
+            )
+
+            val idToDays = mapOf(
+                R.id.monday to DayOfWeek.MONDAY,
+                R.id.tuesday to DayOfWeek.TUESDAY,
+                R.id.wednesday to DayOfWeek.WEDNESDAY,
+                R.id.thursday to DayOfWeek.THURSDAY,
+                R.id.friday to DayOfWeek.FRIDAY,
+                R.id.saturday to DayOfWeek.SATURDAY,
+                R.id.sunday to DayOfWeek.SUNDAY
+            )
+
+            for (data in timeseries) {
+                val time = data.time
+                val datetime = LocalDateTime.from(utc.parse(time))
+                days[datetime.dayOfWeek]?.add(data)
+            }
+            val now = LocalDateTime.now()
+
+
+            dayBar.setOnCheckedChangeListener { group, checkedId ->
+                if (checkedId < 0)
+                    return@setOnCheckedChangeListener
+
+                for (data in days[idToDays.get(checkedId)]!!) {
+                    val time = data.time
+                    val datetime = LocalDateTime.from(utc.parse(time))
+
+                    if (datetime.hour == 12) {
+                        val tempNow = data.data.instant.details.air_temperature?.toDouble()?.roundToInt().toString()
+                        popup.precipitationView.text = "NEDBØR\n${data.data.instant.details.fog_area_fraction}%" //regn eller nedbør riktig her?
+                        popup.visibilityView.text = "TÅKE\n${data.data.instant.details.fog_area_fraction}%"
+                        popup.kpindexView.text = "KP\n3"
+
+                        popup.tempValue.text = "${tempNow}°C"
+
+                    }
                 }
             }
 
-            var dayNow = Calendar.getInstance().get(DAY_OF_WEEK)
-
-            dayBar.setOnCheckedChangeListener { group, checkedId ->
-
+            when(now.dayOfWeek) {
+                DayOfWeek.MONDAY -> dayBar.check(R.id.monday)
+                DayOfWeek.TUESDAY -> dayBar.check(R.id.tuesday)
+                DayOfWeek.WEDNESDAY -> dayBar.check(R.id.wednesday)
+                DayOfWeek.THURSDAY -> dayBar.check(R.id.thursday)
+                DayOfWeek.FRIDAY -> dayBar.check(R.id.friday)
+                DayOfWeek.SATURDAY -> dayBar.check(R.id.saturday)
+                DayOfWeek.SUNDAY -> dayBar.check(R.id.sunday)
+                null -> dayBar.clearCheck()
             }
 
-            when(dayNow) {
-                MONDAY -> dayBar.check(R.id.monday)
-                TUESDAY -> dayBar.check(R.id.tuesday)
-                WEDNESDAY -> dayBar.check(R.id.wednesday)
-                THURSDAY -> dayBar.check(R.id.thursday)
-                FRIDAY -> dayBar.check(R.id.friday)
-                SATURDAY -> dayBar.check(R.id.saturday)
-                SUNDAY -> dayBar.check(R.id.sunday)
-                else -> null
-            }
-
-
-            var tempNow = weather.properties.timeseries[0].data.instant.details.air_temperature?.toDouble()?.roundToInt().toString()
-
-            popup.precipitationView.text = "NEDBØR\n${weather.properties.timeseries[0].data.instant.details.fog_area_fraction}%" //regn eller nedbør riktig her?
-            popup.visibilityView.text = "TÅKE\n${weather.properties.timeseries[0].data.instant.details.fog_area_fraction}%"
-            popup.kpindexView.text = "KP\n3"
-
-            popup.tempValue.text = "${tempNow}°C"
 
 //            popup.day0.text = "Nå:\n" +
 //                    "Vindhastighet: ${weather.properties.timeseries[0].data.instant.details.wind_speed} m/s\n" +
