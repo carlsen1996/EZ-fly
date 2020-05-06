@@ -1,10 +1,12 @@
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.example.basicmap.R.layout.place_kort
 import com.example.basicmap.lib.Met
 import com.example.basicmap.lib.populateWeather
+import com.example.basicmap.ui.places.LivePlace
 import com.example.basicmap.ui.places.Place
 import com.example.basicmap.ui.places.PlacesFragment
 import com.example.basicmap.ui.places.PlacesViewModel
@@ -45,17 +47,16 @@ class PlacesListAdapter(val fragment: PlacesFragment, val placesList: MutableLis
 
             itemView.cardView
 
-            // This is a bit ugly, but works.
-            // Would be cool to push the coroutines to livedata and just observe here, we'll see
-            // if that's doable in the future.
-            GlobalScope.launch {
-                val weather = Met().locationForecast(place.position) ?: return@launch
-                withContext(Dispatchers.Main) {
-                    populateWeather(fragment.requireContext(), itemView.cardView, weather)
-                }
-            }
+            val live = LivePlace()
 
+            live.weather.observe(fragment.viewLifecycleOwner, Observer {
+                if (it == null)
+                    return@Observer
+                populateWeather(fragment.requireContext(), itemView.cardView, it)
+            })
+            live.place.value = place
         }
+
         fun slettPlace(pos: Int) {
             placesList?.removeAt(pos)
             placesViewModel.getPlaces().value = placesList
