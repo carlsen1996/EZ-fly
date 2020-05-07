@@ -49,7 +49,7 @@
         android:background="@drawable/daybar_shape">
 
         <RadioButton
-            android:id="@+id/monday"
+            android:id="@+id/today"
             android:layout_width="55dp"
             android:layout_height="20dp"
             android:gravity="center"
@@ -60,7 +60,7 @@
         </RadioButton>
 
         <RadioButton
-            android:id="@+id/tuesday"
+            android:id="@+id/tommorow"
             android:gravity="center"
             android:button="@drawable/empty_radio"
             android:layout_width="55dp"
@@ -71,7 +71,7 @@
         </RadioButton>
 
         <RadioButton
-            android:id="@+id/wednesday"
+            android:id="@+id/third"
             android:gravity="center"
             android:button="@drawable/empty_radio"
             android:layout_width="55dp"
@@ -82,7 +82,7 @@
         </RadioButton>
 
         <RadioButton
-            android:id="@+id/thursday"
+            android:id="@+id/fourth"
             android:gravity="center"
             android:button="@drawable/empty_radio"
             android:layout_width="55dp"
@@ -93,7 +93,7 @@
         </RadioButton>
 
         <RadioButton
-            android:id="@+id/friday"
+            android:id="@+id/fifth"
             android:gravity="center"
             android:button="@drawable/empty_radio"
             android:layout_width="55dp"
@@ -104,7 +104,7 @@
         </RadioButton>
 
         <RadioButton
-            android:id="@+id/saturday"
+            android:id="@+id/sixth"
             android:gravity="center"
             android:button="@drawable/empty_radio"
             android:layout_width="55dp"
@@ -115,7 +115,7 @@
         </RadioButton>
 
         <RadioButton
-            android:id="@+id/sunday"
+            android:id="@+id/seventh"
             android:gravity="center"
             android:button="@drawable/empty_radio"
             android:layout_width="55dp"

@@ -3,6 +3,8 @@ package com.example.basicmap.lib
 import android.content.Context
 import android.util.Log
 import android.view.View
+import android.widget.RadioButton
+import androidx.core.view.get
 import com.example.basicmap.R
 import kotlinx.android.synthetic.main.weather.view.*
 import java.time.DayOfWeek
@@ -10,6 +12,8 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
+import java.time.format.TextStyle
+import java.util.*
 import kotlin.math.roundToInt
 
 
@@ -37,20 +41,35 @@ fun populateWeather(context: Context, container: View, weather: Met.Kall) {
         days[date.dayOfWeek]?.add(data)
     }
 
-    val idToDays = mapOf(
-        R.id.monday to DayOfWeek.MONDAY,
-        R.id.tuesday to DayOfWeek.TUESDAY,
-        R.id.wednesday to DayOfWeek.WEDNESDAY,
-        R.id.thursday to DayOfWeek.THURSDAY,
-        R.id.friday to DayOfWeek.FRIDAY,
-        R.id.saturday to DayOfWeek.SATURDAY,
-        R.id.sunday to DayOfWeek.SUNDAY
+    val idToDay = mapOf(
+        R.id.today to now.dayOfWeek,
+        R.id.tommorow to now.plusDays(1).dayOfWeek,
+        R.id.third to now.plusDays(2).dayOfWeek,
+        R.id.fourth to now.plusDays(3).dayOfWeek,
+        R.id.fifth to now.plusDays(4).dayOfWeek,
+        R.id.sixth to now.plusDays(5).dayOfWeek,
+        R.id.seventh to now.plusDays(6).dayOfWeek
     )
+
+    val dayToId = mapOf(
+         now.dayOfWeek to R.id.today,
+         now.plusDays(1).dayOfWeek to R.id.tommorow,
+         now.plusDays(2).dayOfWeek to R.id.third,
+         now.plusDays(3).dayOfWeek to R.id.fourth,
+         now.plusDays(4).dayOfWeek to R.id.fifth,
+         now.plusDays(5).dayOfWeek to R.id.sixth,
+         now.plusDays(6).dayOfWeek to R.id.seventh
+    )
+
+    dayToId.forEach {
+        val day = it.key
+        container.findViewById<RadioButton>(it.value).text = day.getDisplayName(TextStyle.SHORT, Locale.getDefault())
+    }
     container.dayBar.setOnCheckedChangeListener { group, checkedId ->
         if (checkedId < 0)
             return@setOnCheckedChangeListener
 
-        for (data in days[idToDays.get(checkedId)]!!) {
+        for (data in days[idToDay.get(checkedId)]!!) {
             val time = data.time
             val datetime = LocalDateTime.from(utc.parse(time))
 
@@ -71,15 +90,5 @@ fun populateWeather(context: Context, container: View, weather: Met.Kall) {
     }
 
     container.dayBar.clearCheck()
-    when(now.dayOfWeek) {
-        DayOfWeek.MONDAY -> container.dayBar.check(R.id.monday)
-        DayOfWeek.TUESDAY -> container.dayBar.check(R.id.tuesday)
-        DayOfWeek.WEDNESDAY -> container.dayBar.check(R.id.wednesday)
-        DayOfWeek.THURSDAY -> container.dayBar.check(R.id.thursday)
-        DayOfWeek.FRIDAY -> container.dayBar.check(R.id.friday)
-        DayOfWeek.SATURDAY -> container.dayBar.check(R.id.saturday)
-        DayOfWeek.SUNDAY -> container.dayBar.check(R.id.sunday)
-        null -> container.dayBar.clearCheck()
-    }
-
+    container.dayBar.check(dayToId.get(now.dayOfWeek) ?: -1)
 }
