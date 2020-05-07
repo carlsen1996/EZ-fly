@@ -4,7 +4,6 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.example.basicmap.R.layout.place_kort
-import com.example.basicmap.lib.Met
 import com.example.basicmap.lib.populateWeather
 import com.example.basicmap.ui.places.LivePlace
 import com.example.basicmap.ui.places.Place
@@ -13,10 +12,6 @@ import com.example.basicmap.ui.places.PlacesViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.place_kort.view.*
 import kotlinx.android.synthetic.main.weather.view.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 
 class PlacesListAdapter(val fragment: PlacesFragment, val placesList: MutableList<Place>?) : RecyclerView.Adapter<PlacesListAdapter.PlacesViewHolder>() {
@@ -41,13 +36,13 @@ class PlacesListAdapter(val fragment: PlacesFragment, val placesList: MutableLis
             }
 
             itemView.gotoButton.setOnClickListener {
-                fragment.homeViewModel.getPlace().value = place
+                fragment.homeViewModel.getPlace().place.value = place
                 fragment.requireActivity().view_pager.setCurrentItem(0, true)
             }
 
             itemView.cardView
 
-            val live = LivePlace()
+            val live = LivePlace(fragment.requireContext())
 
             live.weather.observe(fragment.viewLifecycleOwner, Observer {
                 if (it == null)

@@ -114,19 +114,19 @@ class HomeFragment : Fragment(), OnMapReadyCallback, CoroutineScope {
         // When `model.place` is set in `onMapClick` the model will automatically
         // fetch the associated address and weather info in the background,
         // notifying us here when done.
-        model.address.observe(viewLifecycleOwner, Observer { address ->
+        model.getPlace().address.observe(viewLifecycleOwner, Observer { address ->
             if (address == "")
                 popup.locationNameView.text = "Ingen addresseinformasjon tilgjengelig"
             else
                 popup.locationNameView.text = address
         })
-        model.weather.observe(viewLifecycleOwner, Observer { weather ->
+        model.getPlace().weather.observe(viewLifecycleOwner, Observer { weather ->
             if (weather != null) {
                 populatePopup(weather)
             }
         })
 
-        model.astronomicalData.observe(viewLifecycleOwner, Observer { astronomicalData ->
+        model.getPlace().astronomicalData.observe(viewLifecycleOwner, Observer { astronomicalData ->
             if (astronomicalData != null)
                 populatePopupWithAstroData(astronomicalData)
         })
@@ -137,8 +137,10 @@ class HomeFragment : Fragment(), OnMapReadyCallback, CoroutineScope {
 
         root.lagreLokasjonsKnapp.setOnClickListener {
             // This is only accessible from the popup, meaning the position has been set
-            val place = model.getPlace().value!!
-            place.address = model.address.value ?: ""
+            val livePlace = model.getPlace()
+            val place = livePlace.place.value!!
+            val liveAddress = livePlace.address
+            place.address = liveAddress.value ?: ""
             val places = placesViewModel.getPlaces().value!!
             val toast = Toast.makeText(
                 activity,
@@ -147,12 +149,12 @@ class HomeFragment : Fragment(), OnMapReadyCallback, CoroutineScope {
             )
             if (place.favorite) {
                 popup.lagreLokasjonsKnapp.setImageResource(android.R.drawable.star_big_off)
-                toast.setText("${model.address.value}, er fjernet fra favoritter")
+                toast.setText("${liveAddress.value}, er fjernet fra favoritter")
                 place.favorite = false
                 places.remove(place)
             } else {
                 popup.lagreLokasjonsKnapp.setImageResource(android.R.drawable.star_big_on)
-                toast.setText("${model.address.value}, er lagt til i favoritter")
+                toast.setText("${liveAddress.value}, er lagt til i favoritter")
                 place.favorite = true
                 places.add(place)
             }
@@ -160,7 +162,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, CoroutineScope {
             toast.show()
         }
         root.gotoButton.setOnClickListener {
-            map.animateCamera(CameraUpdateFactory.newLatLng(model.getPlace().value!!.position))
+            map.animateCamera(CameraUpdateFactory.newLatLng(model.getPlace().place.value!!.position))
         }
 
         return root
@@ -176,7 +178,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, CoroutineScope {
                 return@setOnMapClickListener
             // Store the location in the view model, it will do the necessary work of
             // fetching weather and address info
-            model.getPlace().value = Place(it)
+            model.getPlace().place.value = Place(it)
         }
 
         map.setOnMarkerClickListener {
@@ -186,7 +188,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, CoroutineScope {
         }
 
         // Make sure new markers are inside the viewport
-        model.getPlace().observe(viewLifecycleOwner, Observer {
+        model.getPlace().place.observe(viewLifecycleOwner, Observer {
             Log.d("place observer", "foo")
             if (it == null)
                 return@Observer
