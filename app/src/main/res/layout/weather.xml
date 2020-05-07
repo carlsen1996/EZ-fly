@@ -6,9 +6,61 @@
     android:orientation="vertical"
     android:layout_margin="5dp"
     android:showDividers="middle"
+    app:behavior_peekHeight="55dp"
     android:divider="@drawable/empty_tall_divider"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <HorizontalScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            >
+
+        <LinearLayout
+            android:id="@+id/scrollableHours"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+            <Button
+                android:id="@+id/placeholder1"
+                android:layout_width="wrap_content"
+                android:layout_height="100dp" />
+
+            <Button
+                android:id="@+id/placeholder2"
+                android:layout_width="wrap_content"
+                android:layout_height="100dp" />
+
+            <Button
+                android:id="@+id/placeholder3"
+                android:layout_width="wrap_content"
+                android:layout_height="100dp" />
+
+            <Button
+                android:id="@+id/placeholder4"
+                android:layout_width="wrap_content"
+                android:layout_height="100dp" />
+
+            <Button
+                android:id="@+id/placeholder5"
+                android:layout_width="wrap_content"
+                android:layout_height="100dp" />
+
+            <Button
+                android:id="@+id/placeholder6"
+                android:layout_width="wrap_content"
+                android:layout_height="100dp" />
+
+            </LinearLayout>
+
+            </HorizontalScrollView>
+
+    </ScrollView>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -134,7 +186,8 @@
         android:layout_width="336dp"
         android:layout_height="wrap_content"
         android:background="@drawable/daybar_shape"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="visible">
 
         <RelativeLayout
             android:id="@+id/tempContainer"
@@ -146,12 +199,12 @@
                 android:id="@+id/tempValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="70°C"
                 android:layout_marginTop="4dp"
-                android:textFontWeight="1"
+                android:fontFamily="@font/lato_light"
+                android:text="70°C"
                 android:textColor="@color/quantum_white_100"
-                android:textSize="40sp"
-                android:fontFamily="@font/lato_light"/>
+                android:textFontWeight="1"
+                android:textSize="40sp" />
 
             <TextView
                 android:id="@+id/minTempValue"
@@ -160,9 +213,9 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="12dp"
                 android:layout_toRightOf="@+id/tempValue"
+                android:fontFamily="@font/lato_regular"
                 android:text="Min: 3"
                 android:textColor="@color/quantum_white_100"
-                android:fontFamily="@font/lato_regular"
                 android:textSize="10sp" />
 
             <TextView
@@ -172,8 +225,8 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="24dp"
                 android:layout_toRightOf="@+id/tempValue"
-                android:text="Max: 3"
                 android:fontFamily="@font/lato_regular"
+                android:text="Max: 3"
                 android:textColor="@color/quantum_white_100"
                 android:textSize="10sp" />
 
@@ -190,9 +243,9 @@
 
             <ImageView
                 android:id="@+id/weatherImageView"
-                android:layout_centerInParent="true"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
+                android:layout_centerInParent="true"
                 android:contentDescription="ImageOfWeather"
                 app:srcCompat="@drawable/ic_notifications_black_24dp" />
 
@@ -203,17 +256,18 @@
 
 
     <LinearLayout
-        android:showDividers="middle"
-        android:divider="@drawable/empty_tall_divider"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center">
+        android:divider="@drawable/empty_tall_divider"
+        android:gravity="center"
+        android:showDividers="middle"
+        android:visibility="visible">
 
         <RelativeLayout
             android:id="@+id/windContainer"
             android:layout_width="wrap_content"
-            android:layout_marginRight="31dp"
             android:layout_height="65dp"
+            android:layout_marginRight="31dp"
             android:background="@drawable/windcontainer_shape">
 
             <ImageView
@@ -252,8 +306,8 @@
                 android:layout_below="@+id/windValue"
                 android:layout_marginLeft="3dp"
                 android:layout_toRightOf="@+id/windLogo"
-                android:text="Vindkast: 10 m/s "
                 android:fontFamily="@font/lato_light"
+                android:text="Vindkast: 10 m/s "
                 android:textColor="@color/quantum_white_100"
                 android:textSize="11sp" />
 
