@@ -49,7 +49,7 @@ class PlacesFragment : Fragment() {
             adapter = viewAdapter
         }
 
-        placesViewModel.getPlaces().observe(viewLifecycleOwner, Observer<MutableList<Place>> {
+        placesViewModel.getPlaces().observe(viewLifecycleOwner, Observer {
             viewAdapter.notifyDataSetChanged()
             if(viewAdapter.itemCount == 0) {
                 recycleViewTekstPlaces.visibility = VISIBLE

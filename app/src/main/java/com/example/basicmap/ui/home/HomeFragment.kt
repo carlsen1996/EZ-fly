@@ -151,12 +151,12 @@ class HomeFragment : Fragment(), OnMapReadyCallback, CoroutineScope {
                 popup.lagreLokasjonsKnapp.setImageResource(android.R.drawable.star_big_off)
                 toast.setText("${liveAddress.value}, er fjernet fra favoritter")
                 place.favorite = false
-                places.remove(place)
+                places.remove(livePlace)
             } else {
                 popup.lagreLokasjonsKnapp.setImageResource(android.R.drawable.star_big_on)
                 toast.setText("${liveAddress.value}, er lagt til i favoritter")
                 place.favorite = true
-                places.add(place)
+                places.add(livePlace)
             }
             placesViewModel.getPlaces().value = places
             toast.show()

@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.basicmap.R.layout.place_kort
 import com.example.basicmap.lib.populateWeather
 import com.example.basicmap.ui.places.LivePlace
-import com.example.basicmap.ui.places.Place
 import com.example.basicmap.ui.places.PlacesFragment
 import com.example.basicmap.ui.places.PlacesViewModel
 import kotlinx.android.synthetic.main.activity_main.*
@@ -14,20 +13,19 @@ import kotlinx.android.synthetic.main.place_kort.view.*
 import kotlinx.android.synthetic.main.weather.view.*
 
 
-class PlacesListAdapter(val fragment: PlacesFragment, val placesList: MutableList<Place>?) : RecyclerView.Adapter<PlacesListAdapter.PlacesViewHolder>() {
+class PlacesListAdapter(val fragment: PlacesFragment, val placesList: MutableList<LivePlace>?) : RecyclerView.Adapter<PlacesListAdapter.PlacesViewHolder>() {
     private val placesViewModel = PlacesViewModel()
     inner class PlacesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun setData(place: Place, pos: Int) {
-            itemView.locationNameView.text = place.address
+        fun setData(livePlace: LivePlace, pos: Int) {
             itemView.lagreLokasjonsKnapp.setImageResource(android.R.drawable.star_big_on)
             itemView.lagreLokasjonsKnapp.setOnClickListener {
                 val builder = androidx.appcompat.app.AlertDialog.Builder(fragment.requireActivity())
                 builder.setTitle("Slett lokasjon/plass")
-                builder.setMessage("Er du sikker på at du vil slette \n" + place.address + " ?")
+                builder.setMessage("Er du sikker på at du vil slette \n" + livePlace.address + " ?")
                 builder.setPositiveButton("Ja") { dialog, which ->
                     slettPlace(pos)
-                    place.favorite = false
+                    livePlace.place.value?.favorite = false
                 }
                 builder.setNegativeButton("Nei") { dialog, which ->
                     dialog.dismiss()
@@ -36,20 +34,21 @@ class PlacesListAdapter(val fragment: PlacesFragment, val placesList: MutableLis
             }
 
             itemView.gotoButton.setOnClickListener {
-                fragment.homeViewModel.getPlace().place.value = place
+                fragment.homeViewModel.getPlace().place.value = livePlace.place.value
                 fragment.requireActivity().view_pager.setCurrentItem(0, true)
             }
 
             itemView.cardView
 
-            val live = LivePlace(fragment.requireContext())
-
-            live.weather.observe(fragment.viewLifecycleOwner, Observer {
+            livePlace.weather.observe(fragment.viewLifecycleOwner, Observer {
                 if (it == null)
                     return@Observer
                 populateWeather(fragment.requireContext(), itemView.cardView, it)
             })
-            live.place.value = place
+
+            livePlace.address.observe(fragment.viewLifecycleOwner, Observer {
+                itemView.locationNameView.text = it
+            })
         }
 
         fun slettPlace(pos: Int) {
@@ -64,8 +63,8 @@ class PlacesListAdapter(val fragment: PlacesFragment, val placesList: MutableLis
     }
 
     override fun onBindViewHolder(holder: PlacesViewHolder, position: Int) {
-        val place = placesList!!.elementAt(position)
-        holder.setData(place, position)
+        val livePlace = placesList!!.elementAt(position)
+        holder.setData(livePlace, position)
     }
 
 

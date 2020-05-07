@@ -7,7 +7,7 @@ import com.example.basicmap.lib.Met
 
 class PlacesViewModel : ViewModel() {
     companion object {
-        var places = MutableLiveData(mutableListOf<Place>())
+        var places = MutableLiveData(mutableListOf<LivePlace>())
     }
 
     fun getPlaces() = places
@@ -33,6 +33,11 @@ class LivePlace(application: Context) {
 
     val address: LiveData<String> = Transformations.switchMap(place) {
         liveData {
+            if (it.address != "") {
+                emit(it.address)
+                return@liveData
+            }
+
             val p = it.position
             val geoc = Geocoder(application)
             try {
