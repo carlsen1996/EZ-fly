@@ -11,56 +11,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <ScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-        <HorizontalScrollView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            >
-
-        <LinearLayout
-            android:id="@+id/scrollableHours"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
-            <Button
-                android:id="@+id/placeholder1"
-                android:layout_width="wrap_content"
-                android:layout_height="100dp" />
-
-            <Button
-                android:id="@+id/placeholder2"
-                android:layout_width="wrap_content"
-                android:layout_height="100dp" />
-
-            <Button
-                android:id="@+id/placeholder3"
-                android:layout_width="wrap_content"
-                android:layout_height="100dp" />
-
-            <Button
-                android:id="@+id/placeholder4"
-                android:layout_width="wrap_content"
-                android:layout_height="100dp" />
-
-            <Button
-                android:id="@+id/placeholder5"
-                android:layout_width="wrap_content"
-                android:layout_height="100dp" />
-
-            <Button
-                android:id="@+id/placeholder6"
-                android:layout_width="wrap_content"
-                android:layout_height="100dp" />
-
-            </LinearLayout>
-
-            </HorizontalScrollView>
-
-    </ScrollView>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -178,9 +128,60 @@
             android:text="søn">
         </RadioButton>
 
-
-
     </RadioGroup>
+
+    <ScrollView
+        android:id="@+id/hourScrollView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <HorizontalScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            >
+
+            <LinearLayout
+                android:id="@+id/scrollableHours"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+                <Button
+                    android:id="@+id/placeholder1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="100dp" />
+
+                <Button
+                    android:id="@+id/placeholder2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="100dp" />
+
+                <Button
+                    android:id="@+id/placeholder3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="100dp" />
+
+                <Button
+                    android:id="@+id/placeholder4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="100dp" />
+
+                <Button
+                    android:id="@+id/placeholder5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="100dp" />
+
+                <Button
+                    android:id="@+id/placeholder6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="100dp" />
+
+            </LinearLayout>
+
+        </HorizontalScrollView>
+
+    </ScrollView>
+
 
     <RelativeLayout
         android:layout_width="336dp"
