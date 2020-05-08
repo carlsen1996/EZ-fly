@@ -7,6 +7,8 @@ import com.github.kittinunf.fuel.coroutines.awaitString
 import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
 import java.text.SimpleDateFormat
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 
@@ -104,7 +106,7 @@ class Met {
         return weather
     }
 
-    suspend fun receiveAstroData(p: LatLng): AstronomicalData? {
+    suspend fun receiveAstroData(p: LatLng, date: ZonedDateTime): AstronomicalData? {
 
         /* meterologisk institutts instruksjoner for bruk av sunset/sunrise api:
         Parameters
@@ -126,9 +128,8 @@ class Met {
         ER MULIG JEG MÅ LAGE "MOTTAKERVARIABLE" FOR ALLE DATA sunrise-APIet ønsker å returnere. Dette vil jeg teste
         */
 
-
-        val sdf = SimpleDateFormat("YYYY-MM-dd")
-        val currentDate = sdf.format(Date())
+        val sdf = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        val currentDate = sdf.format(date)
 
         //poenget med de 5 kodesnuttene over, er å gjøre formatet på datoen "spiselig" for meterologisk institutts API: YYYY-MM-DD
 

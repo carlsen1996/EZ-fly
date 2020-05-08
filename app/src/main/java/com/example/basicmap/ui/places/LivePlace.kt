@@ -2,11 +2,15 @@ package com.example.basicmap.ui.places
 
 import android.content.Context
 import android.location.Geocoder
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.liveData
+import androidx.lifecycle.*
 import com.example.basicmap.lib.Met
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.time.DayOfWeek
+import java.time.LocalDate
+import java.time.ZonedDateTime
 
 class LivePlace(application: Context) {
     val place: MutableLiveData<Place> =
@@ -51,11 +55,38 @@ class LivePlace(application: Context) {
         }
     }
 
-    val astronomicalData: LiveData<Met.AstronomicalData?> = Transformations.switchMap(place) {
-        liveData {
-            val astro =
-                Met().receiveAstroData(it.position)
-            emit(astro)
+    val day: MutableLiveData<ZonedDateTime> by lazy {
+        MutableLiveData(ZonedDateTime.now())
+    }
+
+    val astronomicalData: MediatorLiveData<Met.AstronomicalData> = MediatorLiveData()
+
+    init {
+        astronomicalData.addSource(place) {
+            GlobalScope.launch {
+                withContext(Dispatchers.IO) {
+                    val astro = Met().receiveAstroData(it.position, day.value!!)
+                    withContext(Dispatchers.Main) {
+                        astronomicalData.value = astro
+                    }
+                }
+
+            }
         }
+        astronomicalData.addSource(day) {
+            val place = place.value
+            GlobalScope.launch {
+                withContext(Dispatchers.IO) {
+                    if (place == null)
+                        return@withContext
+                    val astro = Met().receiveAstroData(place.position, it)
+                    withContext(Dispatchers.Main) {
+                        astronomicalData.value = astro
+                    }
+                }
+
+            }
+        }
+
     }
 }
