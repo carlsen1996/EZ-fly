@@ -55,13 +55,15 @@ class LivePlace(application: Context) {
         }
     }
 
-    val day: MutableLiveData<ZonedDateTime> by lazy {
-        MutableLiveData(ZonedDateTime.now())
+    val day: MutableLiveData<LocalDate> by lazy {
+        MutableLiveData(LocalDate.now())
     }
 
     val astronomicalData: MediatorLiveData<Met.AstronomicalData> = MediatorLiveData()
 
     init {
+        // Sunset/sunrise needs to be fetched for each day and position
+        // We can assume the day is always set
         astronomicalData.addSource(place) {
             GlobalScope.launch {
                 withContext(Dispatchers.IO) {
@@ -70,7 +72,6 @@ class LivePlace(application: Context) {
                         astronomicalData.value = astro
                     }
                 }
-
             }
         }
         astronomicalData.addSource(day) {

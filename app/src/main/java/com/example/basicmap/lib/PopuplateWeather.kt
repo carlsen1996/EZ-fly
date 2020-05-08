@@ -5,22 +5,24 @@ import android.text.SpannableStringBuilder
 import android.util.Log
 import android.view.View
 import android.widget.RadioButton
-import androidx.core.view.get
 import androidx.core.text.bold
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import com.example.basicmap.R
-import kotlinx.android.synthetic.main.popup.*
+import com.example.basicmap.ui.places.LivePlace
 import kotlinx.android.synthetic.main.weather.view.*
-import java.time.DayOfWeek
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.ZoneId
+import java.time.*
 import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
-import java.util.*
+import java.util.Locale
 import kotlin.math.roundToInt
 
 
-fun populateWeather(context: Context, container: View, weather: Met.Kall) {
+private fun populateWeather(context: Context, container: View, livePlace: LivePlace) {
+    val weather = livePlace.weather.value
+    if (weather == null)
+        return
+
     val utc = DateTimeFormatter.ISO_INSTANT.withZone(ZoneId.of("UTC"))
     val timeseries = weather.properties.timeseries
 
@@ -44,63 +46,37 @@ fun populateWeather(context: Context, container: View, weather: Met.Kall) {
         days[date.dayOfWeek]?.add(data)
     }
 
-    val idToDay = mapOf(
-        R.id.today to now.dayOfWeek,
-        R.id.tommorow to now.plusDays(1).dayOfWeek,
-        R.id.third to now.plusDays(2).dayOfWeek,
-        R.id.fourth to now.plusDays(3).dayOfWeek,
-        R.id.fifth to now.plusDays(4).dayOfWeek,
-        R.id.sixth to now.plusDays(5).dayOfWeek,
-        R.id.seventh to now.plusDays(6).dayOfWeek
-    )
+    val day = livePlace.day.value!!
+    for (data in days[day.dayOfWeek]!!) {
+        val time = data.time
+        val datetime = LocalDateTime.from(utc.parse(time))
 
-    val dayToId = mapOf(
-         now.dayOfWeek to R.id.today,
-         now.plusDays(1).dayOfWeek to R.id.tommorow,
-         now.plusDays(2).dayOfWeek to R.id.third,
-         now.plusDays(3).dayOfWeek to R.id.fourth,
-         now.plusDays(4).dayOfWeek to R.id.fifth,
-         now.plusDays(5).dayOfWeek to R.id.sixth,
-         now.plusDays(6).dayOfWeek to R.id.seventh
-    )
+        if (datetime.dayOfWeek == now.dayOfWeek || datetime.hour == 12) {
+            Log.d("now", datetime.toString())
+            val tempNow =
+                data.data.instant.details.air_temperature?.toDouble()?.roundToInt().toString()
+            val precipProb = data.data.next_6_hours?.details?.probability_of_precipitation
+            val wind = data.data.instant.details.wind_speed
+            val windDirection = data.data.instant.details.wind_from_direction
+            val compassDeg = windDirection?.toDouble()?.let { degToCompass(it) }
+            val windGust = data.data.instant.details.wind_speed_of_gust
 
-    dayToId.forEach {
-        val day = it.key
-        container.findViewById<RadioButton>(it.value).text = day.getDisplayName(TextStyle.SHORT, Locale.getDefault())
-    }
-    container.dayBar.setOnCheckedChangeListener { group, checkedId ->
-        if (checkedId < 0)
-            return@setOnCheckedChangeListener
-
-        for (data in days[idToDay.get(checkedId)]!!) {
-            val time = data.time
-            val datetime = LocalDateTime.from(utc.parse(time))
-
-            if (datetime.dayOfWeek == now.dayOfWeek || datetime.hour == 12) {
-                Log.d("now", datetime.toString())
-                val tempNow = data.data.instant.details.air_temperature?.toDouble()?.roundToInt().toString()
-                val precipProb = data.data.next_6_hours?.details?.probability_of_precipitation
-                val wind = data.data.instant.details.wind_speed
-                val windDirection = data.data.instant.details.wind_from_direction
-                val compassDeg = windDirection?.toDouble()?.let { degToCompass(it) }
-                val windGust = data.data.instant.details.wind_speed_of_gust
-
-                container.tempValue.text = "${tempNow}°C"
-                container.precipValue.text = "${precipProb}"
-                container.windValue.text = "${wind}"
-                container.windDesc.text = "m/s ${compassDeg}"
-                val customGustString = SpannableStringBuilder().append("Vindkast: ").bold {append("$windGust")}.append(" m/s")
-                container.windGustValue.text = customGustString
-                val weatherIconName = data.data.next_6_hours?.summary?.symbol_code
-                val id = context.resources.getIdentifier(weatherIconName, "mipmap", context.packageName)
-                container.weatherImageView.setImageResource(id)
-                break
-            }
+            container.tempValue.text = "${tempNow}°C"
+            container.precipValue.text = "${precipProb}"
+            container.windValue.text = "${wind}"
+            container.windDesc.text = "m/s ${compassDeg}"
+            val customGustString =
+                SpannableStringBuilder().append("Vindkast: ").bold { append("$windGust") }
+                    .append(" m/s")
+            container.windGustValue.text = customGustString
+            val weatherIconName = data.data.next_6_hours?.summary?.symbol_code
+            val id = context.resources.getIdentifier(weatherIconName, "mipmap", context.packageName)
+            container.weatherImageView.setImageResource(id)
+            break
         }
     }
 
-    container.dayBar.clearCheck()
-    container.dayBar.check(dayToId.get(now.dayOfWeek) ?: -1)
+
 }
 
 private fun degToCompass(a : Double) : String {
@@ -108,3 +84,62 @@ private fun degToCompass(a : Double) : String {
     var c = arrayOf("N","NNE","NE","ENE","E","ESE", "SE", "SSE","S","SSW","SW","WSW","W","WNW","NW","NNW")
     return c[(b % 16)]
 }
+
+fun setupWeatherElement(
+    context: Context,
+    lifecycleOwner: LifecycleOwner,
+    livePlace: LivePlace,
+    container: View
+) {
+    val now = LocalDate.now()
+
+    val dayToId = mapOf(
+        now.dayOfWeek to R.id.today,
+        now.plusDays(1).dayOfWeek to R.id.tommorow,
+        now.plusDays(2).dayOfWeek to R.id.third,
+        now.plusDays(3).dayOfWeek to R.id.fourth,
+        now.plusDays(4).dayOfWeek to R.id.fifth,
+        now.plusDays(5).dayOfWeek to R.id.sixth,
+        now.plusDays(6).dayOfWeek to R.id.seventh
+    )
+    val idToDay = mapOf(
+        R.id.today to now,
+        R.id.tommorow to now.plusDays(1),
+        R.id.third to now.plusDays(2),
+        R.id.fourth to now.plusDays(3),
+        R.id.fifth to now.plusDays(4),
+        R.id.sixth to now.plusDays(5),
+        R.id.seventh to now.plusDays(6)
+    )
+
+    dayToId.forEach {
+        val day = it.key
+        container.findViewById<RadioButton>(it.value).text = day.getDisplayName(TextStyle.SHORT, Locale.getDefault())
+    }
+
+    livePlace.day.observe(lifecycleOwner, Observer {
+        populateWeather(context, container, livePlace)
+    })
+
+    livePlace.weather.observe(lifecycleOwner, Observer {
+        populateWeather(context, container, livePlace)
+    })
+
+    livePlace.address.observe(lifecycleOwner, Observer {
+        if (it == "")
+            container.locationNameView.text = "Ingen addresseinformasjon tilgjengelig"
+        else
+            container.locationNameView.text = it
+    })
+
+    if (container.dayBar.checkedRadioButtonId == -1) {
+        container.dayBar.check(dayToId.get(livePlace.day.value?.dayOfWeek) ?: -1)
+    }
+    container.dayBar.setOnCheckedChangeListener { group, checkedId ->
+        if (checkedId < 0)
+            return@setOnCheckedChangeListener
+        livePlace.day.value = idToDay.get(checkedId) as LocalDate
+    }
+
+}
+

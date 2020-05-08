@@ -7,6 +7,7 @@ import com.github.kittinunf.fuel.coroutines.awaitString
 import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
 import java.text.SimpleDateFormat
+import java.time.LocalDate
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -106,7 +107,7 @@ class Met {
         return weather
     }
 
-    suspend fun receiveAstroData(p: LatLng, date: ZonedDateTime): AstronomicalData? {
+    suspend fun receiveAstroData(p: LatLng, date: LocalDate): AstronomicalData? {
 
         /* meterologisk institutts instruksjoner for bruk av sunset/sunrise api:
         Parameters
