@@ -132,6 +132,13 @@ fun setupWeatherElement(
             container.locationNameView.text = it
     })
 
+    livePlace.astronomicalData.observe(lifecycleOwner, Observer {
+    })
+
+    livePlace.kp.observe(lifecycleOwner, Observer {
+    })
+
+
     if (container.dayBar.checkedRadioButtonId == -1) {
         container.dayBar.check(dayToId.get(livePlace.day.value?.dayOfWeek) ?: -1)
     }

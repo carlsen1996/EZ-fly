@@ -3,6 +3,8 @@ package com.example.basicmap.ui.places
 import android.content.Context
 import android.location.Geocoder
 import androidx.lifecycle.*
+import com.example.basicmap.lib.Kp
+import com.example.basicmap.lib.KpTime
 import com.example.basicmap.lib.Met
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -60,6 +62,12 @@ class LivePlace(application: Context) {
     }
 
     val astronomicalData: MediatorLiveData<Met.AstronomicalData> = MediatorLiveData()
+
+    val kp: LiveData<List<KpTime>> by lazy {
+        liveData {
+            emit(Kp().getKP())
+        }
+    }
 
     init {
         // Sunset/sunrise needs to be fetched for each day and position
