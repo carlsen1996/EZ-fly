@@ -2,11 +2,17 @@ package com.example.basicmap.ui.places
 
 import android.content.Context
 import android.location.Geocoder
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.liveData
+import androidx.lifecycle.*
+import com.example.basicmap.lib.Kp
+import com.example.basicmap.lib.KpTime
 import com.example.basicmap.lib.Met
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.time.DayOfWeek
+import java.time.LocalDate
+import java.time.ZonedDateTime
 
 class LivePlace(application: Context) {
     val place: MutableLiveData<Place> =
@@ -51,11 +57,45 @@ class LivePlace(application: Context) {
         }
     }
 
-    val astronomicalData: LiveData<Met.AstronomicalData?> = Transformations.switchMap(place) {
+    val day: MutableLiveData<LocalDate> by lazy {
+        MutableLiveData(LocalDate.now())
+    }
+
+    val astronomicalData: MediatorLiveData<Met.AstronomicalData> = MediatorLiveData()
+
+    val kp: LiveData<List<KpTime>> by lazy {
         liveData {
-            val astro =
-                Met().receiveAstroData(it.position)
-            emit(astro)
+            emit(Kp().getKP())
         }
+    }
+
+    init {
+        // Sunset/sunrise needs to be fetched for each day and position
+        // We can assume the day is always set
+        astronomicalData.addSource(place) {
+            GlobalScope.launch {
+                withContext(Dispatchers.IO) {
+                    val astro = Met().receiveAstroData(it.position, day.value!!)
+                    withContext(Dispatchers.Main) {
+                        astronomicalData.value = astro
+                    }
+                }
+            }
+        }
+        astronomicalData.addSource(day) {
+            val place = place.value
+            GlobalScope.launch {
+                withContext(Dispatchers.IO) {
+                    if (place == null)
+                        return@withContext
+                    val astro = Met().receiveAstroData(place.position, it)
+                    withContext(Dispatchers.Main) {
+                        astronomicalData.value = astro
+                    }
+                }
+
+            }
+        }
+
     }
 }
