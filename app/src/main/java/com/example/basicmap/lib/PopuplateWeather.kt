@@ -11,10 +11,13 @@ import androidx.lifecycle.Observer
 import com.example.basicmap.R
 import com.example.basicmap.ui.places.LivePlace
 import kotlinx.android.synthetic.main.weather.view.*
-import java.time.*
+import java.time.DayOfWeek
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
-import java.util.Locale
+import java.util.*
 import kotlin.math.roundToInt
 
 

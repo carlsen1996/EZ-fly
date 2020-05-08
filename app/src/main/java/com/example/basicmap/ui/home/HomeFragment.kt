@@ -1,7 +1,6 @@
 package com.example.basicmap.ui.home
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Bundle
@@ -16,7 +15,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.basicmap.R
-import com.example.basicmap.lib.*
+import com.example.basicmap.lib.getJsonDataFromAsset
+import com.example.basicmap.lib.initNoFlyLufthavnSirkel
+import com.example.basicmap.lib.setupWeatherElement
 import com.example.basicmap.ui.places.Place
 import com.example.basicmap.ui.places.PlacesViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -272,18 +273,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback, CoroutineScope {
         val polygon = map.addPolygon(polygonOptions)
         zones.add(polygon)
         return polygon
-    }
-
-    @SuppressLint("SetTextI18n")
-    private fun populatePopup() {
-    }
-
-    fun populatePopupWithAstroData(astroData: Met.AstronomicalData) {
-
-        activity?.runOnUiThread{
-            //popup.sunSetTimeView.text = "Solnedgang: ${astroData.sunset}"
-            //popup.sunRiseTimeView.text = "Soloppgang: ${astroData.sunrise}"
-        }
     }
 
     private fun leggTilLufthavner() {
