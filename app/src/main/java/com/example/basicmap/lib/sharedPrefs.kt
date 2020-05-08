@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import com.example.basicmap.ui.drones.Drone
+import com.example.basicmap.ui.places.LivePlace
 import com.example.basicmap.ui.places.Place
 import com.google.gson.GsonBuilder
 
@@ -31,16 +32,24 @@ fun loadDrones(context: Context): MutableList<Drone> {
     return drones.toMutableList()
 }
 
-fun loadPlaces(context: Context): MutableList<Place> {
+fun loadPlaces(context: Context): MutableList<LivePlace> {
     val sharedPrefPlaces: SharedPreferences =
         context.getSharedPreferences(SHARED_PREF, AppCompatActivity.MODE_PRIVATE)
     val gson = GsonBuilder().create()
     val json = sharedPrefPlaces.getString(PLACES, null)
     val places = gson.fromJson(json, Array<Place>::class.java) ?: return mutableListOf()
-    return places.toMutableList()
+    val livePlaces = places.map {
+        val livePlace = LivePlace(context)
+        livePlace.place.value = it
+        livePlace
+    }
+    return livePlaces.toMutableList()
 }
 
-fun savePlaces(context: Context, places: List<Place>): String? {
+fun savePlaces(context: Context, livePlaces: List<LivePlace>): String? {
+    val places = livePlaces.map {
+        it.place.value
+    }
     val sharedPref: SharedPreferences =
         context.getSharedPreferences(SHARED_PREF, AppCompatActivity.MODE_PRIVATE)
     val editor: SharedPreferences.Editor = sharedPref.edit()

@@ -1,12 +1,10 @@
 package com.example.basicmap.ui.places
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 
 class PlacesViewModel : ViewModel() {
     companion object {
-        var places = MutableLiveData(mutableListOf<Place>())
+        var places = MutableLiveData(mutableListOf<LivePlace>())
     }
 
     fun getPlaces() = places
@@ -17,3 +15,4 @@ class PlacesViewModel : ViewModel() {
     }
     val text: LiveData<String> = _text
 }
+
