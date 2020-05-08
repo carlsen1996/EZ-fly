@@ -4,7 +4,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.example.basicmap.R.layout.place_kort
-import com.example.basicmap.lib.populateWeather
+import com.example.basicmap.lib.setupWeatherElement
 import com.example.basicmap.ui.places.LivePlace
 import com.example.basicmap.ui.places.PlacesFragment
 import com.example.basicmap.ui.places.PlacesViewModel
@@ -40,15 +40,12 @@ class PlacesListAdapter(val fragment: PlacesFragment, val placesList: MutableLis
 
             itemView.cardView
 
-            livePlace.weather.observe(fragment.viewLifecycleOwner, Observer {
-                if (it == null)
-                    return@Observer
-                populateWeather(fragment.requireContext(), itemView.cardView, it)
-            })
-
-            livePlace.address.observe(fragment.viewLifecycleOwner, Observer {
-                itemView.locationNameView.text = it
-            })
+            setupWeatherElement(
+                fragment.requireContext(),
+                fragment.viewLifecycleOwner,
+                livePlace,
+                itemView
+            )
         }
 
         fun slettPlace(pos: Int) {
@@ -58,7 +55,7 @@ class PlacesListAdapter(val fragment: PlacesFragment, val placesList: MutableLis
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlacesViewHolder {
-        val view = LayoutInflater.from(fragment.    requireContext()).inflate(place_kort, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(place_kort, parent, false)
         return PlacesViewHolder(view)
     }
 

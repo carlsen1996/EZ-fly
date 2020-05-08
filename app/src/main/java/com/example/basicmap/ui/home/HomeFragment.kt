@@ -1,7 +1,6 @@
 package com.example.basicmap.ui.home
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Bundle
@@ -16,10 +15,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.basicmap.R
-import com.example.basicmap.lib.Met
 import com.example.basicmap.lib.getJsonDataFromAsset
 import com.example.basicmap.lib.initNoFlyLufthavnSirkel
-import com.example.basicmap.lib.populateWeather
+import com.example.basicmap.lib.setupWeatherElement
 import com.example.basicmap.ui.places.Place
 import com.example.basicmap.ui.places.PlacesViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -34,6 +32,7 @@ import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.popup.*
+import kotlinx.android.synthetic.main.popup.view.*
 import kotlinx.android.synthetic.main.weather.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -114,22 +113,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback, CoroutineScope {
         // When `model.place` is set in `onMapClick` the model will automatically
         // fetch the associated address and weather info in the background,
         // notifying us here when done.
-        model.getPlace().address.observe(viewLifecycleOwner, Observer { address ->
-            if (address == "")
-                popup.locationNameView.text = "Ingen addresseinformasjon tilgjengelig"
-            else
-                popup.locationNameView.text = address
-        })
-        model.getPlace().weather.observe(viewLifecycleOwner, Observer { weather ->
-            if (weather != null) {
-                populatePopup(weather)
-            }
-        })
 
-        model.getPlace().astronomicalData.observe(viewLifecycleOwner, Observer { astronomicalData ->
-            if (astronomicalData != null)
-                populatePopupWithAstroData(astronomicalData)
-        })
+        setupWeatherElement(requireContext(), viewLifecycleOwner, model.getPlace(), root.popup)
 
         Places.initialize(requireContext(), getString(R.string.google_maps_key))
         placesClient = Places.createClient(requireContext())
@@ -192,6 +177,12 @@ class HomeFragment : Fragment(), OnMapReadyCallback, CoroutineScope {
             Log.d("place observer", "foo")
             if (it == null)
                 return@Observer
+
+            val botview = BottomSheetBehavior.from(popup)
+            if (popup.visibility != View.VISIBLE) {
+                popup.visibility = View.VISIBLE
+                botview.state = BottomSheetBehavior.STATE_EXPANDED
+            }
 
             if (it.favorite) {
                 popup.lagreLokasjonsKnapp.setImageResource(android.R.drawable.star_big_on)
@@ -282,23 +273,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback, CoroutineScope {
         val polygon = map.addPolygon(polygonOptions)
         zones.add(polygon)
         return polygon
-    }
-
-    @SuppressLint("SetTextI18n")
-    private fun populatePopup(weather: Met.Kall) {
-        val botview = BottomSheetBehavior.from(popup)
-        botview.state = BottomSheetBehavior.STATE_EXPANDED
-        popup.visibility = View.VISIBLE
-
-        populateWeather(requireContext(), popup, weather)
-    }
-
-    fun populatePopupWithAstroData(astroData: Met.AstronomicalData) {
-
-        activity?.runOnUiThread{
-            //popup.sunSetTimeView.text = "Solnedgang: ${astroData.sunset}"
-            //popup.sunRiseTimeView.text = "Soloppgang: ${astroData.sunrise}"
-        }
     }
 
     private fun leggTilLufthavner() {
