@@ -18,6 +18,7 @@ import com.example.basicmap.R
 import com.example.basicmap.lib.getJsonDataFromAsset
 import com.example.basicmap.lib.initNoFlyLufthavnSirkel
 import com.example.basicmap.lib.setupWeatherElement
+import com.example.basicmap.ui.places.LivePlace
 import com.example.basicmap.ui.places.Place
 import com.example.basicmap.ui.places.PlacesViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -136,12 +137,16 @@ class HomeFragment : Fragment(), OnMapReadyCallback, CoroutineScope {
                 popup.lagreLokasjonsKnapp.setImageResource(android.R.drawable.star_big_off)
                 toast.setText("${liveAddress.value}, er fjernet fra favoritter")
                 place.favorite = false
-                places.remove(livePlace)
+                places.removeIf( {
+                    livePlace.place.value == place
+                })
             } else {
                 popup.lagreLokasjonsKnapp.setImageResource(android.R.drawable.star_big_on)
                 toast.setText("${liveAddress.value}, er lagt til i favoritter")
                 place.favorite = true
-                places.add(livePlace)
+                val savedPlace = LivePlace(requireContext())
+                savedPlace.place.value = place
+                places.add(savedPlace)
             }
             placesViewModel.getPlaces().value = places
             toast.show()
