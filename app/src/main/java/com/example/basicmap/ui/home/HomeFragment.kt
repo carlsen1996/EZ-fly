@@ -43,7 +43,7 @@ import kotlin.coroutines.CoroutineContext
 
 private val TAG = "HomeFragment"
 
-class HomeFragment : Fragment(), OnMapReadyCallback, CoroutineScope {
+class HomeFragment : Fragment(), OnMapReadyCallback {
 
     private val PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1
     private var locationPermissionGranted = false
@@ -57,13 +57,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback, CoroutineScope {
 
     private val model: HomeViewModel by viewModels()
     private val placesViewModel: PlacesViewModel by viewModels()
-
-    // Dummy job to make cancellation of running jobs easy
-    private lateinit var job: Job
-
-    // Add all jobs to the same context
-    override val coroutineContext: CoroutineContext
-        get() = job + Dispatchers.IO
 
     private var sirkelMutableListOver = mutableListOf<CircleOptions>()
     private var ferdigsirkelMutableListOver = mutableListOf<Circle>()
@@ -83,7 +76,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback, CoroutineScope {
         // Not sure why this works, but savedInstanceState doesn't
         // Save the camera position, so we don't unnecessarily reset on onCreateView
         model.cameraPosition = map.cameraPosition
-        job.cancel() // Cancel all running jobs
         super.onDestroyView()
         Log.d(TAG, "onDestroyView")
     }
@@ -102,9 +94,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback, CoroutineScope {
         val root = inflater.inflate(R.layout.fragment_home, container, false)
         val mapFragment = childFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
-
-        // This is no longer used, so might be removed
-        job = Job()
 
         // Run `onMapReady` when the map is ready to be used.
         // Anything that require the map needs to be there.
