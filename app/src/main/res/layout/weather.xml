@@ -172,14 +172,23 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:fontFamily="@font/lato_light"
+                                    android:layout_marginTop="15dp"
+                                    android:text="HH:MM"
                                     android:textColor="@color/quantum_white_100"
                                     android:textFontWeight="1"
                                     android:textSize="40sp"
                                     android:visibility="visible"
-                                    tools:text="HH:MM"
                                     tools:visibility="visible" />
 
+                                <View
+                                    android:layout_width="match_parent"
+                                    android:layout_below="@id/whatHourItIsTextView"
+                                    android:layout_height="0.75dp"
+                                    android:background="@android:color/white" />
+
+
                             </RelativeLayout>
+
 
                             <RelativeLayout
                                 android:id="@+id/tempContainer"
