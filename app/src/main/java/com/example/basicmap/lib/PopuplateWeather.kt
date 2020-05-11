@@ -62,6 +62,38 @@ fun setupWeatherElement(
     }
 
     livePlace.day.observe(lifecycleOwner, Observer {
+        val weather = livePlace.weather.value
+        if (weather == null)
+            return@Observer
+
+        val utc = DateTimeFormatter.ISO_INSTANT.withZone(ZoneId.of("UTC"))
+        val timeseries = weather.properties.timeseries
+
+        val days = mapOf(
+            DayOfWeek.MONDAY to mutableListOf<Met.Numb>(),
+            DayOfWeek.TUESDAY to mutableListOf<Met.Numb>(),
+            DayOfWeek.WEDNESDAY to mutableListOf<Met.Numb>(),
+            DayOfWeek.THURSDAY to mutableListOf<Met.Numb>(),
+            DayOfWeek.FRIDAY to mutableListOf<Met.Numb>(),
+            DayOfWeek.SATURDAY to mutableListOf<Met.Numb>(),
+            DayOfWeek.SUNDAY to mutableListOf<Met.Numb>()
+        )
+        val now = LocalDate.now()
+        for (data in timeseries) {
+            val time = data.time
+            val date = LocalDate.from(utc.parse(time))
+
+            if (date.isAfter(now.plusDays(6)))
+                break
+
+            days[date.dayOfWeek]?.add(data)
+        }
+
+        val day = livePlace.day.value!!
+        val data = days[day.dayOfWeek]!!
+
+        val viewAdapter = HourlyWeatherListAdapter(context, data)
+        container.hourScrollView.adapter = viewAdapter
     })
 
     container.hourScrollView.layoutManager =
