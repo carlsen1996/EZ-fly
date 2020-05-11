@@ -2,6 +2,7 @@ package com.example.basicmap.ui.places
 
 import android.content.Context
 import android.text.SpannableStringBuilder
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,12 +12,21 @@ import com.example.basicmap.R
 import com.example.basicmap.lib.Met
 import com.example.basicmap.lib.degToCompass
 import kotlinx.android.synthetic.main.hourly_weather.view.*
+import java.time.LocalTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import kotlin.math.roundToInt
 
 class HourlyWeatherListAdapter(val context: Context, val hours: List<Met.Numb>): RecyclerView.Adapter<HourlyWeatherListAdapter.HourViewHolder>() {
     inner class HourViewHolder(val item: View): RecyclerView.ViewHolder(item) {
 
         fun setData(data: Met.Numb) {
+
+            val time = LocalTime.from(
+                DateTimeFormatter.ISO_INSTANT.withZone(ZoneId.of("UTC")).parse(data.time)
+            )
+            item.whatHourItIsTextView.text = time.toString()
+
             val tempNow =
                 data.data.instant.details.air_temperature?.toDouble()?.roundToInt().toString()
             val precipProb = data.data.next_6_hours?.details?.probability_of_precipitation
