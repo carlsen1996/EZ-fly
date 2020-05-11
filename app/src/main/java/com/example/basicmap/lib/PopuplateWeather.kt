@@ -10,6 +10,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import com.example.basicmap.R
 import com.example.basicmap.ui.places.LivePlace
+import kotlinx.android.synthetic.main.hourly_weather.view.*
 import kotlinx.android.synthetic.main.weather.view.*
 import java.time.DayOfWeek
 import java.time.LocalDate
