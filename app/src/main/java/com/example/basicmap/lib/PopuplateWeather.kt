@@ -127,7 +127,8 @@ fun setupWeatherElement(
         populateWeather(context, container, livePlace)
     })
 
-    container.hourScrollView.layoutManager = LinearLayoutManager(context)
+    container.hourScrollView.layoutManager =
+        LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
     livePlace.weather.observe(lifecycleOwner, Observer {
         if (it == null)

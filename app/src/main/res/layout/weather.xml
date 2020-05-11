@@ -130,6 +130,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="5dp"
         android:layout_marginStart="5dp"
+        android:orientation="horizontal"
         android:background="@drawable/daybar_shape">
 
     </androidx.recyclerview.widget.RecyclerView>
