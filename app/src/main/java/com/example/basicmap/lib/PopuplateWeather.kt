@@ -8,8 +8,11 @@ import android.widget.RadioButton
 import androidx.core.text.bold
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.basicmap.R
+import com.example.basicmap.ui.places.HourlyWeatherListAdapter
 import com.example.basicmap.ui.places.LivePlace
+import kotlinx.android.synthetic.main.hourly_weather.view.*
 import kotlinx.android.synthetic.main.weather.view.*
 import java.time.DayOfWeek
 import java.time.LocalDate
@@ -20,69 +23,7 @@ import java.time.format.TextStyle
 import java.util.*
 import kotlin.math.roundToInt
 
-
-private fun populateWeather(context: Context, container: View, livePlace: LivePlace) {
-    val weather = livePlace.weather.value
-    if (weather == null)
-        return
-
-    val utc = DateTimeFormatter.ISO_INSTANT.withZone(ZoneId.of("UTC"))
-    val timeseries = weather.properties.timeseries
-
-    val days = mapOf(
-        DayOfWeek.MONDAY to mutableListOf<Met.Numb>(),
-        DayOfWeek.TUESDAY to mutableListOf<Met.Numb>(),
-        DayOfWeek.WEDNESDAY to mutableListOf<Met.Numb>(),
-        DayOfWeek.THURSDAY to mutableListOf<Met.Numb>(),
-        DayOfWeek.FRIDAY to mutableListOf<Met.Numb>(),
-        DayOfWeek.SATURDAY to mutableListOf<Met.Numb>(),
-        DayOfWeek.SUNDAY to mutableListOf<Met.Numb>()
-    )
-    val now = LocalDate.now()
-    for (data in timeseries) {
-        val time = data.time
-        val date = LocalDate.from(utc.parse(time))
-
-        if (date.isAfter(now.plusDays(6)))
-            break
-
-        days[date.dayOfWeek]?.add(data)
-    }
-
-    val day = livePlace.day.value!!
-    for (data in days[day.dayOfWeek]!!) {
-        val time = data.time
-        val datetime = LocalDateTime.from(utc.parse(time))
-
-        if (datetime.dayOfWeek == now.dayOfWeek || datetime.hour == 12) {
-            Log.d("now", datetime.toString())
-            val tempNow =
-                data.data.instant.details.air_temperature?.toDouble()?.roundToInt().toString()
-            val precipProb = data.data.next_6_hours?.details?.probability_of_precipitation
-            val wind = data.data.instant.details.wind_speed
-            val windDirection = data.data.instant.details.wind_from_direction
-            val compassDeg = windDirection?.toDouble()?.let { degToCompass(it) }
-            val windGust = data.data.instant.details.wind_speed_of_gust
-
-            container.tempValue.text = "${tempNow}°C"
-            container.precipValue.text = "${precipProb}"
-            container.windValue.text = "${wind}"
-            container.windDesc.text = "m/s ${compassDeg}"
-            val customGustString =
-                SpannableStringBuilder().append("Vindkast: ").bold { append("$windGust") }
-                    .append(" m/s")
-            container.windGustValue.text = customGustString
-            val weatherIconName = data.data.next_6_hours?.summary?.symbol_code
-            val id = context.resources.getIdentifier(weatherIconName, "mipmap", context.packageName)
-            container.weatherImageView.setImageResource(id)
-            break
-        }
-    }
-
-
-}
-
-private fun degToCompass(a : Double) : String {
+fun degToCompass(a : Double) : String {
     var b =((a/22.5)+.5).toInt()
     var c = arrayOf("N","NNE","NE","ENE","E","ESE", "SE", "SSE","S","SSW","SW","WSW","W","WNW","NW","NNW")
     return c[(b % 16)]
@@ -121,11 +62,75 @@ fun setupWeatherElement(
     }
 
     livePlace.day.observe(lifecycleOwner, Observer {
-        populateWeather(context, container, livePlace)
+        val weather = livePlace.weather.value
+        if (weather == null)
+            return@Observer
+
+        val utc = DateTimeFormatter.ISO_INSTANT.withZone(ZoneId.of("UTC"))
+        val timeseries = weather.properties.timeseries
+
+        val days = mapOf(
+            DayOfWeek.MONDAY to mutableListOf<Met.Numb>(),
+            DayOfWeek.TUESDAY to mutableListOf<Met.Numb>(),
+            DayOfWeek.WEDNESDAY to mutableListOf<Met.Numb>(),
+            DayOfWeek.THURSDAY to mutableListOf<Met.Numb>(),
+            DayOfWeek.FRIDAY to mutableListOf<Met.Numb>(),
+            DayOfWeek.SATURDAY to mutableListOf<Met.Numb>(),
+            DayOfWeek.SUNDAY to mutableListOf<Met.Numb>()
+        )
+        val now = LocalDate.now()
+        for (data in timeseries) {
+            val time = data.time
+            val date = LocalDate.from(utc.parse(time))
+
+            if (date.isAfter(now.plusDays(6)))
+                break
+
+            days[date.dayOfWeek]?.add(data)
+        }
+
+        val day = livePlace.day.value!!
+        val data = days[day.dayOfWeek]!!
+
+        val viewAdapter = HourlyWeatherListAdapter(context, data)
+        container.hourScrollView.adapter = viewAdapter
     })
 
+    container.hourScrollView.layoutManager =
+        LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+
     livePlace.weather.observe(lifecycleOwner, Observer {
-        populateWeather(context, container, livePlace)
+        if (it == null)
+            return@Observer
+
+        val utc = DateTimeFormatter.ISO_INSTANT.withZone(ZoneId.of("UTC"))
+        val timeseries = it.properties.timeseries
+
+        val days = mapOf(
+            DayOfWeek.MONDAY to mutableListOf<Met.Numb>(),
+            DayOfWeek.TUESDAY to mutableListOf<Met.Numb>(),
+            DayOfWeek.WEDNESDAY to mutableListOf<Met.Numb>(),
+            DayOfWeek.THURSDAY to mutableListOf<Met.Numb>(),
+            DayOfWeek.FRIDAY to mutableListOf<Met.Numb>(),
+            DayOfWeek.SATURDAY to mutableListOf<Met.Numb>(),
+            DayOfWeek.SUNDAY to mutableListOf<Met.Numb>()
+        )
+        val now = LocalDate.now()
+        for (data in timeseries) {
+            val time = data.time
+            val date = LocalDate.from(utc.parse(time))
+
+            if (date.isAfter(now.plusDays(6)))
+                break
+
+            days[date.dayOfWeek]?.add(data)
+        }
+
+        val day = livePlace.day.value!!
+        val data = days[day.dayOfWeek]!!
+
+        val viewAdapter = HourlyWeatherListAdapter(context, data)
+        container.hourScrollView.adapter = viewAdapter
     })
 
     livePlace.address.observe(lifecycleOwner, Observer {
