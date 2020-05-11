@@ -246,7 +246,9 @@
                                     android:layout_height="55dp"
                                     android:layout_centerVertical="true"
                                     android:src="@drawable/icons8_wind_100"
-                                    app:srcCompat="@drawable/icons8_wind_100" />
+                                    android:visibility="visible"
+                                    app:srcCompat="@drawable/icons8_wind_100"
+                                    tools:srcCompat="@drawable/icons8_wind_100" />
 
                                 <TextView
                                     android:id="@+id/windValue"
