@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="5dp"
+    android:divider="@drawable/empty_tall_divider"
     android:gravity="center"
     android:orientation="vertical"
-    android:layout_margin="5dp"
     android:showDividers="middle"
-    android:divider="@drawable/empty_tall_divider"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:visibility="visible"
+    app:behavior_peekHeight="55dp">
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,248 +27,283 @@
 
         <TextView
             android:id="@+id/locationNameView"
-            android:gravity="center"
-            android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:textStyle="bold"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="placeholder address"
             android:textColor="@color/quantum_black_100"
-            android:text="placeholder address" />
+            android:textStyle="bold" />
 
         <ImageButton
-            android:padding="7dp"
             android:id="@+id/lagreLokasjonsKnapp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="7dp"
             android:src="@android:drawable/star_big_off"
             android:visibility="visible" />
     </LinearLayout>
 
     <RadioGroup
+        android:id="@+id/dayBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/dayBar"
+        android:background="@drawable/daybar_shape"
         android:gravity="center"
-        android:orientation="horizontal"
-        android:background="@drawable/daybar_shape">
+        android:orientation="horizontal">
 
         <RadioButton
             android:id="@+id/today"
             android:layout_width="55dp"
             android:layout_height="20dp"
-            android:gravity="center"
-            android:button="@drawable/empty_radio"
             android:background="@drawable/daybar_button_shape"
-            android:textColor="@color/radio_color"
-            android:text="man">
-        </RadioButton>
+            android:button="@drawable/empty_radio"
+            android:gravity="center"
+            android:text="man"
+            android:textColor="@color/radio_color"></RadioButton>
 
         <RadioButton
             android:id="@+id/tommorow"
-            android:gravity="center"
-            android:button="@drawable/empty_radio"
             android:layout_width="55dp"
             android:layout_height="20dp"
             android:background="@drawable/daybar_button_shape"
-            android:textColor="@color/radio_color"
-            android:text="tir">
-        </RadioButton>
+            android:button="@drawable/empty_radio"
+            android:gravity="center"
+            android:text="tir"
+            android:textColor="@color/radio_color"></RadioButton>
 
         <RadioButton
             android:id="@+id/third"
-            android:gravity="center"
-            android:button="@drawable/empty_radio"
             android:layout_width="55dp"
             android:layout_height="20dp"
             android:background="@drawable/daybar_button_shape"
-            android:textColor="@color/radio_color"
-            android:text="ons">
-        </RadioButton>
+            android:button="@drawable/empty_radio"
+            android:gravity="center"
+            android:text="ons"
+            android:textColor="@color/radio_color"></RadioButton>
 
         <RadioButton
             android:id="@+id/fourth"
-            android:gravity="center"
-            android:button="@drawable/empty_radio"
             android:layout_width="55dp"
             android:layout_height="20dp"
             android:background="@drawable/daybar_button_shape"
-            android:textColor="@color/radio_color"
-            android:text="tor">
-        </RadioButton>
+            android:button="@drawable/empty_radio"
+            android:gravity="center"
+            android:text="tor"
+            android:textColor="@color/radio_color"></RadioButton>
 
         <RadioButton
             android:id="@+id/fifth"
-            android:gravity="center"
-            android:button="@drawable/empty_radio"
             android:layout_width="55dp"
             android:layout_height="20dp"
             android:background="@drawable/daybar_button_shape"
-            android:textColor="@color/radio_color"
-            android:text="fre">
-        </RadioButton>
+            android:button="@drawable/empty_radio"
+            android:gravity="center"
+            android:text="fre"
+            android:textColor="@color/radio_color"></RadioButton>
 
         <RadioButton
             android:id="@+id/sixth"
-            android:gravity="center"
-            android:button="@drawable/empty_radio"
             android:layout_width="55dp"
             android:layout_height="20dp"
             android:background="@drawable/daybar_button_shape"
-            android:textColor="@color/radio_color"
-            android:text="lør">
-        </RadioButton>
+            android:button="@drawable/empty_radio"
+            android:gravity="center"
+            android:text="lør"
+            android:textColor="@color/radio_color"></RadioButton>
 
         <RadioButton
             android:id="@+id/seventh"
-            android:gravity="center"
-            android:button="@drawable/empty_radio"
             android:layout_width="55dp"
             android:layout_height="20dp"
             android:background="@color/quantum_black_100"
-            android:textColor="@color/radio_color"
-            android:text="søn">
-        </RadioButton>
-
-
+            android:button="@drawable/empty_radio"
+            android:gravity="center"
+            android:text="søn"
+            android:textColor="@color/radio_color"></RadioButton>
 
     </RadioGroup>
 
-    <RelativeLayout
-        android:layout_width="336dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/daybar_shape"
-        android:orientation="horizontal">
-
-        <RelativeLayout
-            android:id="@+id/tempContainer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/daybar_shape">
-
-            <TextView
-                android:id="@+id/tempValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="70°C"
-                android:layout_marginTop="4dp"
-                android:textFontWeight="1"
-                android:textColor="@color/quantum_white_100"
-                android:textSize="40sp"
-                android:fontFamily="@font/lato_light"/>
-
-            <TextView
-                android:id="@+id/minTempValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="12dp"
-                android:layout_toRightOf="@+id/tempValue"
-                android:text="Min: 3"
-                android:textColor="@color/quantum_white_100"
-                android:fontFamily="@font/lato_regular"
-                android:textSize="10sp" />
-
-            <TextView
-                android:id="@+id/maxTempValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="24dp"
-                android:layout_toRightOf="@+id/tempValue"
-                android:text="Max: 3"
-                android:fontFamily="@font/lato_regular"
-                android:textColor="@color/quantum_white_100"
-                android:textSize="10sp" />
-
-
-        </RelativeLayout>
-
-
-        <RelativeLayout
-            android:layout_width="70dp"
-            android:layout_height="60dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:background="@drawable/daybar_shape">
-
-            <ImageView
-                android:id="@+id/weatherImageView"
-                android:layout_centerInParent="true"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:contentDescription="ImageOfWeather"
-                app:srcCompat="@drawable/ic_notifications_black_24dp" />
-
-        </RelativeLayout>
-
-
-    </RelativeLayout>
-
-
-    <LinearLayout
-        android:showDividers="middle"
-        android:divider="@drawable/empty_tall_divider"
+    <ScrollView
+        android:id="@+id/hourScrollView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center">
+        android:background="@drawable/daybar_shape">
 
-        <RelativeLayout
-            android:id="@+id/windContainer"
+        <HorizontalScrollView
             android:layout_width="wrap_content"
-            android:layout_marginRight="31dp"
-            android:layout_height="65dp"
-            android:background="@drawable/windcontainer_shape">
+            android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/windLogo"
-                android:layout_width="70dp"
-                android:layout_height="55dp"
-                android:layout_centerVertical="true"
-                android:src="@drawable/ic_winds" />
-
-            <TextView
-                android:id="@+id/windValue"
+            <LinearLayout
+                android:id="@+id/scrollableHours"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="3dp"
-                android:layout_marginTop="5dp"
-                android:layout_toRightOf="@+id/windLogo"
-                android:fontFamily="@font/lato_light"
-                android:text="43.3"
-                android:textColor="@color/quantum_white_100"
-                android:textSize="25sp" />
+                android:background="@drawable/daybar_shape"
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/windDesc"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="4dp"
-                android:layout_toRightOf="@+id/windValue"
-                android:paddingTop="10dp"
-                android:text="m/s WNW"
-                android:textColor="@color/quantum_white_100" />
+                <androidx.cardview.widget.CardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/daybar_shape"
+                    tools:visibility="visible">
 
-            <TextView
-                android:id="@+id/windGustValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/windValue"
-                android:layout_marginLeft="3dp"
-                android:layout_toRightOf="@+id/windLogo"
-                android:text="Vindkast: 10 m/s "
-                android:fontFamily="@font/lato_light"
-                android:textColor="@color/quantum_white_100"
-                android:textSize="11sp" />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="#000000">
 
-        </RelativeLayout>
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:visibility="visible">
 
-        <RelativeLayout
-            android:id="@+id/sunContainer"
-            android:layout_width="100dp"
-            android:layout_height="60dp"
-            android:background="@drawable/daybar_shape" />
+                            <RelativeLayout
+                                android:id="@+id/timeOfDayContainer"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="-15dp"
+                                android:visibility="visible"
+                                tools:visibility="visible">
 
-    </LinearLayout>
+                                <TextView
+                                    android:id="@+id/whatHourItIsTextView"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:fontFamily="@font/lato_light"
+                                    android:layout_marginTop="15dp"
+                                    android:text="HH:MM"
+                                    android:textColor="@color/quantum_white_100"
+                                    android:textFontWeight="1"
+                                    android:textSize="40sp"
+                                    android:visibility="visible"
+                                    tools:visibility="visible" />
+
+                                <View
+                                    android:layout_width="match_parent"
+                                    android:layout_below="@id/whatHourItIsTextView"
+                                    android:layout_height="0.75dp"
+                                    android:background="@android:color/white" />
+
+
+                            </RelativeLayout>
+
+
+                            <RelativeLayout
+                                android:id="@+id/tempContainer"
+                                android:layout_width="185dp"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/timeOfDayContainer"
+                                android:background="@drawable/daybar_shape">
+
+                                <TextView
+                                    android:id="@+id/tempValue"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:fontFamily="@font/lato_light"
+                                    android:text="70°C"
+                                    android:textColor="@color/quantum_white_100"
+                                    android:textFontWeight="1"
+                                    android:textSize="40sp" />
+
+                                <TextView
+                                    android:id="@+id/minTempValue"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="5dp"
+                                    android:layout_marginTop="12dp"
+                                    android:layout_toEndOf="@+id/tempValue"
+                                    android:fontFamily="@font/lato_regular"
+                                    android:text="Min: 3"
+                                    android:textColor="@color/quantum_white_100"
+                                    android:textSize="10sp" />
+
+                                <TextView
+                                    android:id="@+id/maxTempValue"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="5dp"
+                                    android:layout_marginTop="24dp"
+                                    android:layout_toEndOf="@+id/tempValue"
+                                    android:fontFamily="@font/lato_regular"
+                                    android:text="Max: 3"
+                                    android:textColor="@color/quantum_white_100"
+                                    android:textSize="10sp" />
+
+                                <ImageView
+                                    android:id="@+id/weatherImageView"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_toEndOf="@+id/maxTempValue"
+                                    android:contentDescription="ImageOfWeather"
+                                    app:srcCompat="@drawable/ic_notifications_black_24dp" />
+
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/windContainer"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/tempContainer">
+
+                                <ImageView
+                                    android:id="@+id/windLogo"
+                                    android:layout_width="70dp"
+                                    android:layout_height="55dp"
+                                    android:layout_centerVertical="false"
+                                    android:src="@drawable/icons8_wind_48"
+                                    android:visibility="visible" />
+
+                                <TextView
+                                    android:id="@+id/windValue"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="3dp"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_toRightOf="@+id/windLogo"
+                                    android:fontFamily="@font/lato_light"
+                                    android:text="43.3"
+                                    android:textColor="@color/quantum_white_100"
+                                    android:textSize="25sp" />
+
+                                <TextView
+                                    android:id="@+id/windDesc"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="4dp"
+                                    android:layout_toRightOf="@+id/windValue"
+                                    android:paddingTop="10dp"
+                                    android:text="m/s WNW"
+                                    android:textColor="@color/quantum_white_100" />
+
+                                <TextView
+                                    android:id="@+id/windGustValue"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/windValue"
+                                    android:layout_marginLeft="3dp"
+                                    android:layout_toRightOf="@+id/windLogo"
+                                    android:fontFamily="@font/lato_light"
+                                    android:text="Vindkast: 10 m/s "
+                                    android:textColor="@color/quantum_white_100"
+                                    android:textSize="11sp" />
+
+                            </RelativeLayout>
+
+
+                        </RelativeLayout>
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+
+        </HorizontalScrollView>
+
+    </ScrollView>
 
     <RelativeLayout
         android:id="@+id/bottomBar"
@@ -279,8 +317,8 @@
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_alignParentLeft="true">
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true">
 
             <TextView
                 android:id="@+id/kpIndexText"
@@ -295,8 +333,8 @@
                 android:id="@+id/kpIndexValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
                 android:layout_below="@+id/kpIndexText"
+                android:layout_centerHorizontal="true"
                 android:text="1"
                 android:textColor="@color/quantum_white_100" />
         </RelativeLayout>
@@ -320,9 +358,9 @@
                 android:id="@+id/visibilityValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/visiblityText"
                 android:layout_centerHorizontal="true"
                 android:text="10 km"
-                android:layout_below="@+id/visiblityText"
                 android:textColor="@color/quantum_white_100" />
         </RelativeLayout>
 
@@ -344,8 +382,8 @@
                 android:id="@+id/precipValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
                 android:layout_below="@+id/precipText"
+                android:layout_centerHorizontal="true"
                 android:text="76%"
                 android:textColor="@color/quantum_white_100" />
 
