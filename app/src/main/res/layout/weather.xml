@@ -158,23 +158,34 @@
                             android:orientation="horizontal"
                             android:visibility="visible">
 
-                            <TextView
-                                android:id="@+id/whatHourItIsTextView"
+                            <RelativeLayout
+                                android:id="@+id/timeOfDayContainer"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_centerHorizontal="true"
                                 android:layout_marginTop="-15dp"
-                                android:fontFamily="@font/lato_light"
-                                android:textColor="@color/quantum_white_100"
-                                android:textFontWeight="1"
-                                android:textSize="40sp"
-                                tools:text="HH:MM" />
+                                android:visibility="visible"
+                                tools:visibility="visible">
+
+                                <TextView
+                                    android:id="@+id/whatHourItIsTextView"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:fontFamily="@font/lato_light"
+                                    android:textColor="@color/quantum_white_100"
+                                    android:textFontWeight="1"
+                                    android:textSize="40sp"
+                                    android:visibility="visible"
+                                    tools:text="HH:MM"
+                                    tools:visibility="visible" />
+
+                            </RelativeLayout>
 
                             <RelativeLayout
                                 android:id="@+id/tempContainer"
                                 android:layout_width="185dp"
                                 android:layout_height="wrap_content"
-                                android:layout_below="@+id/whatHourItIsTextView"
+                                android:layout_below="@+id/timeOfDayContainer"
                                 android:background="@drawable/daybar_shape">
 
                                 <TextView
@@ -234,7 +245,8 @@
                                     android:layout_width="70dp"
                                     android:layout_height="55dp"
                                     android:layout_centerVertical="true"
-                                    android:src="@drawable/icons8_wind_100" />
+                                    android:src="@drawable/icons8_wind_100"
+                                    app:srcCompat="@drawable/icons8_wind_100" />
 
                                 <TextView
                                     android:id="@+id/windValue"
