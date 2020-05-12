@@ -12,20 +12,27 @@ import com.example.basicmap.R
 import com.example.basicmap.lib.Met
 import com.example.basicmap.lib.degToCompass
 import kotlinx.android.synthetic.main.hourly_weather.view.*
+import java.time.Instant
 import java.time.LocalTime
 import java.time.ZoneId
+import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import kotlin.math.roundToInt
 
 class HourlyWeatherListAdapter(val context: Context, val hours: List<Met.Numb>): RecyclerView.Adapter<HourlyWeatherListAdapter.HourViewHolder>() {
+
+    val utc = DateTimeFormatter.ISO_INSTANT.withZone(ZoneId.of("UTC"))
+    val hourMins = DateTimeFormatter.ofPattern("HH:mm")
+
     inner class HourViewHolder(val item: View): RecyclerView.ViewHolder(item) {
+
 
         fun setData(data: Met.Numb) {
 
-            val time = LocalTime.from(
-                DateTimeFormatter.ISO_INSTANT.withZone(ZoneId.of("UTC")).parse(data.time)
+            val time = ZonedDateTime.ofInstant(
+                Instant.from(utc.parse(data.time)), ZoneId.systemDefault()
             )
-            item.whatHourItIsTextView.text = time.toString()
+            item.whatHourItIsTextView.text = time.format(hourMins)
 
             val tempNow =
                 data.data.instant.details.air_temperature?.toDouble()?.roundToInt().toString()
