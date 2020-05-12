@@ -40,7 +40,8 @@ class PlacesFragment : Fragment() {
     ): View? {
         val root = inflater.inflate(R.layout.fragment_places, container, false)
 
-        placesViewModel.getPlaces().value = loadPlaces(requireContext())
+        placesViewModel.getPlaces().value = placesViewModel.getPlaces().value
+            ?: loadPlaces(requireContext())
         viewManager = LinearLayoutManager(activity)
         viewAdapter = PlacesListAdapter(this, placesViewModel.getPlaces().value)
         recyclerView = root.recyclerView.apply {

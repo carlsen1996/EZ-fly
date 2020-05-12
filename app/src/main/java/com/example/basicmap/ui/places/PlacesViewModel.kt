@@ -4,7 +4,7 @@ import androidx.lifecycle.*
 
 class PlacesViewModel : ViewModel() {
     companion object {
-        var places = MutableLiveData(mutableListOf<LivePlace>())
+        var places: MutableLiveData<MutableList<LivePlace>> = MutableLiveData()
     }
 
     fun getPlaces() = places
