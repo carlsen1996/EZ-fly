@@ -42,7 +42,8 @@ class HourlyWeatherListAdapter(val context: Context, val hours: List<Met.Numb>):
                 SpannableStringBuilder().append("Vindkast: ").bold { append("$windGust") }
                     .append(" m/s")
             item.windGustValue.text = customGustString
-            val weatherIconName = data.data.next_6_hours?.summary?.symbol_code
+            val weatherIconName = data.data.next_1_hours?.summary?.symbol_code
+                ?: data.data.next_6_hours?.summary?.symbol_code ?: ""
             val id = context.resources.getIdentifier(weatherIconName, "mipmap", context.packageName)
             item.weatherImageView.setImageResource(id)
         }
