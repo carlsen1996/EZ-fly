@@ -1,16 +1,14 @@
 package com.example.basicmap.lib
 
-import android.util.Log
 import com.github.kittinunf.fuel.Fuel
-import com.github.kittinunf.fuel.core.HttpException
-import com.github.kittinunf.fuel.coroutines.awaitString
+import com.github.kittinunf.fuel.coroutines.awaitStringResponse
+import com.github.kittinunf.result.Result
 import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
-import java.text.SimpleDateFormat
+import kotlinx.coroutines.delay
+import java.lang.Exception
 import java.time.LocalDate
-import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
-import java.util.*
 
 
 class Met {
@@ -81,28 +79,48 @@ class Met {
 
     data class AstronomicalData(val location: location, val meta: AstroMeta)
 
+    companion object {
+        private var throttle = false
+        private var queued = 0
+    }
+
+
 
     suspend fun locationForecast(p: LatLng): Kall? {
-        val baseUrl = "https://in2000-apiproxy.ifi.uio.no/weatherapi/locationforecast/2.0/.json"
-        val fullUrl = "${baseUrl}?lat=${p.latitude}&lon=${p.longitude}"
-        val gson = Gson()
-        var response: String? = null
-
-        try {
-            response = Fuel.get(fullUrl).awaitString()
-        } catch (e: Exception) {
-            Log.d("locationForecast", e.toString())
-            return null
+        queued++
+        if (throttle || queued > 19) {
+            delay(1000)
+            throttle = false
         }
 
-        val weather = gson.fromJson(response, Kall::class.java)
-        //Log.d("temp verdi", weather.properties.timeseries[0].data.instant.details.air_temperature) //test som henter nåværende temp
-        //Log.d("regn verdi", weather.properties.timeseries[0].data.next_1_hours.details.precipitation_amount)//test som henter nåværende regn
+        val baseUrl = "https://in2000-apiproxy.ifi.uio.no/weatherapi/locationforecast/2.0/.json"
+        val fullUrl = "${baseUrl}?lat=${p.latitude}&lon=${p.longitude}"
 
-        return weather
+
+        val gson = Gson()
+        val query = Fuel.get(fullUrl)
+        val (request, response, result) = try {
+            // We always get Failure when using `responseString()` her for some reason.
+            query.awaitStringResponse()
+        } catch (e: Exception) {
+            queued--
+            return null
+        }
+        queued--
+        if (response.statusCode == 429) {
+            throttle = true
+            return Met().locationForecast(p)
+        }
+        val res = result
+        return gson.fromJson(res, Kall::class.java)
     }
 
     suspend fun receiveAstroData(p: LatLng, date: LocalDate): AstronomicalData? {
+        queued++
+        if (throttle || queued > 10) {
+            delay(2000)
+            throttle = false
+        }
 
         /* meterologisk institutts instruksjoner for bruk av sunset/sunrise api:
         Parameters
@@ -135,16 +153,21 @@ class Met {
         val fullSunsetUrl = "${baseSunsetUrl}?lat=${p.latitude}&lon=${p.longitude}&date=${currentDate}&offset=+01:00"
         //sett inn sunset her; få igang et kall fra browser
         val gson = Gson()
-        var response: String? = null
-        try {
-            response = Fuel.get(fullSunsetUrl).awaitString()
-        } catch(e: Exception) {
-            Log.d("sunrise", e.toString())
-            return null
+        val (request, response, result) = Fuel.get(fullSunsetUrl).responseString()
+        queued--
+        when (result) {
+            is Result.Failure -> {
+                if (response.statusCode == 429) {
+                    throttle = true
+                    return Met().receiveAstroData(p, date)
+                }
+                return null
+            }
+            is Result.Success -> {
+                val res = result.get()
+//                Log.d("result sunset", res)
+                return gson.fromJson(res, AstronomicalData::class.java)
+            }
         }
-        Log.d("Url", fullSunsetUrl + "TESTING ASTRODATA")
-        val astronomicalData = gson.fromJson(response, AstronomicalData::class.java)
-
-        return astronomicalData
     }
 }
