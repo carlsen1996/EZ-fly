@@ -169,7 +169,11 @@ class HomeFragment : Fragment(), OnMapReadyCallback, PlaceSelectionListener {
             // Store the location in the view model, it will do the necessary work of
             // fetching weather and address info
             model.getPlace().place.value = Place(it)
-            val sted = it
+            var sted = it
+            var stedlat = it.latitude
+            stedlat = stedlat-0.002
+            val stedlong = it.longitude
+            sted = LatLng(stedlat, stedlong)
             map.animateCamera(CameraUpdateFactory.newLatLng(sted))
 
         }
