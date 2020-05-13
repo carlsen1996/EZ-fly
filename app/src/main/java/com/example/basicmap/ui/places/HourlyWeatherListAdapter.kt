@@ -47,8 +47,16 @@ class HourlyWeatherListAdapter(val context: Context, val hours: List<Met.Numb>):
             item.tempValue.text = "${tempNow}°C"
             item.windValue.text = "${wind}"
             item.windDesc.text = "m/s ${compassDeg}"
-            item.minTempValue.text = "${tempMin}°C"
-            item.maxTempValue.text = "${tempMax}°C"
+            if (tempMax == null || tempMin == null) {
+                item.minTempValue.text = ""
+                item.maxTempValue.text = ""
+            }
+            else {
+                item.maxTempValue.text = "Max: ${tempMax}"
+                item.minTempValue.text = "Min: ${tempMin}"
+            }
+
+
 
             val customGustString =
                 SpannableStringBuilder().append("Vindkast: ").bold { append("$windGust") }
