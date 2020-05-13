@@ -41,14 +41,33 @@ class HourlyWeatherListAdapter(val context: Context, val hours: List<Met.Numb>):
             val windDirection = data.data.instant.details.wind_from_direction
             val compassDeg = windDirection?.toDouble()?.let { degToCompass(it) }
             val windGust = data.data.instant.details.wind_speed_of_gust
+            val tempMax = data.data.next_6_hours?.details?.air_temperature_max
+            val tempMin = data.data.next_6_hours?.details?.air_temperature_min
 
             item.tempValue.text = "${tempNow}°C"
             item.windValue.text = "${wind}"
             item.windDesc.text = "m/s ${compassDeg}"
+            if (tempMax == null || tempMin == null) {
+                item.minTempValue.text = ""
+                item.maxTempValue.text = ""
+            }
+            else {
+                item.maxTempValue.text = "Max: ${tempMax}"
+                item.minTempValue.text = "Min: ${tempMin}"
+            }
+
+
+
             val customGustString =
                 SpannableStringBuilder().append("Vindkast: ").bold { append("$windGust") }
                     .append(" m/s")
-            item.windGustValue.text = customGustString
+            if (windGust == null) {
+                item.windGustValue.text = ""
+            }
+            else {
+                item.windGustValue.text = customGustString
+            }
+
             val weatherIconName = data.data.next_1_hours?.summary?.symbol_code
                 ?: data.data.next_6_hours?.summary?.symbol_code ?: ""
             val id = context.resources.getIdentifier(weatherIconName, "mipmap", context.packageName)
