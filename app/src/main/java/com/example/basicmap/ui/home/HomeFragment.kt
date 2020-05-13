@@ -169,13 +169,10 @@ class HomeFragment : Fragment(), OnMapReadyCallback, PlaceSelectionListener {
             // Store the location in the view model, it will do the necessary work of
             // fetching weather and address info
             model.getPlace().place.value = Place(it)
-            var sted = it
-            var stedlat = it.latitude
-            stedlat = stedlat-0.002
-            val stedlong = it.longitude
-            sted = LatLng(stedlat, stedlong)
-            map.animateCamera(CameraUpdateFactory.newLatLng(sted))
+            moveCameraIfOutsideVisibleRegion(it)
+            //moves camera to point if it isn't on the top half of the screen
 
+            //moveCameraIfOutsideVisibleRegionTotal(it)
         }
 
         map.setOnMarkerClickListener {
@@ -314,6 +311,42 @@ class HomeFragment : Fragment(), OnMapReadyCallback, PlaceSelectionListener {
             Log.d("fjernLufthavner", "ferdigsirkelMutableListeOver er tom")
         }
         lufthavnButtonTeller = true
+    }
+
+    private fun moveCameraIfOutsideVisibleRegionTotal(stedet : LatLng) {
+        if(!map.projection.visibleRegion.latLngBounds.contains(stedet)) {
+            var sted = stedet
+            var stedlat = sted.latitude
+            stedlat = stedlat-0.002
+            val stedlong = sted.longitude
+            sted = LatLng(stedlat, stedlong)
+            map.animateCamera(CameraUpdateFactory.newLatLng(sted))
+        }
+    }
+
+    private fun moveCameraIfOutsideVisibleRegion(stedet : LatLng) {
+        val sted = stedet
+
+        val northEast = map.projection.visibleRegion.farRight
+        val southEast = map.projection.visibleRegion.nearRight
+        val nELat = northEast.latitude
+        val sELat = southEast.latitude
+        val latDiff = nELat - sELat
+        val nySLat = northEast.latitude - latDiff/2
+        val stedLat = sted.latitude
+
+        if (stedLat > nELat || stedLat < nySLat) {
+            moveCameraToCaPoint(sted)
+        }
+    }
+
+    private fun moveCameraToCaPoint(omraade : LatLng) {
+        var sted = omraade
+        var stedlat = sted.latitude
+        stedlat = stedlat-0.002
+        val stedlong = omraade.longitude
+        sted = LatLng(stedlat, stedlong)
+        map.animateCamera(CameraUpdateFactory.newLatLng(sted))
     }
 
 
