@@ -31,18 +31,15 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.net.PlacesClient
-import com.google.android.libraries.places.api.model.Place as GPlace
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.popup.*
 import kotlinx.android.synthetic.main.popup.view.*
 import kotlinx.android.synthetic.main.weather.view.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlin.coroutines.CoroutineContext
+import kotlinx.coroutines.newFixedThreadPoolContext
+import com.google.android.libraries.places.api.model.Place as GPlace
 
 
 private val TAG = "HomeFragment"
@@ -173,6 +170,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, PlaceSelectionListener {
             //moves camera to point if it isn't on the top half of the screen
 
             //moveCameraIfOutsideVisibleRegionTotal(it)
+
         }
 
         map.setOnMarkerClickListener {
@@ -315,12 +313,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, PlaceSelectionListener {
 
     private fun moveCameraIfOutsideVisibleRegionTotal(stedet : LatLng) {
         if(!map.projection.visibleRegion.latLngBounds.contains(stedet)) {
-            var sted = stedet
-            var stedlat = sted.latitude
-            stedlat = stedlat-0.002
-            val stedlong = sted.longitude
-            sted = LatLng(stedlat, stedlong)
-            map.animateCamera(CameraUpdateFactory.newLatLng(sted))
+            moveCameraToCaPoint(stedet)
         }
     }
 
@@ -329,24 +322,41 @@ class HomeFragment : Fragment(), OnMapReadyCallback, PlaceSelectionListener {
 
         val northEast = map.projection.visibleRegion.farRight
         val southEast = map.projection.visibleRegion.nearRight
+        val northWest = map.projection.visibleRegion.farLeft
+
         val nELat = northEast.latitude
         val sELat = southEast.latitude
+        val nWLng = northWest.longitude
+        val nELng = northEast.longitude
+
         val latDiff = nELat - sELat
         val nySLat = northEast.latitude - latDiff/2
         val stedLat = sted.latitude
+        val stedLng = sted.longitude
 
-        if (stedLat > nELat || stedLat < nySLat) {
+        if (stedLat > nELat || stedLat < nySLat || stedLng < nWLng || stedLng > nELng) {
+            //problems arise if the visible region is over 180th meridian
+            //Tuveuni, Fiji is a place where such a bug might arise
             moveCameraToCaPoint(sted)
         }
     }
 
     private fun moveCameraToCaPoint(omraade : LatLng) {
+        val kar = map.cameraPosition.zoom
         var sted = omraade
         var stedlat = sted.latitude
-        stedlat = stedlat-0.002
+        if (kar <= 15) {
+            stedlat = stedlat-0.002
+        }
+        else if (kar < 5) {
+            stedlat = stedlat-0.02
+        }
+        //need to adjust the change acordingly to the zoom level
+
         val stedlong = omraade.longitude
         sted = LatLng(stedlat, stedlong)
         map.animateCamera(CameraUpdateFactory.newLatLng(sted))
+        //Log.d("kar", kar.toString())
     }
 
 
