@@ -47,22 +47,17 @@ class Met {
     data class Kall(val properties: Properties)
 
     //astronomical data: (formatting-"template" available here: https://api.met.no/weatherapi/sunrise/2.0/.json?lat=40.7127&lon=-74.0059&date=2020-04-23&offset=-05:00#
-    //ENDRE TIL STOR BOKSTAV PÅ DISSE OGSÅ
     data class Sunrise(val desc: String?, val time: String?)
-    data class sunset(val time: String?)
-    data class solarnoon(val time: String?, val elevation: String?)
-    data class solarmidnight(val time: String?, val elevation: String?)
-    data class moonphase(val time: String?, val value: String?)
-    data class moonshadow(val time: String?, val elevation: String?, val azimuth: String?)
-    data class moonposition(val azimuth: String?, val range: String?, val time: String?, val desc: String?, val elevation: String?, val phase: String?)
-    data class moonrise(val time: String?)
-    data class moonset(val time: String?)
-    data class high_moon(val time: String?, val elevation: String?)
-    data class low_moon(val time: String?, val elevation: String?)
-    data class polardayend(val time: String?)
-    data class polardaystart(val time: String?)
-    data class polarnightend(val time: String?)
-    data class polarnightstart(val time: String?)
+    data class Sunset(val time: String?)
+    data class Solarnoon(val time: String?, val elevation: String?)
+    data class Solarmidnight(val time: String?, val elevation: String?)
+    data class Moonphase(val time: String?, val value: String?)
+    data class Moonshadow(val time: String?, val elevation: String?, val azimuth: String?)
+    data class Moonposition(val azimuth: String?, val range: String?, val time: String?, val desc: String?, val elevation: String?, val phase: String?)
+    data class Moonrise(val time: String?)
+    data class Moonset(val time: String?)
+    data class High_moon(val time: String?, val elevation: String?)
+    data class Low_moon(val time: String?, val elevation: String?)
 
     data class location(val height: String?,
                         val time: List<time>,
@@ -70,17 +65,17 @@ class Met {
                         val longitude: String?)
 
     data class time(val sunrise: Sunrise?,
-                    val moonposition: moonposition?,
+                    val moonposition: Moonposition?,
                     val date: String?,
-                    val solarmidnight: solarmidnight?,
-                    val moonset: moonset?,
-                    val low_moon: low_moon?,
-                    val high_moon: high_moon?,
-                    val solarnoon: solarnoon?,
-                    val moonrise: moonrise?,
-                    val moonphase: moonphase?,
-                    val sunset: sunset?,
-                    val moonshadow: moonshadow?)
+                    val solarmidnight: Solarmidnight?,
+                    val moonset: Moonset?,
+                    val low_moon: Low_moon?,
+                    val high_moon: High_moon?,
+                    val solarnoon: Solarnoon?,
+                    val moonrise: Moonrise?,
+                    val moonphase: Moonphase?,
+                    val sunset: Sunset?,
+                    val moonshadow: Moonshadow?)
 
     data class AstroMeta(val licenseurl: String?)
 
