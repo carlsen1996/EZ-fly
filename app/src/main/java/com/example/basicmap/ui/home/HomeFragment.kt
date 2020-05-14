@@ -127,9 +127,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback, PlaceSelectionListener {
                 popup.lagreLokasjonsKnapp.setImageResource(android.R.drawable.star_big_off)
                 toast.setText("${liveAddress.value}, er fjernet fra favoritter")
                 place.favorite = false
-                places.removeIf( {
-                    livePlace.place.value == place
-                })
+                places.removeIf {
+                    it.place.value == place
+                }
             } else {
                 popup.lagreLokasjonsKnapp.setImageResource(android.R.drawable.star_big_on)
                 toast.setText("${liveAddress.value}, er lagt til i favoritter")
