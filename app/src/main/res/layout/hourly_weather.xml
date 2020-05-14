@@ -97,7 +97,8 @@
         android:id="@+id/windContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tempContainer">
+        android:layout_below="@+id/tempContainer"
+        android:contextClickable="true">
 
         <ImageView
             android:id="@+id/windLogo"
