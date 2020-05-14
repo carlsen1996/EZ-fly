@@ -215,6 +215,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, PlaceSelectionListener {
         if (model.cameraPosition == null) {
             getLocationPermission()
             getDeviceLocation()
+
         }
 
         leggTilLufthavner()
@@ -264,6 +265,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, PlaceSelectionListener {
                             LatLng(latitude, longitude), 15.0f
                         )
                     )
+                    map.isMyLocationEnabled = true
                 }
             } else {
                 Log.d("location", "didn't get location")
