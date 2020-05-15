@@ -3,6 +3,7 @@ package com.example.basicmap.lib
 import android.content.Context
 import android.text.SpannableStringBuilder
 import android.util.Log
+import android.view.MotionEvent
 import android.view.View
 import android.widget.RadioButton
 import androidx.core.text.bold
@@ -14,6 +15,7 @@ import com.example.basicmap.ui.places.HourlyWeatherListAdapter
 import com.example.basicmap.ui.places.LivePlace
 import kotlinx.android.synthetic.main.hourly_weather.view.*
 import kotlinx.android.synthetic.main.weather.view.*
+import java.text.SimpleDateFormat
 import java.time.*
 import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
@@ -90,6 +92,7 @@ fun setupWeatherElement(
 
         val viewAdapter = HourlyWeatherListAdapter(context, data)
         container.hourScrollView.adapter = viewAdapter
+
     }
 
     livePlace.day.observe(lifecycleOwner, Observer {
@@ -118,6 +121,54 @@ fun setupWeatherElement(
     })
 
     livePlace.astronomicalData.observe(lifecycleOwner, Observer {
+
+        val rawSunData = livePlace.astronomicalData.value?.location?.time
+
+        if (rawSunData != null) {
+            for (data in rawSunData) {
+                var utc = data?.sunrise?.time
+                var utc2 = data?.sunset?.time
+                if (utc != null && utc2 != null) {
+                    val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:SSSZ")
+                    val sdf2 = SimpleDateFormat("HH:mm")
+                    var sunriseEpoch = sdf.parse(utc).time / 1000
+                    var sunsetEpoch = sdf.parse(utc2).time / 1000
+                    var sunriseDate = Date(sunriseEpoch)
+                    var sunSetDate = Date(sunsetEpoch)
+                    var timenow = Instant.now().epochSecond
+
+                    var timeSinceRise = (timenow - sunriseEpoch).toDouble()
+                    var sunFullPeriod = (sunsetEpoch - sunriseEpoch).toDouble()
+
+                    var percent = timeSinceRise / sunFullPeriod * 100
+
+                    var sunriseHours = sdf2.format(sunriseDate)
+                    var sunsetHours = sdf2.format(sunSetDate)
+
+                    container.sunRiseValue.text = sunriseHours.toString()
+                    container.sunSetValue.text = sunsetHours.toString()
+
+                    container.sunGraph.setOnTouchListener(object : View.OnTouchListener {
+                        override fun onTouch(v: View?, event: MotionEvent?): Boolean {
+                            return true
+                        }
+                    })
+                    if (percent > 0 && percent < 100) {
+                        container.sunGraph.isEnabled = true
+                        container.sunGraph.progress = percent.toInt()
+                    } else {
+                        container.sunGraph.progress = 0
+                        container.sunGraph.isEnabled = false
+                    }
+
+
+
+
+                    Log.d("riseofsun", "${timeSinceRise} divided by ${sunFullPeriod} is ${percent}")
+                }
+            }
+        }
+
     })
 
     livePlace.kp.observe(lifecycleOwner, Observer {

@@ -127,7 +127,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/hourScrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="170dp"
         android:layout_marginEnd="5dp"
         android:layout_marginStart="5dp"
         android:background="@drawable/daybar_shape">
@@ -136,7 +136,7 @@
 
     <RelativeLayout
         android:id="@+id/bottomBar"
-        android:layout_width="300dp"
+        android:layout_width="310dp"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:background="@drawable/daybar_shape"
@@ -196,25 +196,38 @@
 
         <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:layout_alignParentRight="true">
 
-            <TextView
-                android:id="@+id/precipText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <com.marcinmoskala.arcseekbar.ArcSeekBar
+                android:id="@+id/sunGraph"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
                 android:layout_centerHorizontal="true"
-                android:text="Nedbør"
-                android:textColor="@color/quantum_white_100" />
+                app:progress="10"
+                app:thumb="@drawable/ic_sun"
+                app:progressColor="#E1BA5F"
+                app:progressWidth="1.5dp" />
 
             <TextView
-                android:id="@+id/precipValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/precipText"
-                android:layout_centerHorizontal="true"
-                android:text="76%"
-                android:textColor="@color/quantum_white_100" />
+                android:id="@+id/sunRiseValue"
+                android:text="05:55"
+                android:textColor="@color/quantum_orange200"
+                android:textSize="8sp"
+                android:layout_below="@id/sunGraph"
+                android:layout_marginLeft="2dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/sunSetValue"
+                android:text="22:55"
+                android:textColor="@color/quantum_orange200"
+                android:textSize="8sp"
+                android:layout_below="@id/sunGraph"
+                android:layout_marginLeft="91dp" />
 
 
         </RelativeLayout>
