@@ -1,6 +1,7 @@
 package com.example.basicmap.lib
 
 import android.content.Context
+import android.text.Editable
 import android.text.SpannableStringBuilder
 import android.util.Log
 import android.view.View
@@ -117,6 +118,7 @@ fun setupWeatherElement(
         }
         else
             container.locationNameView.text = it
+            container.locationNameEditTextView.setText(it)
     })
 
     livePlace.astronomicalData.observe(lifecycleOwner, Observer {

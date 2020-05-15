@@ -51,7 +51,9 @@ class PlacesFragment : Fragment() {
         }
 
         placesViewModel.getPlaces().observe(viewLifecycleOwner, Observer {
+
             viewAdapter.notifyDataSetChanged()
+
             if(viewAdapter.itemCount == 0) {
                 recycleViewTekstPlaces.visibility = VISIBLE
             }

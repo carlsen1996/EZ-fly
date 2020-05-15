@@ -1,8 +1,11 @@
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.example.basicmap.R.layout.activity_main
 import com.example.basicmap.R.layout.place_kort
 import com.example.basicmap.lib.setupWeatherElement
 import com.example.basicmap.ui.places.LivePlace
@@ -17,8 +20,17 @@ class PlacesListAdapter(val fragment: PlacesFragment, val placesList: MutableLis
     private val placesViewModel = PlacesViewModel()
     inner class PlacesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
+
+
         fun setData(livePlace: LivePlace, pos: Int) {
             itemView.lagreLokasjonsKnapp.setImageResource(android.R.drawable.star_big_on)
+
+
+            itemView.locationNameView.visibility = GONE //removes the textview of the original popup
+
+            itemView.locationNameEditTextView.visibility = VISIBLE //makes an edit text view visible
+            itemView.storeNewAddressButton.visibility = VISIBLE
+
             itemView.lagreLokasjonsKnapp.setOnClickListener {
                 val builder = androidx.appcompat.app.AlertDialog.Builder(fragment.requireActivity())
                 builder.setTitle("Slett lokasjon/plass")
@@ -31,6 +43,20 @@ class PlacesListAdapter(val fragment: PlacesFragment, val placesList: MutableLis
                     dialog.dismiss()
                 }
                 builder.show()
+            }
+
+
+            itemView.storeNewAddressButton.setOnClickListener{
+
+                var newAddress: String = itemView.locationNameEditTextView.getText().toString()
+                livePlace.place.value?.address = newAddress
+
+                val message: String = "Du har endret addressenavn på denne favorittlokasjonen."
+
+                //MAKE A TOAST
+                //MAKE A TOAST
+                //MAKE A TOAST
+
             }
 
             itemView.gotoButton.setOnClickListener {
