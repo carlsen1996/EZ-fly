@@ -19,7 +19,7 @@
         android:id="@+id/recycleViewTekstPlaces"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Du har ingen registrerte lokasjoner"
+        android:text="@string/FPXML_ingenreglokasjoner"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

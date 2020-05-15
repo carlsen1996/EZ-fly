@@ -220,11 +220,11 @@ class HomeFragment : Fragment(), OnMapReadyCallback, PlaceSelectionListener {
 
         leggTilLufthavner()
         flyplassButton.setOnClickListener {
-            if (lufthavnButtonTeller == false) {
+            if (!lufthavnButtonTeller) {
                 fjernLufthavner()
                 Log.d("KartLufthavnButton", "fjerner lufthavner")
             }
-            else if (lufthavnButtonTeller == true) {
+            else if (lufthavnButtonTeller) {
                 leggTilLufthavner()
                 Log.d("KartLufthavnButton", "legger til lufthavner")
             }
@@ -315,7 +315,21 @@ class HomeFragment : Fragment(), OnMapReadyCallback, PlaceSelectionListener {
 
     private fun moveCameraIfOutsideVisibleRegionTotal(stedet : LatLng) {
         if(!map.projection.visibleRegion.latLngBounds.contains(stedet)) {
-            moveCameraToCaPoint(stedet)
+            val kar = map.cameraPosition.zoom
+            var sted = stedet
+            var stedlat = sted.latitude
+            if (kar <= 15) {
+                stedlat = stedlat-0.002
+            }
+            else if (kar < 5) {
+                stedlat = stedlat-0.02
+            }
+            //need to adjust the change acordingly to the zoom level
+
+            val stedlong = stedet.longitude
+            sted = LatLng(stedlat, stedlong)
+            map.animateCamera(CameraUpdateFactory.newLatLng(sted))
+            //Log.d("kar", kar.toString())
         }
     }
 
@@ -332,6 +346,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, PlaceSelectionListener {
         val nELng = northEast.longitude
 
         val latDiff = nELat - sELat
+        val latDiffTenth = latDiff/10
         val nySLat = northEast.latitude - latDiff/2
         val stedLat = sted.latitude
         val stedLng = sted.longitude
@@ -339,20 +354,15 @@ class HomeFragment : Fragment(), OnMapReadyCallback, PlaceSelectionListener {
         if (stedLat > nELat || stedLat < nySLat || stedLng < nWLng || stedLng > nELng) {
             //problems arise if the visible region is over 180th meridian
             //Tuveuni, Fiji is a place where such a bug might arise
-            moveCameraToCaPoint(sted)
+            moveCameraToCaPoint(sted, latDiffTenth)
         }
     }
 
-    private fun moveCameraToCaPoint(omraade : LatLng) {
+    private fun moveCameraToCaPoint(omraade : LatLng, latDiffTenth : Double) {
         val kar = map.cameraPosition.zoom
         var sted = omraade
         var stedlat = sted.latitude
-        if (kar <= 15) {
-            stedlat = stedlat-0.002
-        }
-        else if (kar < 5) {
-            stedlat = stedlat-0.02
-        }
+        stedlat = stedlat-latDiffTenth
         //need to adjust the change acordingly to the zoom level
 
         val stedlong = omraade.longitude

@@ -18,7 +18,8 @@ class ListAdapter(val context: Context, val droneList: MutableList<Drone>?) : Re
 
         fun setData(drone: Drone?, pos: Int) {
             itemView.navn.setText(drone?.navn)
-            itemView.vindStyrke.setText("Maks vindstyrke: " + drone?.maksVindStyrke.toString())
+            itemView.vindStyrke.setText(context.getString(R.string.DLA_maksvindstyrke) + drone?.maksVindStyrke.toString())
+            //itemView.vindStyrke.setText("Maks vindstyrke: " + drone?.maksVindStyrke.toString())
             if(drone?.imgSrc == "") {
                 Glide.with(itemView)
                     .load(R.drawable.drone_img_asst)
@@ -30,10 +31,12 @@ class ListAdapter(val context: Context, val droneList: MutableList<Drone>?) : Re
                     .into(itemView.imageView)
             }
             if(drone?.vanntett == true) {
-                itemView.vanntett.setText("Er vanntett")
+                itemView.vanntett.setText(context.getString(R.string.DLA_vanntett) + drone?.maksVindStyrke.toString())
+                //itemView.vanntett.setText("Er vanntett")
             }
             else {
-                itemView.vanntett.setText("Ikke vanntett")
+                itemView.vanntett.setText(context.getString(R.string.DLA_ikkevanntett) + drone?.maksVindStyrke.toString())
+                //itemView.vanntett.setText("Ikke vanntett")
             }
             itemView.editKnapp.setOnClickListener {
                 val intent = Intent(context, EditDrone::class.java)

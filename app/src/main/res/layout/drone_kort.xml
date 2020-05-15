@@ -28,7 +28,7 @@
             android:layout_marginTop="80dp"
             android:layout_toEndOf="@id/imageView"
             android:maxLines="1"
-            android:text="vanntett" />
+            android:text="@string/DKXML_vanntett" />
 
         <TextView
             android:id="@+id/navn"
@@ -38,7 +38,7 @@
             android:layout_marginTop="20dp"
             android:layout_toEndOf="@id/imageView"
             android:maxLines="1"
-            android:text="Navn"
+            android:text="@string/DKXML_navn"
             android:textAlignment="viewStart" />
 
         <TextView
@@ -49,7 +49,7 @@
             android:layout_marginTop="50dp"
             android:layout_toEndOf="@id/imageView"
             android:maxLines="1"
-            android:text="Vindstyrke" />
+            android:text="@string/DKXML_vindstyrke" />
 
         <ImageView
             android:id="@+id/imageView"

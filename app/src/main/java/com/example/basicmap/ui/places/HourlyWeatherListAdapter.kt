@@ -58,8 +58,10 @@ class HourlyWeatherListAdapter(val context: Context, val hours: List<Met.Numb>):
                 item.maxTempValue.text = ""
             }
             else {
-                item.maxTempValue.text = "Max: ${tempMax}"
-                item.minTempValue.text = "Min: ${tempMin}"
+                item.maxTempValue.text = context.getString(R.string.HWLA_max)+ "${tempMax}"
+                item.minTempValue.text = context.getString(R.string.HWLA_min)+ "${tempMin}"
+                //item.maxTempValue.text = "Max: ${tempMax}"
+                //item.minTempValue.text = "Min: ${tempMin}"
             }
 
 

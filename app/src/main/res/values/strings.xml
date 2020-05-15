@@ -13,6 +13,53 @@
     </string-array>
     <string name="title_activity_main">MainActivity</string>
     <string name="messageWithLink"><a href="https://www.google.com/">Tap here to open Link</a></string>
+
+
+    <string name="PW_mangelpaainfo">Ingen addresseinformasjon tilgjengelig</string>
+    <string name="DLA_vanntett">Er vantett</string>
+    <string name="DLA_ikkevanntett">Ikke vanntett</string>
+    <string name="DLA_maksvindstyrke">Maks vindstyrke: </string>
+    <string name="HWLA_max">Max: </string>
+    <string name="HWLA_min">Min: </string>
+    <string name="AEDXML_dronenavn">Drone navn:</string>
+    <string name="AEDXML_navn">Navn:</string>
+    <string name="AEDXML_dronensmaksvindhastighet">Dronens maks vindhastighet:</string>
+    <string name="AEDXML_erdronenvanntett">Er dronen vanntett?</string>
+    <string name="AEDXML_lagreendringer">Lagre endringer</string>
+    <string name="AEDXML_slettdrone">Slett Drone</string>
+    <string name="ARDXML_leggtil">Legg til</string>
+    <string name="DKXML_vanntett">vanntett</string>
+    <string name="DKXML_navn">Navn</string>
+    <string name="DKXML_vindstyrke">Vindstyrke</string>
+    <string name="FDXML_ingenregdroner">Du har ingen registrerte droner</string>
+    <string name="FPXML_ingenreglokasjoner">Du har ingen registrerte lokasjoner</string>
+    <string name="HWXML_hhmm">HH:MM</string>
+    <string name="HWXML_70deg">70°C</string>
+    <string name="HWXML_max3">Max: 3</string>
+    <string name="HWXML_min3">Min: 3</string>
+    <string name="HWXML_imageofweather">ImageOfWeather</string>
+    <string name="HWXML_43">43.3</string>
+    <string name="HWXML_mswnw">m/s WNW</string>
+    <string name="HWXML_vindkast">Vindkast: 10m/s</string>
+    <string name="WXML_placeholderadress">placeholder address</string>
+    <string name="WXML_man">man</string>
+    <string name="WXML_tir">tir</string>
+    <string name="WXML_ons">ons</string>
+    <string name="WXML_tor">tor</string>
+    <string name="WXML_fre">fre</string>
+    <string name="WXML_loer">lør</string>
+    <string name="WXML_soen">søn</string>
+    <string name="WXML_kpinx">Kp Index</string>
+    <string name="WXML_StefanKarlStefanson">1</string>
+    <string name="WXML_sikt">Sikt</string>
+    <string name="WXML_10km">10 km</string>
+    <string name="WXML_nedboer">Nedbør</string>
+    <string name="WXML_76">76%</string>
+
+
+
+
+
 </resources>
 
 

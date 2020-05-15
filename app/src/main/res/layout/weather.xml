@@ -31,7 +31,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="placeholder address"
+            android:text="@string/WXML_placeholderadress"
             android:textColor="@color/quantum_black_100"
             android:textStyle="bold" />
 
@@ -59,7 +59,7 @@
             android:background="@drawable/daybar_button_shape"
             android:button="@drawable/empty_radio"
             android:gravity="center"
-            android:text="man"
+            android:text="@string/WXML_man"
             android:textColor="@color/radio_color"></RadioButton>
 
         <RadioButton
@@ -69,7 +69,7 @@
             android:background="@drawable/daybar_button_shape"
             android:button="@drawable/empty_radio"
             android:gravity="center"
-            android:text="tir"
+            android:text="@string/WXML_tir"
             android:textColor="@color/radio_color"></RadioButton>
 
         <RadioButton
@@ -79,7 +79,7 @@
             android:background="@drawable/daybar_button_shape"
             android:button="@drawable/empty_radio"
             android:gravity="center"
-            android:text="ons"
+            android:text="@string/WXML_ons"
             android:textColor="@color/radio_color"></RadioButton>
 
         <RadioButton
@@ -89,7 +89,7 @@
             android:background="@drawable/daybar_button_shape"
             android:button="@drawable/empty_radio"
             android:gravity="center"
-            android:text="tor"
+            android:text="@string/WXML_tor"
             android:textColor="@color/radio_color"></RadioButton>
 
         <RadioButton
@@ -99,7 +99,7 @@
             android:background="@drawable/daybar_button_shape"
             android:button="@drawable/empty_radio"
             android:gravity="center"
-            android:text="fre"
+            android:text="@string/WXML_fre"
             android:textColor="@color/radio_color"></RadioButton>
 
         <RadioButton
@@ -109,7 +109,7 @@
             android:background="@drawable/daybar_button_shape"
             android:button="@drawable/empty_radio"
             android:gravity="center"
-            android:text="lør"
+            android:text="@string/WXML_loer"
             android:textColor="@color/radio_color"></RadioButton>
 
         <RadioButton
@@ -119,7 +119,7 @@
             android:background="@color/quantum_black_100"
             android:button="@drawable/empty_radio"
             android:gravity="center"
-            android:text="søn"
+            android:text="@string/WXML_soen"
             android:textColor="@color/radio_color"></RadioButton>
 
     </RadioGroup>
@@ -155,7 +155,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_centerHorizontal="true"
-                android:text="Kp Index"
+                android:text="@string/WXML_kpinx"
                 android:textColor="@color/quantum_white_100" />
 
             <TextView
@@ -164,7 +164,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/kpIndexText"
                 android:layout_centerHorizontal="true"
-                android:text="1"
+                android:text="@string/WXML_StefanKarlStefanson"
                 android:textColor="@color/quantum_white_100" />
         </RelativeLayout>
 
@@ -180,7 +180,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:text="Sikt"
+                android:text="@string/WXML_sikt"
                 android:textColor="@color/quantum_white_100" />
 
             <TextView
@@ -189,7 +189,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/visiblityText"
                 android:layout_centerHorizontal="true"
-                android:text="10 km"
+                android:text="@string/WXML_10km"
                 android:textColor="@color/quantum_white_100" />
         </RelativeLayout>
 
@@ -204,7 +204,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:text="Nedbør"
+                android:text="@string/WXML_nedboer"
                 android:textColor="@color/quantum_white_100" />
 
             <TextView
@@ -213,7 +213,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/precipText"
                 android:layout_centerHorizontal="true"
-                android:text="76%"
+                android:text="@string/WXML_76"
                 android:textColor="@color/quantum_white_100" />
 
 

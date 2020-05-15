@@ -111,8 +111,10 @@ fun setupWeatherElement(
     })
 
     livePlace.address.observe(lifecycleOwner, Observer {
-        if (it == "")
-            container.locationNameView.text = "Ingen addresseinformasjon tilgjengelig"
+        if (it == "") {
+            container.locationNameView.text = context.getString(R.string.PW_mangelpaainfo)
+            //container.locationNameView.text = "Ingen addresseinformasjon tilgjengelig"
+        }
         else
             container.locationNameView.text = it
     })
