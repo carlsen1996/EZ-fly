@@ -35,8 +35,7 @@ import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.fragment_home.*
-import kotlinx.android.synthetic.main.popup.*
-import kotlinx.android.synthetic.main.popup.view.*
+import kotlinx.android.synthetic.main.fragment_home.view.*
 import kotlinx.android.synthetic.main.weather.view.*
 import kotlinx.coroutines.newFixedThreadPoolContext
 import com.google.android.libraries.places.api.model.Place as GPlace
