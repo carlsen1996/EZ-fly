@@ -87,38 +87,6 @@ fun setupWeatherElement(
             val inst = Instant.from(temp)
             val date = ZonedDateTime.ofInstant(inst, ZoneId.systemDefault())
 
-            val fog = data.data.instant.details.fog_area_fraction
-            val lowClouds = data.data.instant.details.cloud_area_fraction_low
-            val mediumClouds = data.data.instant.details.cloud_area_fraction_medium
-            val highClouds = data.data.instant.details.cloud_area_fraction_high
-
-
-            if(fog != null && lowClouds != null && mediumClouds != null && highClouds != null) {
-
-                val fogFloat = fog.toFloat()
-                val lowCloudsFloat = lowClouds.toFloat()
-                val mediumCloudsFloat = mediumClouds.toFloat()
-                val highCloudsFloat = highClouds.toFloat()
-
-                val combinedFraction = fogFloat + lowCloudsFloat + mediumCloudsFloat + highCloudsFloat
-                val visibility = combinedFraction / 4
-
-                val visibilityText = 15 - 15*(visibility/100)
-                val visibilityFinalValue = visibilityText.roundToInt()
-                Log.d("fog", "${fogFloat}")
-                Log.d("lowClouds", "${lowCloudsFloat}")
-                Log.d("mediumClouds", "${mediumCloudsFloat}")
-                Log.d("highClouds", "${highCloudsFloat}")
-                Log.d("visibility", "${visibility}")
-
-                container.visibilityValue.text = "${visibilityFinalValue} km"
-            }
-
-
-
-
-
-
 
             if (date.isAfter(now.plusDays(6)))
                 break
@@ -127,9 +95,47 @@ fun setupWeatherElement(
         }
 
         val day = livePlace.day.value!!
-        val data = days[day.dayOfWeek]!!
+        val dayTimeseries = days[day.dayOfWeek]!!
 
-        val viewAdapter = HourlyWeatherListAdapter(context, data)
+        // Calculate line of sight at 12:00 or at the current time if the current day is selected.
+        for (data in dayTimeseries) {
+            val time = data.time
+            val temp = utc.parse(time)
+            val inst = Instant.from(temp)
+            val date = ZonedDateTime.ofInstant(inst, ZoneId.systemDefault())
+
+            if (date.hour == 12 || date.dayOfWeek == day.dayOfWeek) {
+                val fog = data.data.instant.details.fog_area_fraction
+                val lowClouds = data.data.instant.details.cloud_area_fraction_low
+                val mediumClouds = data.data.instant.details.cloud_area_fraction_medium
+                val highClouds = data.data.instant.details.cloud_area_fraction_high
+
+                if (fog != null && lowClouds != null && mediumClouds != null && highClouds != null) {
+
+                    val fogFloat = fog.toFloat()
+                    val lowCloudsFloat = lowClouds.toFloat()
+                    val mediumCloudsFloat = mediumClouds.toFloat()
+                    val highCloudsFloat = highClouds.toFloat()
+
+                    val combinedFraction =
+                        fogFloat + lowCloudsFloat + mediumCloudsFloat + highCloudsFloat
+                    val visibility = combinedFraction / 4
+
+                    val visibilityText = 15 - 15 * (visibility / 100)
+                    val visibilityFinalValue = visibilityText.roundToInt()
+                    Log.d("fog", "${fogFloat}")
+                    Log.d("lowClouds", "${lowCloudsFloat}")
+                    Log.d("mediumClouds", "${mediumCloudsFloat}")
+                    Log.d("highClouds", "${highCloudsFloat}")
+                    Log.d("visibility", "${visibility}")
+
+                    container.visibilityValue.text = "${visibilityFinalValue} km"
+                    break
+                }
+            }
+        }
+
+        val viewAdapter = HourlyWeatherListAdapter(context, dayTimeseries)
         container.hourScrollView.adapter = viewAdapter
     }
 
