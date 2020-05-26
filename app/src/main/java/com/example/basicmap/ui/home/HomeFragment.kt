@@ -37,7 +37,6 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
 import kotlinx.android.synthetic.main.weather.view.*
-import kotlinx.coroutines.newFixedThreadPoolContext
 import com.google.android.libraries.places.api.model.Place as GPlace
 
 
@@ -50,6 +49,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, PlaceSelectionListener {
     private lateinit var locationClient: FusedLocationProviderClient
     private lateinit var map: GoogleMap
     private lateinit var placesClient: PlacesClient
+    var destroyViewHaveRun: Boolean = false
 
     // Transient reference to current marker, backed by the ViewModel
     private var marker: Marker? = null
@@ -75,7 +75,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, PlaceSelectionListener {
     override fun onDestroyView() {
         // Not sure why this works, but savedInstanceState doesn't
         // Save the camera position, so we don't unnecessarily reset on onCreateView
-        model.cameraPosition = map.cameraPosition
+        destroyViewHaveRun = true
         super.onDestroyView()
         Log.d(TAG, "onDestroyView")
     }
@@ -207,7 +207,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, PlaceSelectionListener {
             }
         })
 
-        if (model.cameraPosition == null) {
+        if (!destroyViewHaveRun) {
             getLocationPermission()
             getDeviceLocation()
 

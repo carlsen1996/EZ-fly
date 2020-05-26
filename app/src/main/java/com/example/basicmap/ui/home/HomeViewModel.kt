@@ -25,7 +25,6 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    var cameraPosition: CameraPosition? = null
 
     fun getPlace(): LivePlace {
         return livePlace!!
