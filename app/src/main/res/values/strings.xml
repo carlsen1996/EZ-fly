@@ -18,7 +18,7 @@
     <string name="PW_mangelpaainfo">Ingen addresseinformasjon tilgjengelig</string>
     <string name="DLA_vanntett">Er vantett</string>
     <string name="DLA_ikkevanntett">Ikke vanntett</string>
-    <string name="DLA_maksvindstyrke">Maks vindstyrke: </string>
+    <string name="DLA_maksvindstyrke">Maks vindstyrke: %s</string>
     <string name="HWLA_max">Max: </string>
     <string name="HWLA_min">Min: </string>
     <string name="AEDXML_dronenavn">Drone navn:</string>
