@@ -150,32 +150,6 @@
             android:layout_centerVertical="true">
 
             <TextView
-                android:id="@+id/kpIndexText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_centerHorizontal="true"
-                android:text="@string/WXML_kpinx"
-                android:textColor="@color/quantum_white_100" />
-
-            <TextView
-                android:id="@+id/kpIndexValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/kpIndexText"
-                android:layout_centerHorizontal="true"
-                android:text="@string/WXML_StefanKarlStefanson"
-                android:textColor="@color/quantum_white_100" />
-        </RelativeLayout>
-
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true">
-
-            <TextView
                 android:id="@+id/visiblityText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -199,22 +173,42 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true">
 
-            <TextView
-                android:id="@+id/precipText"
-                android:layout_width="wrap_content"
+            <SeekBar
+                android:id="@+id/sunGraph"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:text="@string/WXML_nedboer"
-                android:textColor="@color/quantum_white_100" />
+                android:layout_alignParentTop="true"
+                android:layout_marginBottom="2dp"
+                android:maxHeight="7dp"
+                android:progress="20"
+                android:progressDrawable="@drawable/sungraph_drawable"
+                android:splitTrack="false"
+                android:thumb="@drawable/ic_sun">
+
+            </SeekBar>
 
             <TextView
-                android:id="@+id/precipValue"
+                android:id="@+id/sunRiseValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/precipText"
-                android:layout_centerHorizontal="true"
-                android:text="@string/WXML_76"
-                android:textColor="@color/quantum_white_100" />
+                android:layout_below="@id/sunGraph"
+                android:layout_marginBottom="3dp"
+                android:layout_marginLeft="17dp"
+                android:text="05:55"
+                android:textColor="@color/quantum_orange200"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/sunSetValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/sunGraph"
+                android:layout_marginLeft="148dp"
+                android:layout_marginBottom="3dp"
+                android:text="22:55"
+                android:textColor="@color/quantum_orange200"
+                android:textSize="14sp" />
 
 
         </RelativeLayout>

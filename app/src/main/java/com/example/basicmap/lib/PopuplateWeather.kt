@@ -3,6 +3,7 @@ package com.example.basicmap.lib
 import android.content.Context
 import android.text.SpannableStringBuilder
 import android.util.Log
+import android.view.MotionEvent
 import android.view.View
 import android.widget.RadioButton
 import androidx.core.text.bold
@@ -14,6 +15,7 @@ import com.example.basicmap.ui.places.HourlyWeatherListAdapter
 import com.example.basicmap.ui.places.LivePlace
 import kotlinx.android.synthetic.main.hourly_weather.view.*
 import kotlinx.android.synthetic.main.weather.view.*
+import java.text.SimpleDateFormat
 import java.time.*
 import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
@@ -79,6 +81,39 @@ fun setupWeatherElement(
             val inst = Instant.from(temp)
             val date = ZonedDateTime.ofInstant(inst, ZoneId.systemDefault())
 
+            val fog = data.data.instant.details.fog_area_fraction
+            val lowClouds = data.data.instant.details.cloud_area_fraction_low
+            val mediumClouds = data.data.instant.details.cloud_area_fraction_medium
+            val highClouds = data.data.instant.details.cloud_area_fraction_high
+
+
+            if(fog != null && lowClouds != null && mediumClouds != null && highClouds != null) {
+
+                val fogFloat = fog.toFloat()
+                val lowCloudsFloat = lowClouds.toFloat()
+                val mediumCloudsFloat = mediumClouds.toFloat()
+                val highCloudsFloat = highClouds.toFloat()
+
+                val combinedFraction = fogFloat + lowCloudsFloat + mediumCloudsFloat + highCloudsFloat
+                val visibility = combinedFraction / 4
+
+                var visibilityText = 15 - 15*(visibility/100)
+                visibilityText = visibilityText.roundToInt().toFloat()
+                Log.d("fog", "${fogFloat}")
+                Log.d("lowClouds", "${lowCloudsFloat}")
+                Log.d("mediumClouds", "${mediumCloudsFloat}")
+                Log.d("highClouds", "${highCloudsFloat}")
+                Log.d("visibility", "${visibility}")
+
+                container.visibilityValue.text = visibilityText.toString()
+            }
+
+
+
+
+
+
+
             if (date.isAfter(now.plusDays(6)))
                 break
 
@@ -120,6 +155,51 @@ fun setupWeatherElement(
     })
 
     livePlace.astronomicalData.observe(lifecycleOwner, Observer {
+
+        val rawSunData = livePlace.astronomicalData.value?.location?.time
+
+        if (rawSunData != null) {
+            for (data in rawSunData) {
+                var utc = data?.sunrise?.time
+                var utc2 = data?.sunset?.time
+                if (utc != null && utc2 != null) {
+                    val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:SSSZ")
+                    val sdf2 = SimpleDateFormat("HH:mm")
+                    var sunriseEpoch = sdf.parse(utc).time
+                    var sunriseSeconds = sdf.parse(utc).time / 1000
+                    var sunsetEpoch = sdf.parse(utc2).time
+                    var sunsetSeconds = sdf.parse(utc2).time / 1000
+                    var sunriseDate = Date(sunriseEpoch)
+                    var sunsetDate = Date(sunsetEpoch)
+                    var timenow = Instant.now().epochSecond
+
+                    var timeSinceRise = (timenow - sunriseSeconds).toDouble()
+                    var sunFullPeriod = (sunsetSeconds - sunriseSeconds).toDouble()
+
+                    var percent = timeSinceRise / sunFullPeriod * 100
+
+                    var sunriseHours = sdf2.format(sunriseDate)
+                    var sunsetHours = sdf2.format(sunsetDate)
+
+                    container.sunRiseValue.text = sunriseHours.toString()
+                    container.sunSetValue.text = sunsetHours.toString()
+
+                    container.sunGraph.setOnTouchListener(object : View.OnTouchListener {
+                        override fun onTouch(v: View?, event: MotionEvent?): Boolean {
+                            return true
+                        }
+                    })
+
+                    if (percent > 0 && percent < 100) {
+                        container.sunGraph.thumb.alpha = 255
+                        container.sunGraph.progress = percent.toInt()
+                    } else {
+                        container.sunGraph.thumb.alpha = 0
+                        container.sunGraph.progress = 0
+                    }
+                }
+            }
+        }
     })
 
     livePlace.kp.observe(lifecycleOwner, Observer {
