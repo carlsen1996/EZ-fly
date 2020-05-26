@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="5dp"
@@ -23,11 +22,12 @@
             android:layout_height="wrap_content"
             android:padding="7dp"
             android:src="@android:drawable/ic_menu_compass"
-            android:visibility="visible" />
+            android:visibility="visible"
+            android:contentDescription="@string/gaa_til_sted" />
 
         <TextView
             android:id="@+id/locationNameView"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
@@ -41,7 +41,8 @@
             android:layout_height="wrap_content"
             android:padding="7dp"
             android:src="@android:drawable/star_big_off"
-            android:visibility="visible" />
+            android:visibility="visible"
+            android:contentDescription="@string/lagr_sted" />
     </LinearLayout>
 
     <HorizontalScrollView
@@ -145,7 +146,6 @@
         android:id="@+id/bottomBar"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:background="@drawable/daybar_shape"
         android:paddingLeft="10dp"
         android:paddingRight="10dp">
@@ -153,7 +153,7 @@
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_centerVertical="true">
 
             <TextView
@@ -178,7 +178,7 @@
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true">
+            android:layout_alignParentEnd="true">
 
             <SeekBar
                 android:id="@+id/sunGraph"
@@ -201,7 +201,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/sunGraph"
                 android:layout_marginBottom="3dp"
-                android:layout_marginLeft="17dp"
+                android:layout_marginStart="17dp"
                 android:text="05:55"
                 android:textColor="@color/quantum_orange200"
                 android:textSize="14sp" />
@@ -211,7 +211,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/sunGraph"
-                android:layout_marginLeft="148dp"
+                android:layout_marginStart="148dp"
                 android:layout_marginBottom="3dp"
                 android:text="22:55"
                 android:textColor="@color/quantum_orange200"
