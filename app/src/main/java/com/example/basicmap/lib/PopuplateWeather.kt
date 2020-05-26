@@ -21,6 +21,7 @@ import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
 import java.util.*
 import kotlin.math.roundToInt
+import kotlin.math.roundToLong
 
 fun degToCompass(a : Double) : String {
     var b =((a/22.5)+.5).toInt()
@@ -98,14 +99,14 @@ fun setupWeatherElement(
                 val visibility = combinedFraction / 4
 
                 var visibilityText = 15 - 15*(visibility/100)
-                visibilityText = visibilityText.roundToInt().toFloat()
+                var visibilityFinalValue = visibilityText.roundToInt()
                 Log.d("fog", "${fogFloat}")
                 Log.d("lowClouds", "${lowCloudsFloat}")
                 Log.d("mediumClouds", "${mediumCloudsFloat}")
                 Log.d("highClouds", "${highCloudsFloat}")
                 Log.d("visibility", "${visibility}")
 
-                container.visibilityValue.text = visibilityText.toString()
+                container.visibilityValue.text = "${visibilityFinalValue} km"
             }
 
 
