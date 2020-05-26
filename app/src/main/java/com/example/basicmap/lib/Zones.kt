@@ -58,10 +58,6 @@ public fun initNoFlyLufthavnSirkel(jsonStringen : String): MutableList<CircleOpt
     val luftpls = "Wewo"*/
 
 
-    if (kor1 == null||kor2 == null||kor3 == null) {
-        Log.d("Zones", "En kordinat er Null (Kor1/2/3) ------------------------------")
-    }
-
     for (enkelFlyplass in LufthavnMutableListe) {
 
         val kor1ArrayKlarForSplitting: String = kor1[teller]
@@ -69,138 +65,68 @@ public fun initNoFlyLufthavnSirkel(jsonStringen : String): MutableList<CircleOpt
         val kor3ArrayKlarForSplitting: String = kor3[teller]
 
         print("Yeet")
-        if (kor1ArrayKlarForSplitting == null||kor2ArrayKlarForSplitting == null||kor3ArrayKlarForSplitting == null) {
-            Log.d("Zones", "En Kor-Klar for splitting er NULL ------------------------------")
-            val lufthavn1 = lufthavnNavn[0]
-            //Hvis vi noen gang trenger tilgang til navnet på lufthavnen
 
-            /*val yeboi = "Yeboi"
-            val noboi = "Noboi"
-            if (lufthavnNavn == null) {
-                Log.d("Lufthavn1", noboi)
-            }
-            else {
-                Log.d("Lufthavn1", yeboi)
-            }*/
-            //
+        // Må gjøre doublen om til faktisk riktige kordinater med korTilBedreKor
 
-            teller++
-        }
-        else {
+        val kor1ArraySplittet = kor1ArrayKlarForSplitting.split(", ").toTypedArray()
+        val kor2ArraySplittet = kor2ArrayKlarForSplitting.split(", ").toTypedArray()
+        val kor3ArraySplittet = kor3ArrayKlarForSplitting.split(", ").toTypedArray()
 
-            // Må gjøre doublen om til faktisk riktige kordinater med korTilBedreKor
+        /*Log.d("e1", kor1ArraySplittet.get(0).toString())
+        Log.d("e1", kor1ArraySplittet.get(1).toString())
+        Log.d("e1", kor2ArraySplittet.get(0).toString())
+        Log.d("e1", kor2ArraySplittet.get(1).toString())
+        Log.d("e1", kor3ArraySplittet.get(0).toString())
+        Log.d("e1", kor3ArraySplittet.get(1).toString())
+        Log.d("-", " ")*/
+        n1 = korTilBedreKor(kor1ArraySplittet[0])
+        e1 = korTilBedreKor(kor1ArraySplittet[1])
+        n2 = korTilBedreKor(kor2ArraySplittet[0])
+        e2 = korTilBedreKor(kor2ArraySplittet[1])
+        n3 = korTilBedreKor(kor3ArraySplittet[0])
+        e3 = korTilBedreKor(kor3ArraySplittet[1])
 
-            val kor1ArraySplittet = kor1ArrayKlarForSplitting.split(", ").toTypedArray()
-            val kor2ArraySplittet = kor2ArrayKlarForSplitting.split(", ").toTypedArray()
-            val kor3ArraySplittet = kor3ArrayKlarForSplitting.split(", ").toTypedArray()
+        /*Log.d("n1", n1.toString())
+        Log.d("e1", n1.toString())
+        Log.d("n2", N2.toString())
+        Log.d("e2", N2.toString())
+        Log.d("n3", N3.toString())
+        Log.d("e3", N3.toString())
+        Log.d("-", "------------------")*/
 
-            /*Log.d("e1", kor1ArraySplittet.get(0).toString())
-            Log.d("e1", kor1ArraySplittet.get(1).toString())
-            Log.d("e1", kor2ArraySplittet.get(0).toString())
-            Log.d("e1", kor2ArraySplittet.get(1).toString())
-            Log.d("e1", kor3ArraySplittet.get(0).toString())
-            Log.d("e1", kor3ArraySplittet.get(1).toString())
-            Log.d("-", " ")*/
-            n1 = korTilBedreKor(kor1ArraySplittet[0])
-            e1 = korTilBedreKor(kor1ArraySplittet[1])
-            n2 = korTilBedreKor(kor2ArraySplittet[0])
-            e2 = korTilBedreKor(kor2ArraySplittet[1])
-            n3 = korTilBedreKor(kor3ArraySplittet[0])
-            e3 = korTilBedreKor(kor3ArraySplittet[1])
-
-            /*Log.d("n1", n1.toString())
-            Log.d("e1", n1.toString())
-            Log.d("n2", N2.toString())
-            Log.d("e2", N2.toString())
-            Log.d("n3", N3.toString())
-            Log.d("e3", N3.toString())
-            Log.d("-", "------------------")*/
-
-            val latlng1 = LatLng(n1, e1)
-            val latlng2 = LatLng(n2, e2)
-            val latlng3 = LatLng(n3, e3)
+        val latlng1 = LatLng(n1, e1)
+        val latlng2 = LatLng(n2, e2)
+        val latlng3 = LatLng(n3, e3)
 
 
-            val sirkelfarge = Color.parseColor("#66FF0000")
+        val sirkelfarge = Color.parseColor("#66FF0000")
 
 
+        val sirkelOptionis1 = CircleOptions()
+            .center(latlng1) // Senteret
+            .radius(5000.0) // I meter
+            .fillColor(sirkelfarge) // RBG + alpha (transparancy)
+            .strokeColor(Color.TRANSPARENT) // Utkanten av sirkelen
+        val sirkelOptionis2 = CircleOptions()
+            .center(latlng2) // Senteret
+            .radius(5000.0) // I meter
+            .fillColor(sirkelfarge) // RBG + alpha (transparancy)
+            .strokeColor(Color.TRANSPARENT) // Utkanten av sirkelen
+        val sirkelOptionis3 = CircleOptions()
+            .center(latlng3) // Senteret
+            .radius(5000.0) // I meter
+            .fillColor(sirkelfarge) // RBG + alpha (transparancy)
+            .strokeColor(Color.TRANSPARENT) // Utkanten av sirkelen
 
-            val sirkelOptionis1 = CircleOptions()
-                .center(latlng1) // Senteret
-                .radius(5000.0) // I meter
-                .fillColor(sirkelfarge) // RBG + alpha (transparancy)
-                .strokeColor(Color.TRANSPARENT) // Utkanten av sirkelen
-            val sirkelOptionis2 = CircleOptions()
-                .center(latlng2) // Senteret
-                .radius(5000.0) // I meter
-                .fillColor(sirkelfarge) // RBG + alpha (transparancy)
-                .strokeColor(Color.TRANSPARENT) // Utkanten av sirkelen
-            val sirkelOptionis3 = CircleOptions()
-                .center(latlng3) // Senteret
-                .radius(5000.0) // I meter
-                .fillColor(sirkelfarge) // RBG + alpha (transparancy)
-                .strokeColor(Color.TRANSPARENT) // Utkanten av sirkelen
+        //-----------------------------------------------------
+        //Kommenter ut dette
 
-            //-----------------------------------------------------
-            //Kommenter ut dette
-
-            sirkelMutableList.add(sirkelOptionis1)
-            sirkelMutableList.add(sirkelOptionis2)
-            sirkelMutableList.add(sirkelOptionis3)
-
+        sirkelMutableList.add(sirkelOptionis1)
+        sirkelMutableList.add(sirkelOptionis2)
+        sirkelMutableList.add(sirkelOptionis3)
 
 
-
-            //Kommenter ut dette
-            //-----------------------------------------------------
-
-            //yeet
-
-            //-----------------------------------------------------
-            //Kommenter inn dette
-
-            /*var kordinatListe = arrayOf<LatLng>(LatLng1, LatLng2, LatLng3)
-            var ekteKordinatListe = mutableListOf<LatLng>(LatLng1, LatLng2, LatLng3)
-
-            val trekantpoligon = kartet.addPolygon(
-                PolygonOptions()
-                    //.fillColor(sirkelfarge)
-                    //.add(kordinatListe)
-                    .addAll(ekteKordinatListe)
-            )
-
-
-            var polyguneerPunktListe = mutableListOf<LatLng>()
-            var tellerkar = 0
-            while (tellerkar <3) {
-                var p = ekteKordinatListe[tellerkar]
-                var sirkelPunkter = mutableListOf<LatLng>()
-                sirkelPunkter = (tegnSirkel(p, 5000, 1))
-                for (punkt in sirkelPunkter) {
-                    polyguneerPunktListe.add(punkt)
-                }
-                //polyguneerPunktListe.add(tegnSirkel(p, 5000, 1))
-            }
-
-
-
-            val poligono = kartet.addPolygon(
-                PolygonOptions()
-                    //.fillColor(sirkelfarge)
-                    //.add(kordinatListe)
-                    .addAll(polyguneerPunktListe)
-                    .strokeColor(Color.TRANSPARENT)
-                    .fillColor(sirkelfarge)
-            )*/
-
-            //Kommenter inn dette
-            //-----------------------------------------------------
-
-
-
-
-            teller++
-        }
+        teller++
 
     }
 

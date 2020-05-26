@@ -99,7 +99,7 @@ class Met {
 
         val gson = Gson()
         val query = Fuel.get(fullUrl)
-        val (request, response, result) = try {
+        val (_, response, result) = try {
             // We always get Failure when using `responseString()` here for some reason.
             query.awaitStringResponse()
         } catch (e: Exception) {
@@ -153,7 +153,7 @@ class Met {
         val fullSunsetUrl = "${baseSunsetUrl}?lat=${p.latitude}&lon=${p.longitude}&date=${currentDate}&offset=+01:00"
         //sett inn sunset her; få igang et kall fra browser
         val gson = Gson()
-        val (request, response, result) = Fuel.get(fullSunsetUrl).responseString()
+        val (_, response, result) = Fuel.get(fullSunsetUrl).responseString()
         queued--
         when (result) {
             is Result.Failure -> {

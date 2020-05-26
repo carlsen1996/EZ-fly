@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val viewPager: ViewPager = findViewById(R.id.view_pager)
         val drones = loadDrones(application)
-        dronesViewModel.getDroneList().value = drones?.toMutableList()
+        dronesViewModel.getDroneList().value = drones.toMutableList()
 
         // While this is deprecated, ViewPager2 introduces a bunch of unnecessary complications
         // with scrolling.
