@@ -13,11 +13,11 @@
         android:layout_marginRight="10dp"
         android:layout_marginBottom="10dp"
         android:clickable="true"
-        android:background="@color/colorAccent"
+        android:background="?attr/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@android:drawable/ic_input_add"
-        android:tint="@android:color/white"/>
+        android:tint="?attr/colorPrimaryDark"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"

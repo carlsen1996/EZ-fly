@@ -22,8 +22,7 @@
             android:layout_height="60dp"
             android:layout_width="match_parent"
             app:tabIconTint="@drawable/menu_item_color_check"
-            app:tabUnboundedRipple="true"
-            android:background="?attr/colorPrimary" />
+            app:tabUnboundedRipple="true" />
     </com.google.android.material.appbar.AppBarLayout>
 
 
