@@ -44,85 +44,92 @@
             android:visibility="visible" />
     </LinearLayout>
 
-    <RadioGroup
-        android:id="@+id/dayBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <HorizontalScrollView
         android:background="@drawable/daybar_shape"
-        android:gravity="center"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
-        <RadioButton
-            android:id="@+id/today"
-            android:layout_width="55dp"
-            android:layout_height="20dp"
-            android:background="@drawable/daybar_button_shape"
-            android:button="@drawable/empty_radio"
+        <RadioGroup
+            android:id="@+id/dayBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="@string/WXML_man"
-            android:textColor="@color/radio_color"></RadioButton>
+            android:orientation="horizontal">
 
-        <RadioButton
-            android:id="@+id/tommorow"
-            android:layout_width="55dp"
-            android:layout_height="20dp"
-            android:background="@drawable/daybar_button_shape"
-            android:button="@drawable/empty_radio"
-            android:gravity="center"
-            android:text="@string/WXML_tir"
-            android:textColor="@color/radio_color"></RadioButton>
+            <RadioButton
+                android:id="@+id/today"
+                android:layout_width="55dp"
+                android:layout_height="20dp"
+                android:background="@drawable/daybar_button_shape"
+                android:button="@drawable/empty_radio"
+                android:gravity="center"
+                android:text="@string/WXML_man"
+                android:textColor="@color/radio_color" />
 
-        <RadioButton
-            android:id="@+id/third"
-            android:layout_width="55dp"
-            android:layout_height="20dp"
-            android:background="@drawable/daybar_button_shape"
-            android:button="@drawable/empty_radio"
-            android:gravity="center"
-            android:text="@string/WXML_ons"
-            android:textColor="@color/radio_color"></RadioButton>
+            <RadioButton
+                android:id="@+id/tommorow"
+                android:layout_width="55dp"
+                android:layout_height="20dp"
+                android:background="@drawable/daybar_button_shape"
+                android:button="@drawable/empty_radio"
+                android:gravity="center"
+                android:text="@string/WXML_tir"
+                android:textColor="@color/radio_color" />
 
-        <RadioButton
-            android:id="@+id/fourth"
-            android:layout_width="55dp"
-            android:layout_height="20dp"
-            android:background="@drawable/daybar_button_shape"
-            android:button="@drawable/empty_radio"
-            android:gravity="center"
-            android:text="@string/WXML_tor"
-            android:textColor="@color/radio_color"></RadioButton>
+            <RadioButton
+                android:id="@+id/third"
+                android:layout_width="55dp"
+                android:layout_height="20dp"
+                android:background="@drawable/daybar_button_shape"
+                android:button="@drawable/empty_radio"
+                android:gravity="center"
+                android:text="@string/WXML_ons"
+                android:textColor="@color/radio_color" />
 
-        <RadioButton
-            android:id="@+id/fifth"
-            android:layout_width="55dp"
-            android:layout_height="20dp"
-            android:background="@drawable/daybar_button_shape"
-            android:button="@drawable/empty_radio"
-            android:gravity="center"
-            android:text="@string/WXML_fre"
-            android:textColor="@color/radio_color"></RadioButton>
+            <RadioButton
+                android:id="@+id/fourth"
+                android:layout_width="55dp"
+                android:layout_height="20dp"
+                android:background="@drawable/daybar_button_shape"
+                android:button="@drawable/empty_radio"
+                android:gravity="center"
+                android:text="@string/WXML_tor"
+                android:textColor="@color/radio_color" />
 
-        <RadioButton
-            android:id="@+id/sixth"
-            android:layout_width="55dp"
-            android:layout_height="20dp"
-            android:background="@drawable/daybar_button_shape"
-            android:button="@drawable/empty_radio"
-            android:gravity="center"
-            android:text="@string/WXML_loer"
-            android:textColor="@color/radio_color"></RadioButton>
+            <RadioButton
+                android:id="@+id/fifth"
+                android:layout_width="55dp"
+                android:layout_height="20dp"
+                android:background="@drawable/daybar_button_shape"
+                android:button="@drawable/empty_radio"
+                android:gravity="center"
+                android:text="@string/WXML_fre"
+                android:textColor="@color/radio_color" />
 
-        <RadioButton
-            android:id="@+id/seventh"
-            android:layout_width="55dp"
-            android:layout_height="20dp"
-            android:background="@color/quantum_black_100"
-            android:button="@drawable/empty_radio"
-            android:gravity="center"
-            android:text="@string/WXML_soen"
-            android:textColor="@color/radio_color"></RadioButton>
+            <RadioButton
+                android:id="@+id/sixth"
+                android:layout_width="55dp"
+                android:layout_height="20dp"
+                android:background="@drawable/daybar_button_shape"
+                android:button="@drawable/empty_radio"
+                android:gravity="center"
+                android:text="@string/WXML_loer"
+                android:textColor="@color/radio_color" />
 
-    </RadioGroup>
+            <RadioButton
+                android:id="@+id/seventh"
+                android:layout_width="55dp"
+                android:layout_height="20dp"
+                android:background="@color/quantum_black_100"
+                android:button="@drawable/empty_radio"
+                android:gravity="center"
+                android:text="@string/WXML_soen"
+                android:textColor="@color/radio_color" />
+
+        </RadioGroup>
+    </HorizontalScrollView>
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/hourScrollView"
