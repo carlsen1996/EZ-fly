@@ -103,8 +103,8 @@ fun setupWeatherElement(
                 val combinedFraction = fogFloat + lowCloudsFloat + mediumCloudsFloat + highCloudsFloat
                 val visibility = combinedFraction / 4
 
-                var visibilityText = 15 - 15*(visibility/100)
-                var visibilityFinalValue = visibilityText.roundToInt()
+                val visibilityText = 15 - 15*(visibility/100)
+                val visibilityFinalValue = visibilityText.roundToInt()
                 Log.d("fog", "${fogFloat}")
                 Log.d("lowClouds", "${lowCloudsFloat}")
                 Log.d("mediumClouds", "${mediumCloudsFloat}")
@@ -166,26 +166,26 @@ fun setupWeatherElement(
 
         if (rawSunData != null) {
             for (data in rawSunData) {
-                var utc = data?.sunrise?.time
-                var utc2 = data?.sunset?.time
+                val utc = data.sunrise?.time
+                val utc2 = data.sunset?.time
                 if (utc != null && utc2 != null) {
                     val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:SSSZ")
                     val sdf2 = SimpleDateFormat("HH:mm")
-                    var sunriseEpoch = sdf.parse(utc).time
-                    var sunriseSeconds = sdf.parse(utc).time / 1000
-                    var sunsetEpoch = sdf.parse(utc2).time
-                    var sunsetSeconds = sdf.parse(utc2).time / 1000
-                    var sunriseDate = Date(sunriseEpoch)
-                    var sunsetDate = Date(sunsetEpoch)
-                    var timenow = Instant.now().epochSecond
+                    val sunriseEpoch = sdf.parse(utc).time
+                    val sunriseSeconds = sdf.parse(utc).time / 1000
+                    val sunsetEpoch = sdf.parse(utc2).time
+                    val sunsetSeconds = sdf.parse(utc2).time / 1000
+                    val sunriseDate = Date(sunriseEpoch)
+                    val sunsetDate = Date(sunsetEpoch)
+                    val timenow = Instant.now().epochSecond
 
-                    var timeSinceRise = (timenow - sunriseSeconds).toDouble()
-                    var sunFullPeriod = (sunsetSeconds - sunriseSeconds).toDouble()
+                    val timeSinceRise = (timenow - sunriseSeconds).toDouble()
+                    val sunFullPeriod = (sunsetSeconds - sunriseSeconds).toDouble()
 
-                    var percent = timeSinceRise / sunFullPeriod * 100
+                    val percent = timeSinceRise / sunFullPeriod * 100
 
-                    var sunriseHours = sdf2.format(sunriseDate)
-                    var sunsetHours = sdf2.format(sunsetDate)
+                    val sunriseHours = sdf2.format(sunriseDate)
+                    val sunsetHours = sdf2.format(sunsetDate)
 
                     container.sunRiseValue.text = sunriseHours.toString()
                     container.sunSetValue.text = sunsetHours.toString()
