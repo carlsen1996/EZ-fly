@@ -29,6 +29,11 @@ fun degToCompass(a : Double) : String {
     return c[(b % 16)]
 }
 
+/*
+    Hook up a view with weather.xml layout so it reacts to the various data in @LivePlace
+
+    @param container View with weather.xml layout
+ */
 fun setupWeatherElement(
     context: Context,
     lifecycleOwner: LifecycleOwner,

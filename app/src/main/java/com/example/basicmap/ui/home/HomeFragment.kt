@@ -52,7 +52,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, PlaceSelectionListener {
     private lateinit var map: GoogleMap
     private lateinit var placesClient: PlacesClient
 
-    // Transient reference to current marker, backed by model.position
+    // Transient reference to current marker, backed by the ViewModel
     private var marker: Marker? = null
     private val zones = mutableListOf<Polygon>()
 
@@ -100,11 +100,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, PlaceSelectionListener {
         // Anything that require the map needs to be there.
         mapFragment.getMapAsync(this)
 
-        // Update the UI when address/weather changes.
-        // When `model.place` is set in `onMapClick` the model will automatically
-        // fetch the associated address and weather info in the background,
-        // notifying us here when done.
-
+        // Setup the weather popup so it reacts to livedata updates
         setupWeatherElement(requireContext(), viewLifecycleOwner, model.getPlace(), root.popup)
 
         Places.initialize(requireContext(), getString(R.string.google_maps_key))

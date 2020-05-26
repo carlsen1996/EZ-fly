@@ -100,7 +100,7 @@ class Met {
         val gson = Gson()
         val query = Fuel.get(fullUrl)
         val (request, response, result) = try {
-            // We always get Failure when using `responseString()` her for some reason.
+            // We always get Failure when using `responseString()` here for some reason.
             query.awaitStringResponse()
         } catch (e: Exception) {
             queued--
