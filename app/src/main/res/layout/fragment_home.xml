@@ -52,7 +52,7 @@
             app:behavior_hideable = "true"
             app:behavior_peekHeight="55dp"
             android:visibility="invisible"
-            android:background="@android:color/white"
+            android:background="?attr/backgroundColor"
             android:layout_height="wrap_content">
 
             <include layout="@layout/weather"/>

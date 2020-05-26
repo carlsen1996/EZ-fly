@@ -3,5 +3,5 @@
     <item android:state_checked="true"
         android:color="@color/quantum_amber300" />
     <item android:state_checked="false"
-        android:color="@color/quantum_white_100" />
+        android:color="?attr/colorAccent" />
 </selector>

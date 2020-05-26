@@ -32,7 +32,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/WXML_placeholderadress"
-            android:textColor="@color/quantum_black_100"
+            android:textColor="?attr/colorPrimary"
             android:textStyle="bold" />
 
         <ImageButton
@@ -122,7 +122,7 @@
                 android:id="@+id/seventh"
                 android:layout_width="55dp"
                 android:layout_height="20dp"
-                android:background="@color/quantum_black_100"
+                android:background="@drawable/daybar_button_shape_no_line"
                 android:button="@drawable/empty_radio"
                 android:gravity="center"
                 android:text="@string/WXML_soen"
@@ -162,7 +162,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:text="@string/WXML_sikt"
-                android:textColor="@color/quantum_white_100" />
+                android:textColor="?attr/colorAccent" />
 
             <TextView
                 android:id="@+id/visibilityValue"
@@ -171,7 +171,7 @@
                 android:layout_below="@+id/visiblityText"
                 android:layout_centerHorizontal="true"
                 android:text="@string/WXML_10km"
-                android:textColor="@color/quantum_white_100" />
+                android:textColor="?attr/colorAccent" />
         </RelativeLayout>
 
 

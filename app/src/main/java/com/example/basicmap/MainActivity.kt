@@ -1,6 +1,7 @@
 package com.example.basicmap
 
 import android.content.SharedPreferences
+import android.graphics.Color
 import android.os.Bundle
 import com.google.android.material.tabs.TabLayout
 import androidx.viewpager.widget.ViewPager
@@ -68,9 +69,15 @@ class MainActivity : AppCompatActivity() {
         var userPreferenceDarkMode = preferenceDarkMode.getDarkPref()
         if (userPreferenceDarkMode) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            setTheme(R.style.darkTheme)
+            tabs.setBackgroundColor(Color.parseColor("#102A43"))
+
         }
         else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            setTheme(R.style.AppTheme)
+            tabs.setBackgroundColor(Color.parseColor("#2196F3"))
+
         }
 
     }
