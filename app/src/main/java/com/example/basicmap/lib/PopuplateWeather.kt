@@ -121,13 +121,8 @@ fun setupWeatherElement(
                         fogFloat + lowCloudsFloat + mediumCloudsFloat + highCloudsFloat
                     val visibility = combinedFraction / 4
 
-                    val visibilityText = 15 - 15 * (visibility / 100)
+                    val visibilityText = 15 * (100-visibility) / 100
                     val visibilityFinalValue = visibilityText.roundToInt()
-                    Log.d("fog", "${fogFloat}")
-                    Log.d("lowClouds", "${lowCloudsFloat}")
-                    Log.d("mediumClouds", "${mediumCloudsFloat}")
-                    Log.d("highClouds", "${highCloudsFloat}")
-                    Log.d("visibility", "${visibility}")
 
                     container.visibilityValue.text = "${visibilityFinalValue} km"
                     break
