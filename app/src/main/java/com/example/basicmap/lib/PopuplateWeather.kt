@@ -42,9 +42,9 @@ fun setupWeatherElement(
 ) {
     var dayToId: Map<DayOfWeek, Int>? = null
     var idToDay: Map<Int, LocalDate>? = null
-
+    var now = LocalDate.now()
     fun setupRadioGroup() {
-        val now = LocalDate.now()
+        now = LocalDate.now()
         dayToId = mapOf(
             now.dayOfWeek to R.id.today,
             now.plusDays(1).dayOfWeek to R.id.tommorow,
@@ -70,16 +70,14 @@ fun setupWeatherElement(
         }
 
         if (livePlace.day.value!!.isBefore(now)) {
-            container.dayBar.check(R.id.today)
+            container.dayBar.check(dayToId!!.get(now.dayOfWeek)!!)
         }
     }
 
     setupRadioGroup()
     livePlace.clock.observe(lifecycleOwner, Observer {
-        val date = LocalDateTime.now()
-        // If the clock ticks at 00:00-00:59 we know that a day has passed and we need to recreate
-        // the radiogroup with the day buttons.
-        if (date.hour != 0)
+        // Redo the radio buttons if it's gone a day since it was last done.
+        if (now.dayOfWeek == LocalDate.now().dayOfWeek)
             return@Observer
         setupRadioGroup()
     })
