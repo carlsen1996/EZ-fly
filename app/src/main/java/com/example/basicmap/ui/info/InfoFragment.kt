@@ -38,11 +38,11 @@ class InfoFragment : Fragment() {
                 "https://luftfartstilsynet.no/droner/hobbydrone/dronelek/\n" +
                 "Fullt regelverk her : \n"+
                 "https://lovdata.no/dokument/SF/forskrift/2015-11-30-1404\n"),
-        listOf("Al Hareth\n"+
+        listOf("Al Hareth Adel\n"+
                 "Johannes Carlsen\n"+
                 "Olav Moen\n"+
                 "Philip A.K. Øvland\n"+
-                "Rolf\n"+
+                "Rolf Selås\n"+
                 "Tor Hedin Brønner\n"),
         listOf("Daniel Hellestveit\n"+
                 "Ove Bakken\n"+
