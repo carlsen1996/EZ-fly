@@ -2,17 +2,18 @@ package com.example.basicmap.ui.places
 
 import android.content.Context
 import android.location.Geocoder
+import android.util.Log
 import androidx.lifecycle.*
 import com.example.basicmap.lib.Kp
 import com.example.basicmap.lib.KpTime
 import com.example.basicmap.lib.Met
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import com.google.android.gms.maps.model.LatLng
+import kotlinx.coroutines.*
 import java.time.DayOfWeek
+import java.time.Instant
 import java.time.LocalDate
 import java.time.ZonedDateTime
+
 
 class LivePlace(application: Context) {
     val place: MutableLiveData<Place> =
@@ -21,12 +22,7 @@ class LivePlace(application: Context) {
     val favorite: MutableLiveData<Boolean> =
         MutableLiveData()
 
-    val weather: LiveData<Met.Kall?> = Transformations.switchMap(place) {
-        liveData {
-            val w = Met().locationForecast(it.position)
-            emit(w)
-        }
-    }
+    val weather: MediatorLiveData<Met.Kall?> = MediatorLiveData()
 
     val address: LiveData<String> = Transformations.switchMap(place) {
         liveData {
@@ -69,31 +65,66 @@ class LivePlace(application: Context) {
         }
     }
 
+    // Update the weather every hour
+    val clock: LiveData<Instant> = Transformations.switchMap(place) {
+        liveData {
+            while (true) {
+                delay(3600000)
+                emit(Instant.now())
+            }
+        }
+    }
+
+    suspend private fun getSunrise(p: LatLng) {
+        withContext(Dispatchers.IO) {
+            val astro = Met().receiveAstroData(p, day.value!!)
+            withContext(Dispatchers.Main) {
+                astronomicalData.value = astro
+            }
+        }
+    }
+
+    suspend private fun getWeather(p: LatLng) {
+        withContext(Dispatchers.IO) {
+            val w = Met().locationForecast(p)
+            withContext(Dispatchers.Main) {
+                weather.value = w
+            }
+        }
+    }
+
     init {
         // Sunset/sunrise needs to be fetched for each day and position
         // We can assume the day is always set
         astronomicalData.addSource(place) {
             GlobalScope.launch {
-                withContext(Dispatchers.IO) {
-                    val astro = Met().receiveAstroData(it.position, day.value!!)
-                    withContext(Dispatchers.Main) {
-                        astronomicalData.value = astro
-                    }
-                }
+                getSunrise(it.position)
             }
         }
         astronomicalData.addSource(day) {
             val place = place.value
+            if (place == null)
+                return@addSource
             GlobalScope.launch {
-                withContext(Dispatchers.IO) {
-                    if (place == null)
-                        return@withContext
-                    val astro = Met().receiveAstroData(place.position, it)
-                    withContext(Dispatchers.Main) {
-                        astronomicalData.value = astro
-                    }
-                }
+                getSunrise(place.position)
+            }
+        }
 
+        weather.addSource(place) {
+            if (it == null)
+                return@addSource
+            GlobalScope.launch {
+                getWeather(it.position)
+            }
+        }
+
+        weather.addSource(clock) {
+            val place = place.value
+            Log.d("clock", "foo")
+            if (place == null)
+                return@addSource
+            GlobalScope.launch {
+                getWeather(place.position)
             }
         }
 
