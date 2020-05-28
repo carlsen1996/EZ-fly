@@ -91,7 +91,7 @@
         app:layout_constraintBottom_toTopOf="@+id/leggTilKnapp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@mipmap/appicon_128"
+        app:srcCompat="@mipmap/splash_icon"
         android:layout_marginBottom="50dp"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

@@ -55,7 +55,7 @@
             android:id="@+id/imageView"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            app:srcCompat="@mipmap/appicon_128" />
+            app:srcCompat="@mipmap/splash_icon" />
 
         <ImageView
             android:id="@+id/editKnapp"

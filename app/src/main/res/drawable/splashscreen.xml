@@ -3,7 +3,7 @@
 
     <item android:drawable="@color/colorPrimary" />
     <item>
-        <bitmap android:src="@mipmap/appicon_128"
+        <bitmap android:src="@mipmap/splash_icon"
             android:gravity="center" />
     </item>
 </layer-list>
