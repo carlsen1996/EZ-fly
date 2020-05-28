@@ -40,31 +40,49 @@ fun setupWeatherElement(
     livePlace: LivePlace,
     container: View
 ) {
-    val now = LocalDate.now()
+    var dayToId: Map<DayOfWeek, Int>? = null
+    var idToDay: Map<Int, LocalDate>? = null
 
-    val dayToId = mapOf(
-        now.dayOfWeek to R.id.today,
-        now.plusDays(1).dayOfWeek to R.id.tommorow,
-        now.plusDays(2).dayOfWeek to R.id.third,
-        now.plusDays(3).dayOfWeek to R.id.fourth,
-        now.plusDays(4).dayOfWeek to R.id.fifth,
-        now.plusDays(5).dayOfWeek to R.id.sixth,
-        now.plusDays(6).dayOfWeek to R.id.seventh
-    )
-    val idToDay = mapOf(
-        R.id.today to now,
-        R.id.tommorow to now.plusDays(1),
-        R.id.third to now.plusDays(2),
-        R.id.fourth to now.plusDays(3),
-        R.id.fifth to now.plusDays(4),
-        R.id.sixth to now.plusDays(5),
-        R.id.seventh to now.plusDays(6)
-    )
+    fun setupRadioGroup() {
+        val now = LocalDate.now()
+        dayToId = mapOf(
+            now.dayOfWeek to R.id.today,
+            now.plusDays(1).dayOfWeek to R.id.tommorow,
+            now.plusDays(2).dayOfWeek to R.id.third,
+            now.plusDays(3).dayOfWeek to R.id.fourth,
+            now.plusDays(4).dayOfWeek to R.id.fifth,
+            now.plusDays(5).dayOfWeek to R.id.sixth,
+            now.plusDays(6).dayOfWeek to R.id.seventh
+        )
+        idToDay = mapOf(
+            R.id.today to now,
+            R.id.tommorow to now.plusDays(1),
+            R.id.third to now.plusDays(2),
+            R.id.fourth to now.plusDays(3),
+            R.id.fifth to now.plusDays(4),
+            R.id.sixth to now.plusDays(5),
+            R.id.seventh to now.plusDays(6)
+        )
 
-    dayToId.forEach {
-        val day = it.key
-        container.findViewById<RadioButton>(it.value).text = day.getDisplayName(TextStyle.SHORT, Locale.getDefault())
+        dayToId!!.forEach {
+            val day = it.key
+            container.findViewById<RadioButton>(it.value).text = day.getDisplayName(TextStyle.SHORT, Locale.getDefault())
+        }
+
+        if (livePlace.day.value!!.isBefore(now)) {
+            container.dayBar.check(R.id.today)
+        }
     }
+
+    setupRadioGroup()
+    livePlace.clock.observe(lifecycleOwner, Observer {
+        val date = LocalDateTime.now()
+        // If the clock ticks at 00:00-00:59 we know that a day has passed and we need to recreate
+        // the radiogroup with the day buttons.
+        if (date.hour != 0)
+            return@Observer
+        setupRadioGroup()
+    })
 
     fun populateWeather(weather: Met.Kall) {
         val utc = DateTimeFormatter.ISO_INSTANT.withZone(ZoneId.of("UTC"))
@@ -214,12 +232,12 @@ fun setupWeatherElement(
 
 
     if (container.dayBar.checkedRadioButtonId == -1) {
-        container.dayBar.check(dayToId.get(livePlace.day.value?.dayOfWeek) ?: -1)
+        container.dayBar.check(dayToId!!.get(livePlace.day.value?.dayOfWeek) ?: -1)
     }
     container.dayBar.setOnCheckedChangeListener { group, checkedId ->
         if (checkedId < 0)
             return@setOnCheckedChangeListener
-        livePlace.day.value = idToDay.get(checkedId) as LocalDate
+        livePlace.day.value = idToDay!!.get(checkedId) as LocalDate
     }
 
 }
