@@ -137,7 +137,10 @@ class HomeFragment : Fragment(), OnMapReadyCallback, PlaceSelectionListener {
             toast.show()
         }
         root.gotoButton.setOnClickListener {
-            map.animateCamera(CameraUpdateFactory.newLatLng(model.getPlace().place.value!!.position))
+            val place = model.getPlace().place.value
+            if (place == null)
+                return@setOnClickListener
+            moveCameraIfOutsideVisibleRegion(place.position)
         }
 
         // Setup search
