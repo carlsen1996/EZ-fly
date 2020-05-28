@@ -69,7 +69,11 @@ fun setupWeatherElement(
             container.findViewById<RadioButton>(it.value).text = day.getDisplayName(TextStyle.SHORT, Locale.getDefault())
         }
 
-        if (livePlace.day.value!!.isBefore(now)) {
+        val day = livePlace.day.value!!
+        // Select the correct day
+        if (day.isBefore(now)) {
+            container.dayBar.check(dayToId!!.get(day.dayOfWeek)!!)
+        } else {
             container.dayBar.check(dayToId!!.get(now.dayOfWeek)!!)
         }
     }
