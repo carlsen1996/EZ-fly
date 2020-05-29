@@ -120,7 +120,8 @@
         app:layout_constraintHorizontal_bias="0.082"
         app:layout_constraintStart_toEndOf="@+id/imageView3"
         app:layout_constraintTop_toTopOf="@+id/imageView3"
-        app:srcCompat="@android:drawable/ic_menu_camera" />
+        app:srcCompat="@android:drawable/ic_menu_camera"
+        android:contentDescription="@string/sett_bilde" />
 
     <Button
         android:id="@+id/slettKnapp"
