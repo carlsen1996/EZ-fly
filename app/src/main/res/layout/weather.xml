@@ -32,7 +32,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/WXML_placeholderadress"
-            android:textColor="?attr/colorPrimary"
+            android:textColor="?attr/colorAccent"
             android:textStyle="bold" />
 
         <ImageButton
@@ -161,7 +161,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:text="@string/WXML_sikt"
-                android:textColor="?attr/colorPrimary" />
+                android:textColor="?attr/colorAccent" />
 
             <TextView
                 android:id="@+id/visibilityValue"
