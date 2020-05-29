@@ -302,26 +302,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback, PlaceSelectionListener {
         lufthavnButtonTeller = true
     }
 
-    private fun moveCameraIfOutsideVisibleRegionTotal(stedet : LatLng) {
-        if(!map.projection.visibleRegion.latLngBounds.contains(stedet)) {
-            val kar = map.cameraPosition.zoom
-            var sted = stedet
-            var stedlat = sted.latitude
-            if (kar <= 15) {
-                stedlat = stedlat-0.002
-            }
-            else if (kar < 5) {
-                stedlat = stedlat-0.02
-            }
-            //need to adjust the change acordingly to the zoom level
-
-            val stedlong = stedet.longitude
-            sted = LatLng(stedlat, stedlong)
-            map.animateCamera(CameraUpdateFactory.newLatLng(sted))
-            //Log.d("kar", kar.toString())
-        }
-    }
-
     private fun moveCameraIfOutsideVisibleRegion(stedet : LatLng) {
         val sted = stedet
 
