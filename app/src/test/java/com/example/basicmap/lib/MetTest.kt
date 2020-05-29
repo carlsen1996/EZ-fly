@@ -10,7 +10,7 @@ class MetTest {
     fun forecast() {
         runBlocking {
             val weather = Met().locationForecast(LatLng(50.0, 50.0))
-            assertNotNull(weather.properties.timeseries[0])
+            assertNotNull(weather?.properties?.timeseries?.get(0))
         }
     }
 
