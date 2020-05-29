@@ -164,11 +164,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback, PlaceSelectionListener {
             // Store the location in the view model, it will do the necessary work of
             // fetching weather and address info
             model.getPlace().place.value = Place(it)
-            moveCameraIfOutsideVisibleRegion(it)
-            //moves camera to point if it isn't on the top half of the screen
-
-            //moveCameraIfOutsideVisibleRegionTotal(it)
-
         }
 
         map.setOnMarkerClickListener {
@@ -203,11 +198,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, PlaceSelectionListener {
             marker?.remove()
             marker = map.addMarker(MarkerOptions().position(it.position))
             marker?.setTag(it)
-            val bounds = map.projection.visibleRegion.latLngBounds
-            if (!bounds.contains(it.position)) {
-                Log.d("place observer", "move.")
-                map.animateCamera(CameraUpdateFactory.newLatLng(it.position))
-            }
+            moveCameraIfOutsideVisibleRegion(it.position)
         })
 
         if (!destroyViewHaveRun) {
