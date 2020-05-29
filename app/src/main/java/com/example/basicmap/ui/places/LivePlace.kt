@@ -34,6 +34,8 @@ class LivePlace(application: Context) {
             val p = it.position
             val geoc = Geocoder(application)
             try {
+                // Not sure why this is warning, as things inside the liveData constructor is run
+                // in a background thread. Eg. a big delay here doesn't cause block the UI thread.
                 val locations = geoc.getFromLocation(p.latitude, p.longitude, 1)
                 // The following splits the string in order to remove unnecessary information. getAdressLine
                 // returns very full info, for example
