@@ -45,8 +45,8 @@ class InfoFragment : Fragment() {
                 "https://luftfartstilsynet.no/droner/hobbydrone/dronelek/\n\n" +
                 "Fullt regelverk her : \n\n"+
                 "https://lovdata.no/dokument/SF/forskrift/2015-11-30-1404\n"),
-        listOf("Fra og med 1 Januar 2021 så vil det EU regelverket bli gjeldene i Norge."+
-                "Vi anbefaler brukere å lese seg opp på de nye reglene før det nye regelverket trer i kraft."),
+        listOf("Fra og med 1 Januar 2021 så vil det nye EU regelverket for droner tre i kraft i Norge."+
+                " Vi anbefaler brukere å lese seg opp på det nye regelverket før det trer i kraft."),
         listOf("Al Hareth Adel\n"+
                 "Johannes Carlsen\n"+
                 "Olav Moen\n"+
