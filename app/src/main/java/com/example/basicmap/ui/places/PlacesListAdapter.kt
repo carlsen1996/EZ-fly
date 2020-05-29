@@ -22,7 +22,7 @@ class PlacesListAdapter(val fragment: PlacesFragment, val placesList: MutableLis
             itemView.lagreLokasjonsKnapp.setOnClickListener {
                 val builder = androidx.appcompat.app.AlertDialog.Builder(fragment.requireActivity())
                 builder.setTitle("Slett lokasjon/plass")
-                builder.setMessage("Er du sikker på at du vil slette \n" + livePlace.address + " ?")
+                builder.setMessage("Er du sikker på at du vil slette \n" + livePlace.address.value + " ?")
                 builder.setPositiveButton("Ja") { dialog, which ->
                     slettPlace(pos)
                     livePlace.place.value?.favorite = false
