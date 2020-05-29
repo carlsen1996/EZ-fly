@@ -48,6 +48,7 @@
     <HorizontalScrollView
         android:background="@drawable/daybar_shape"
         android:orientation="horizontal"
+        android:textColor="?attr/colorPrimary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
@@ -160,7 +161,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:text="@string/WXML_sikt"
-                android:textColor="?attr/colorAccent" />
+                android:textColor="?attr/colorPrimary" />
 
             <TextView
                 android:id="@+id/visibilityValue"
@@ -169,7 +170,7 @@
                 android:layout_below="@+id/visiblityText"
                 android:layout_centerHorizontal="true"
                 android:text="@string/WXML_10km"
-                android:textColor="?attr/colorAccent" />
+                android:textColor="?attr/colorPrimary" />
         </RelativeLayout>
 
 

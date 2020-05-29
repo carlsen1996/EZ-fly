@@ -25,7 +25,7 @@
             android:layout_marginTop="15dp"
             android:fontFamily="@font/lato_light"
             android:text="@string/HWXML_hhmm"
-            android:textColor="?attr/colorAccent"
+            android:textColor="?attr/colorPrimary"
             android:textSize="40sp"
             android:visibility="visible"
             tools:visibility="visible" />
@@ -54,7 +54,7 @@
             android:layout_marginTop="4dp"
             android:fontFamily="@font/lato_light"
             android:text="@string/HWXML_70deg"
-            android:textColor="?attr/colorAccent"
+            android:textColor="?attr/colorPrimary"
             android:textFontWeight="1"
             android:textSize="40sp" />
 
@@ -67,7 +67,7 @@
             android:layout_toEndOf="@+id/tempValue"
             android:fontFamily="@font/lato_regular"
             android:text="@string/HWXML_min3"
-            android:textColor="?attr/colorAccent"
+            android:textColor="?attr/colorPrimary"
             android:textSize="10sp" />
 
         <TextView
@@ -79,7 +79,7 @@
             android:layout_toEndOf="@+id/tempValue"
             android:fontFamily="@font/lato_regular"
             android:text="@string/HWXML_max3"
-            android:textColor="?attr/colorAccent"
+            android:textColor="?attr/colorPrimary"
             android:textSize="10sp" />
 
         <ImageView
@@ -117,7 +117,7 @@
             android:layout_toRightOf="@+id/windLogo"
             android:fontFamily="@font/lato_light"
             android:text="@string/HWXML_43"
-            android:textColor="?attr/colorAccent"
+            android:textColor="?attr/colorPrimary"
             android:textSize="25sp" />
 
         <TextView
@@ -128,7 +128,7 @@
             android:layout_toRightOf="@+id/windValue"
             android:paddingTop="10dp"
             android:text="@string/HWXML_mswnw"
-            android:textColor="?attr/colorAccent" />
+            android:textColor="?attr/colorPrimary" />
 
         <TextView
             android:id="@+id/windGustValue"
@@ -139,7 +139,7 @@
             android:layout_toRightOf="@+id/windLogo"
             android:fontFamily="@font/lato_light"
             android:text="@string/HWXML_vindkast"
-            android:textColor="?attr/colorAccent"
+            android:textColor="?attr/colorPrimary"
             android:textSize="11sp" />
 
     </RelativeLayout>
